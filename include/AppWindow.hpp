@@ -30,6 +30,7 @@ private:
     bool isPaused() const;
     bool pauseAllowed() const;
 
+public slots:
     void showMenu();
     void showCharacterCreation();
 };

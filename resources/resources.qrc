@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/resources">
+    <file>fonts/alagard.ttf</file>
+    <file>fonts/GrapeSoda.ttf</file>
+    <file>fonts/DoubleHomicide.ttf</file>
+  </qresource>
+</RCC>

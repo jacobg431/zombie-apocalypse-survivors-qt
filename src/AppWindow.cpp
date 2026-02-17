@@ -9,9 +9,10 @@
 
 AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
 {
+    // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
-    resize(600, 400);
 
+    // --- Pages ---
     stack = new QStackedWidget(this);
     setCentralWidget(stack);
 
@@ -40,6 +41,7 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     connect(menu, &MainMenuPage::StartGameClicked, this, &AppWindow::showCharacterCreation);
     connect(menu, &MainMenuPage::QuitGameClicked, this, &QWidget::close);
 
+    // --- Show menu at startup ---
     showMenu();
 }
 
