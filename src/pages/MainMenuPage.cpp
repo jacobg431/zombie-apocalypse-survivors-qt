@@ -14,11 +14,14 @@ MainMenuPage::MainMenuPage(QWidget *parent) : QWidget(parent)
     auto *game_title = new QLabel("Zombie Apocalypse Survivors");
 
     game_title->setAlignment(Qt::AlignCenter);
-    game_title->setStyleSheet("font-size: 48px; font-weight: bold;");
+    game_title->setStyleSheet("font-size: 56px;" "font-weight: bold;");
 
     // --- Menu buttons ---
     auto *button_start = new QPushButton("Start Game");
     auto *button_quit = new QPushButton("Quit Game");
+
+    button_start->setStyleSheet("font-size: 40px;");
+    button_quit->setStyleSheet("font-size: 40px;");
 
     button_start->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     button_quit->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
