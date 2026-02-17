@@ -30,6 +30,7 @@ MainMenuPage::MainMenuPage(QWidget *parent) : QWidget(parent)
     // --- Layout ---
     auto *layout = new QVBoxLayout(this);
 
+    layout->addStretch();
     layout->addWidget(game_title);
     layout->addStretch();
     layout->addWidget(button_start, 0, Qt::AlignCenter);
