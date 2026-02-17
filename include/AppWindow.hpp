@@ -15,5 +15,6 @@ private:
     QStackedWidget *stack;
     MainMenuPage *menu;
 
+public slots:
     void showMenu();
 };
