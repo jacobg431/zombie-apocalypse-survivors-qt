@@ -19,9 +19,15 @@ include(CTest)  # enables testing infrastructure
 # ---- Qt6 ----
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-add_executable(app src/main.cpp)
+file(GLOB_RECURSE APP_SOURCES 
+    src/*.cpp
+    include/*.hpp
+)
+
+add_executable(app ${APP_SOURCES})
 
 target_link_libraries(app PRIVATE Qt6::Core Qt6::Widgets)
+target_include_directories(app PRIVATE include)
 
 # ---- Catch2 ----
 include(FetchContent)
