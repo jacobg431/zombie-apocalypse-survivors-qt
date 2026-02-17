@@ -56,4 +56,6 @@ compile_commands.json
 # build directory
 build/
 
+# vscode
+.vscode/
 resources/fonts/*.zip
