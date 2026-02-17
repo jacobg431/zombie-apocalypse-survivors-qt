@@ -3,6 +3,7 @@
 
 class QStackedWidget;
 class MainMenuPage;
+class CharacterCreationPage;
 
 class AppWindow : public QMainWindow
 {
@@ -14,6 +15,8 @@ public:
 private:
     QStackedWidget *stack;
     MainMenuPage *menu;
+    CharacterCreationPage *characterCreation;
 
     void showMenu();
+    void showCharacterCreation();
 };
