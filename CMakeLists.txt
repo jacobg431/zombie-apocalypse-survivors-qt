@@ -22,6 +22,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 file(GLOB_RECURSE APP_SOURCES 
     src/*.cpp
     include/*.hpp
+    resources/*.qrc
 )
 
 add_executable(app ${APP_SOURCES})
