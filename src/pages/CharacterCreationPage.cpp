@@ -78,6 +78,7 @@ QVBoxLayout *CharacterCreationPage::heroImageComponent()
 
     auto *component = new QVBoxLayout();
     component->addStretch();
+    component->addSpacing(60);
     component->addWidget(classImageLabel_, 0, Qt::AlignHCenter);
     component->addStretch();
 
@@ -171,7 +172,7 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
 
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + ".png");
-    classImageLabel_->setPixmap(pixmap.scaled(1024/2, 1280/2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    classImageLabel_->setPixmap(pixmap.scaled(564, 564*125, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void CharacterCreationPage::initRoleMap()
