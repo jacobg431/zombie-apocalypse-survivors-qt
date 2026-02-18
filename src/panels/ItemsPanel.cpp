@@ -6,6 +6,7 @@
 #include <QString>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QFrame>
 
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
 {
@@ -15,7 +16,9 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     labelTitle->setAlignment(Qt::AlignCenter);
     labelTitle->setObjectName("panelTitle");
 
-    layout->addWidget(labelTitle);
+    auto *titleGridFrame = new QFrame;
+    titleGridFrame->setObjectName("innerWrapper");
+    auto *titleGridLayout = new QVBoxLayout(titleGridFrame);
 
     // 4x4 Grid
     auto *grid = new QGridLayout;
@@ -40,7 +43,10 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
         }
     }
 
-    layout->addLayout(grid);
+    titleGridLayout->addWidget(labelTitle);
+    titleGridLayout->addLayout(grid);
+
+    layout->addWidget(titleGridFrame);
 
     // Buy Button
     m_button = new DefaultPushButton(buttonText);
@@ -61,10 +67,17 @@ void ItemsPanel::applyStyling() {
             padding: 15px;
         }
 
+        QFrame#innerWrapper {
+            background-color: #a8a8a8;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
         QLabel#panelTitle {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
+            max-height: 64px;
         }
 
     )");
