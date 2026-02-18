@@ -37,7 +37,7 @@ private:
     QLineEdit *nameEdit_ = nullptr;
     QComboBox *classSelect_ = nullptr;
 
-    auto heroImageComponent();
+    QVBoxLayout *heroImageComponent();
 
     QVBoxLayout *HeroDescComponent();
 

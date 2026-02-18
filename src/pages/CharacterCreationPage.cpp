@@ -20,8 +20,7 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *left_panel = heroFormComponent();
 
     // --- Middle panel (class picture) ---
-    auto *middle_panel = new QVBoxLayout();
-    middle_panel->addWidget(new QLabel("Placeholder image"));
+    auto *middle_panel = heroImageComponent();
 
     // Right panel widgets
     auto *right_panel = HeroDescComponent();
@@ -52,8 +51,11 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
     return component;
 }
 
-auto CharacterCreationPage::heroImageComponent()
+QVBoxLayout *CharacterCreationPage::heroImageComponent()
 {
+    auto *component = new QVBoxLayout();
+    component->addWidget(new QLabel("Placeholder image"));
+    return component;
 }
 
 QVBoxLayout *CharacterCreationPage::HeroDescComponent()
