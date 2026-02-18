@@ -2,7 +2,6 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include <QGridLayout>
 #include <QVector>
 
 class ItemsShopPage : public QWidget
@@ -17,9 +16,7 @@ private:
     QWidget* createInventoryPanel();
     void applyStyling();
 
-    QPushButton* m_buyButton = nullptr;
     QPushButton* m_sellButton = nullptr;
 
-    QVector<QPushButton*> m_shopItemButtons;
     QVector<QPushButton*> m_inventoryItemButtons;
 };
