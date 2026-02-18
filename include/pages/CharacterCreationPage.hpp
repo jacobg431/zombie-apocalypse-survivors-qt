@@ -1,10 +1,16 @@
 #pragma once
+#include "ZasLib/Roles.hpp"
+
 #include <QWidget>
 #include <QMap>
-#include <QString>
-#include <QLabel>
-#include <QVBoxLayout>
-#include "ZasLib/Roles.hpp"
+
+// Forward declare to reduce compile time
+class QVBoxLayout;
+class QFormLayout;
+class QLineEdit;
+class QComboBox;
+class QString;
+class QLabel;
 
 class CharacterCreationPage : public QWidget
 {
@@ -27,7 +33,9 @@ private:
 
     void initRoleMap();
 
-    auto heroFormComponent();
+    QFormLayout *heroFormComponent();
+    QLineEdit *nameEdit_ = nullptr;
+    QComboBox *classSelect_ = nullptr;
 
     auto heroImageComponent();
 

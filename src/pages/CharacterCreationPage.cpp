@@ -4,13 +4,11 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QLabel>
+#include <QFormLayout>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QFormLayout>
-#include <QMap>
 #include <QString>
-#include <QListWidget>
+#include <QLabel>
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
@@ -19,18 +17,7 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *layout = new QHBoxLayout(this);
 
     // --- Left panel (pick name & class) ---
-    auto *name_select = new QLineEdit(this);
-    name_select->setMaximumWidth(250);
-
-    auto *class_select = new QComboBox(this);
-    class_select->addItems(role_map_.keys());
-    class_select->setMaximumWidth(250);
-
-    auto *hero_form = new QFormLayout();
-    hero_form->setLabelAlignment(Qt::AlignLeft);
-    hero_form->setFormAlignment(Qt::AlignTop);
-    hero_form->addRow("Hero Name:", name_select);
-    hero_form->addRow("Hero Class:", class_select);
+    auto *left_panel = heroFormComponent();
 
     // --- Middle panel (class picture) ---
     auto *middle_panel = new QVBoxLayout();
@@ -39,16 +26,30 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     // Right panel widgets
     auto *right_panel = HeroDescComponent();
 
-    layout->addLayout(hero_form);
+    layout->addLayout(left_panel);
     layout->addLayout(middle_panel);
     layout->addLayout(right_panel);
 
-    connect(class_select, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
-    emit classSelectUpdated(class_select->currentText());
+    connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
+    classSelectUpdated(classSelect_->currentText());
 }
 
-auto CharacterCreationPage::heroFormComponent()
+QFormLayout *CharacterCreationPage::heroFormComponent()
 {
+    nameEdit_ = new QLineEdit(this);
+    nameEdit_->setMaximumWidth(250);
+
+    classSelect_ = new QComboBox(this);
+    classSelect_->addItems(role_map_.keys());
+    classSelect_->setMaximumWidth(250);
+
+    auto *component = new QFormLayout();
+    component->setLabelAlignment(Qt::AlignLeft);
+    component->setFormAlignment(Qt::AlignTop);
+    component->addRow("Hero Name:", nameEdit_);
+    component->addRow("Hero Class:", classSelect_);
+
+    return component;
 }
 
 auto CharacterCreationPage::heroImageComponent()
