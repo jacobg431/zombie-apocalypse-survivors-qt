@@ -9,6 +9,9 @@
 #include <QComboBox>
 #include <QString>
 #include <QLabel>
+#include <QGroupBox>
+
+int MAX_COL_WIDTH = 300;
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
@@ -16,18 +19,29 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 
     auto *layout = new QHBoxLayout(this);
 
+    auto *left_layout = new QVBoxLayout();
     // --- Left panel (pick name & class) ---
-    auto *left_panel = heroFormComponent();
+    //auto *left_panel = heroFormComponent();
 
-    // --- Middle panel (class picture) ---
-    auto *middle_panel = heroImageComponent();
+    left_layout->setContentsMargins(12, 12, 12, 12);
+    left_layout->setSpacing(12);
 
-    // Right panel widgets
-    auto *right_panel = HeroDescComponent();
+    auto *formWidget = new QWidget(this);
+    formWidget->setLayout(heroFormComponent());
 
-    layout->addLayout(left_panel);
-    layout->addLayout(middle_panel);
-    layout->addLayout(right_panel);
+    auto *descWidget = new QWidget(this);
+    descWidget->setLayout(HeroDescComponent());
+
+    left_layout->addWidget(formWidget);
+    left_layout->addWidget(descWidget);
+
+    auto *left_panel = new QWidget(this);
+    left_panel->setLayout(left_layout);
+    
+    auto *right_panel = heroImageComponent();
+
+    layout->addWidget(left_panel, 1, Qt::AlignCenter);
+    layout->addLayout(right_panel, 1);
 
     connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
     classSelectUpdated(classSelect_->currentText());
@@ -36,17 +50,21 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 QFormLayout *CharacterCreationPage::heroFormComponent()
 {
     nameEdit_ = new QLineEdit(this);
-    nameEdit_->setMaximumWidth(250);
+    nameEdit_->setMaximumWidth(MAX_COL_WIDTH);
 
     classSelect_ = new QComboBox(this);
     classSelect_->addItems(role_map_.keys());
-    classSelect_->setMaximumWidth(250);
+    classSelect_->setMaximumWidth(MAX_COL_WIDTH);
 
     auto *component = new QFormLayout();
     component->setLabelAlignment(Qt::AlignLeft);
     component->setFormAlignment(Qt::AlignTop);
-    component->addRow("Hero Name:", nameEdit_);
-    component->addRow("Hero Class:", classSelect_);
+
+    component->addRow(new QLabel("Choose a name:"));
+    component->addRow(nameEdit_);
+
+    component->addRow(new QLabel("Choose a class:"));
+    component->addRow(classSelect_);
 
     return component;
 }
@@ -56,11 +74,11 @@ QVBoxLayout *CharacterCreationPage::heroImageComponent()
     QLabel *imageLabel = new QLabel("Placeholder image");
     QPixmap pixmap(":/resources/images/placeholder_class.png");
     
-    imageLabel->setPixmap(pixmap.scaled(200, 200, Qt::KeepAspectRatio));
+    imageLabel->setPixmap(pixmap.scaled(300, 300, Qt::KeepAspectRatio));
     imageLabel->setAlignment(Qt::AlignCenter);
     
     auto *component = new QVBoxLayout();
-    component->addWidget(imageLabel, 0, Qt::AlignHCenter);
+    component->addWidget(imageLabel);
 
     return component;
 }
@@ -69,11 +87,11 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
 {
     descriptionLabel_ = new QLabel(this);
     descriptionLabel_->setWordWrap(true);
-    descriptionLabel_->setFixedWidth(220);
+    descriptionLabel_->setAlignment(Qt::AlignTop);
 
     skillList_ = new QLabel(this);
     skillList_->setWordWrap(true);
-    skillList_->setFixedWidth(220);
+    skillList_->setAlignment(Qt::AlignTop);
 
     auto *attributeForm = new QFormLayout();
 
@@ -87,18 +105,30 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
         QLabel *label = new QLabel(attribute);
         QLabel *value = attributesMap_[attribute];
 
-        value->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        value->setAlignment(Qt::AlignRight);
         attributeForm->addRow(label, value);
     }
 
+    const int MIN_BOX_HEIGHT = 150;
+
+    auto *descBox = new QGroupBox("Class description");
+    auto *descLay = new QVBoxLayout(descBox);
+    descLay->addWidget(descriptionLabel_);
+    descBox->setMinimumHeight(MIN_BOX_HEIGHT);
+
+    auto *attrBox = new QGroupBox("Class Attributes");
+    auto *attrLay = new QVBoxLayout(attrBox);
+    attrLay->addLayout(attributeForm);
+
+    auto *skillsBox = new QGroupBox("Class Skills");
+    auto *skillsLay = new QVBoxLayout(skillsBox);
+    skillsLay->addWidget(skillList_);
+    skillsBox->setMinimumHeight(MIN_BOX_HEIGHT);
+
     auto *component = new QVBoxLayout();
-    component->addWidget(new QLabel("Hero descriptions:"));
-    component->addWidget(descriptionLabel_);
-    component->addStretch();
-    component->addWidget(new QLabel("Attributes:"));
-    component->addLayout(attributeForm);
-    component->addStretch();
-    component->addWidget(skillList_);
+    component->addWidget(descBox);
+    component->addWidget(attrBox);
+    component->addWidget(skillsBox);
     component->addStretch();
 
     return component;
