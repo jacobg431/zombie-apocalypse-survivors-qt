@@ -2,6 +2,7 @@
 
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
+#include "pages/ItemsShopPage.hpp"
 #include "widgets/PauseMenu.hpp"
 
 #include <QStackedWidget>
@@ -29,16 +30,18 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     // --- Pages ---
     menu = new MainMenuPage(this);
     characterCreation = new CharacterCreationPage(this);
+    itemsShop = new ItemsShopPage(this);
 
     stack->addWidget(menu);
     stack->addWidget(characterCreation);
+    stack->addWidget(itemsShop);
 
     // --- Connections ---
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
 
-    connect(menu, &MainMenuPage::StartGameClicked, this, &AppWindow::showCharacterCreation);
+    connect(menu, &MainMenuPage::StartGameClicked, this, &AppWindow::showItemsShop);
     connect(menu, &MainMenuPage::QuitGameClicked, this, &QWidget::close);
 
     // --- Show menu at startup ---
@@ -53,6 +56,11 @@ void AppWindow::showMenu()
 void AppWindow::showCharacterCreation()
 {
     stack->setCurrentWidget(characterCreation);
+}
+
+void AppWindow::showItemsShop()
+{
+    stack->setCurrentWidget(itemsShop);
 }
 
 void AppWindow::resizeEvent(QResizeEvent *event)
