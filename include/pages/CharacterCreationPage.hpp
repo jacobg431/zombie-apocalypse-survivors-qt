@@ -3,6 +3,7 @@
 #include <QMap>
 #include <QString>
 #include <QLabel>
+#include <QVBoxLayout>
 #include "ZasLib/Roles.hpp"
 
 class CharacterCreationPage : public QWidget
@@ -21,10 +22,20 @@ private:
 
     QMap<QString, Survivor *> role_map_;
     QMap<QString, QLabel *> attributesMap_;
+    QLabel *skillList_;
+    QLabel *descriptionLabel_;
 
     void initRoleMap();
 
-signals:
-    void CharacterCreated();
+    auto heroFormComponent();
 
+    auto heroImageComponent();
+
+    QVBoxLayout *HeroDescComponent();
+
+signals:
+    void characterCreated();
+
+private slots:
+    void classSelectUpdated(const QString &class_name);
 };
