@@ -15,12 +15,15 @@ PauseMenu::PauseMenu(QWidget *parent) : QWidget(parent)
     title->setAlignment(Qt::AlignCenter);
 
     auto *resumeButton = new QPushButton("Resume", this);
+    resumeButton->setFixedWidth(200);
+
     auto *returnToMenuButton = new QPushButton("Return to Menu", this);
+    returnToMenuButton->setFixedWidth(200);
 
     layout->addStretch(); 
     layout->addWidget(title);
-    layout->addWidget(resumeButton);
-    layout->addWidget(returnToMenuButton);
+    layout->addWidget(resumeButton, 0, Qt::AlignCenter);
+    layout->addWidget(returnToMenuButton, 0, Qt::AlignCenter);
     layout->addStretch();
 
     connect(resumeButton, &QPushButton::clicked, this, &PauseMenu::ResumeClicked);
