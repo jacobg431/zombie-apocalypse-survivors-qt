@@ -12,12 +12,22 @@
 #include <QGroupBox>
 
 int MAX_COL_WIDTH = 300;
+QString TITLE_STYLE = "font-size: 32px; color: #FF5733;";
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
     initRoleMap();
 
-    auto *layout = new QHBoxLayout(this);
+    auto *title_wrapper = new QVBoxLayout(this);
+
+    auto *titleLabel = new QLabel("Create Your Survivor");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setObjectName("pageTitle");
+    titleLabel->setStyleSheet(TITLE_STYLE);
+    title_wrapper->addWidget(titleLabel);
+
+    auto *layout = new QHBoxLayout();
+    title_wrapper->addLayout(layout);
 
     // --- Character form and class description ---
     auto *left_layout = new QVBoxLayout();
