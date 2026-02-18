@@ -3,5 +3,7 @@
     <file>fonts/alagard.ttf</file>
     <file>fonts/GrapeSoda.ttf</file>
     <file>fonts/DoubleHomicide.ttf</file>
-  </qresource>
+
+    <file>images/placeholder_class.png</file>
+    </qresource>
 </RCC>

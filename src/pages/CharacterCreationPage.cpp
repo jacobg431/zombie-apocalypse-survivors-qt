@@ -53,8 +53,15 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
 
 QVBoxLayout *CharacterCreationPage::heroImageComponent()
 {
+    QLabel *imageLabel = new QLabel("Placeholder image");
+    QPixmap pixmap(":/resources/images/placeholder_class.png");
+    
+    imageLabel->setPixmap(pixmap.scaled(200, 200, Qt::KeepAspectRatio));
+    imageLabel->setAlignment(Qt::AlignCenter);
+    
     auto *component = new QVBoxLayout();
-    component->addWidget(new QLabel("Placeholder image"));
+    component->addWidget(imageLabel, 0, Qt::AlignHCenter);
+
     return component;
 }
 
