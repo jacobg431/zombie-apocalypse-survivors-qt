@@ -1,8 +1,9 @@
 #include <QString>
 #include <QWidget>
 #include <QEvent>
+#include <QPushButton>
 
-class ItemPushButton
+class ItemPushButton : public QPushButton
 {
 public:
     ItemPushButton(const QString& text, QWidget* parent = nullptr);
