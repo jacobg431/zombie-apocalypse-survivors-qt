@@ -38,8 +38,6 @@ QWidget* ItemsShopPage::createShopPanel()
         for (int col = 0; col < 4; ++col)
         {
             auto *button = new ItemPushButton("Empty");
-            button->setCheckable(true);
-            button->setMinimumSize(80, 60);
 
             m_shopItemButtons.append(button);
             grid->addWidget(button, row, col);
@@ -59,7 +57,6 @@ QWidget* ItemsShopPage::createShopPanel()
     // Buy Button
     m_buyButton = new DefaultPushButton("Buy");
     m_buyButton->setEnabled(false);
-    m_buyButton->setMinimumHeight(40);
 
     layout->addSpacing(10);
     layout->addWidget(m_buyButton);
@@ -87,8 +84,6 @@ QWidget* ItemsShopPage::createInventoryPanel()
         for (int col = 0; col < 4; ++col)
         {
             auto *button = new ItemPushButton("Empty");
-            button->setCheckable(true);
-            button->setMinimumSize(80, 60);
 
             m_inventoryItemButtons.append(button);
             grid->addWidget(button, row, col);
@@ -135,7 +130,7 @@ void ItemsShopPage::applyStyling()
         }
 
         QLabel#panelTitle {
-            font-size: 18px;
+            font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
         }
