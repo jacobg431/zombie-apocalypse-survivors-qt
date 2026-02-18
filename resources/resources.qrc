@@ -5,5 +5,12 @@
     <file>fonts/DoubleHomicide.ttf</file>
 
     <file>images/placeholder_class.png</file>
+    <file>images/hero.png</file>
+    <file>images/caregiver.png</file>
+    <file>images/jester.png</file>
+    <file>images/outlaw.png</file>
+
+    <file>styles/dark_theme.qss</file>
+    
     </qresource>
 </RCC>

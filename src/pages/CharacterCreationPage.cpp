@@ -19,10 +19,8 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 
     auto *layout = new QHBoxLayout(this);
 
+    // --- Character form and class description ---
     auto *left_layout = new QVBoxLayout();
-    // --- Left panel (pick name & class) ---
-    //auto *left_panel = heroFormComponent();
-
     left_layout->setContentsMargins(12, 12, 12, 12);
     left_layout->setSpacing(12);
 
@@ -37,9 +35,11 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 
     auto *left_panel = new QWidget(this);
     left_panel->setLayout(left_layout);
-    
+
+    // --- Character image ---
     auto *right_panel = heroImageComponent();
 
+    // --- Layout & connections ---
     layout->addWidget(left_panel, 1, Qt::AlignCenter);
     layout->addLayout(right_panel, 1);
 
@@ -71,14 +71,15 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
 
 QVBoxLayout *CharacterCreationPage::heroImageComponent()
 {
-    QLabel *imageLabel = new QLabel("Placeholder image");
-    QPixmap pixmap(":/resources/images/placeholder_class.png");
-    
-    imageLabel->setPixmap(pixmap.scaled(300, 300, Qt::KeepAspectRatio));
-    imageLabel->setAlignment(Qt::AlignCenter);
-    
+    classImageLabel_ = new QLabel(this);
+    classImageLabel_->setScaledContents(true);
+    classImageLabel_->setAlignment(Qt::AlignCenter);
+    classImageLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     auto *component = new QVBoxLayout();
-    component->addWidget(imageLabel);
+    component->addStretch();
+    component->addWidget(classImageLabel_, 0, Qt::AlignHCenter);
+    component->addStretch();
 
     return component;
 }
@@ -168,6 +169,9 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     }
 
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
+
+    QPixmap pixmap(":/resources/images/" + class_string.toLower() + ".png");
+    classImageLabel_->setPixmap(pixmap.scaled(1024/2, 1280/2, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void CharacterCreationPage::initRoleMap()

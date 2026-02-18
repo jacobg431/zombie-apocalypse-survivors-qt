@@ -11,6 +11,7 @@ class QLineEdit;
 class QComboBox;
 class QString;
 class QLabel;
+class QPixmap;
 
 class CharacterCreationPage : public QWidget
 {
@@ -30,6 +31,7 @@ private:
     QMap<QString, QLabel *> attributesMap_;
     QLabel *skillList_;
     QLabel *descriptionLabel_;
+    QLabel *classImageLabel_;
 
     void initRoleMap();
 
