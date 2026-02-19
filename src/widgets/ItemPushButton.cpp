@@ -9,6 +9,7 @@ ItemPushButton::ItemPushButton(const QString& text, QWidget* parent)
     : QPushButton(text, parent) 
 {
     setCheckable(true);
+    setDisabled(true);
     applyStyling();
 }
 
