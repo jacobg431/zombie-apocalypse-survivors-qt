@@ -20,7 +20,7 @@ void DefaultPushButton::applyStyling()
             background-color: #3a3a3a;
             border: 1px solid #555;
             border-radius: 6px;
-            font-size: 40px;
+            font-size: 32px;
         }
 
         QPushButton:hover {
