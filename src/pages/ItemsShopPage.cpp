@@ -26,9 +26,13 @@ ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 
 QWidget* ItemsShopPage::createGoBackPanel()
 {
-    auto *container = new GoBackPanel();
-    container->setContentsMargins(15, 15, 15, 15);
-    return container;
+    m_goBackPanel = new GoBackPanel(this);
+    m_goBackPanel->setContentsMargins(15, 15, 15, 15);
+
+    connect(m_goBackPanel, &GoBackPanel::GoBackClicked,
+            this, &ItemsShopPage::GoBackClicked);
+
+    return m_goBackPanel;
 }
 
 QWidget* ItemsShopPage::createShopPanel()

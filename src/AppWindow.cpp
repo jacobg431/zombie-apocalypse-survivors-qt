@@ -3,6 +3,7 @@
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
 #include "pages/ItemsShopPage.hpp"
+#include "panels/GoBackPanel.hpp"
 #include "widgets/PauseMenu.hpp"
 
 #include <QStackedWidget>
@@ -41,8 +42,13 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
 
-    connect(menu, &MainMenuPage::StartGameClicked, this, &AppWindow::showItemsShop);
-    connect(menu, &MainMenuPage::QuitGameClicked, this, &QWidget::close);
+    connect(menu, &MainMenuPage::StartGameClicked, 
+        this, &AppWindow::showItemsShop);
+    connect(menu, &MainMenuPage::QuitGameClicked, 
+        this, &QWidget::close);
+    connect(itemsShop, &ItemsShopPage::GoBackClicked,
+        this, &AppWindow::showCharacterCreation);
+
 
     // --- Show menu at startup ---
     showMenu();

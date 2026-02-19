@@ -1,5 +1,6 @@
 #pragma once
 
+#include "panels/GoBackPanel.hpp"
 #include <QWidget>
 #include <QPushButton>
 #include <QVector>
@@ -15,10 +16,10 @@ signals:
     void GoBackClicked();
 
 private:
+    GoBackPanel* m_goBackPanel;
+
     QWidget* createGoBackPanel();
     QWidget* createShopPanel();
     QWidget* createInventoryPanel();
     void applyStyling();
-
-    QPushButton* m_backButton = nullptr;
 };

@@ -2,6 +2,7 @@
 #include "widgets/DefaultPushButton.hpp"
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 {
@@ -17,6 +18,8 @@ QFrame* GoBackPanel::createWrapper()
     auto *wrapperLayout = new QHBoxLayout(wrapperFrame);
     
     m_button = new DefaultPushButton("Go Back");
+    connect(m_button, &QPushButton::clicked, this, &GoBackPanel::GoBackClicked);
+
     wrapperLayout->addWidget(m_button);
     wrapperLayout->setAlignment(Qt::AlignLeft);
 

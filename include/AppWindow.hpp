@@ -8,6 +8,7 @@ class MainMenuPage;
 class CharacterCreationPage;
 class ItemsShopPage;
 class PauseMenu;
+class GoBackPanel;
 
 class AppWindow : public QMainWindow
 {
@@ -26,6 +27,7 @@ private:
     CharacterCreationPage *characterCreation;
     ItemsShopPage *itemsShop;
     PauseMenu *pauseOverlay;
+    GoBackPanel *goBackPanel;
 
 
     void setPaused(bool on);
