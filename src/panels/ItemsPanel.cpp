@@ -43,8 +43,10 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
         }
     }
 
-    titleGridLayout->addWidget(labelTitle);
-    titleGridLayout->addLayout(grid);
+    grid->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum), 4, 0);
+
+    titleGridLayout->addWidget(labelTitle, 0);
+    titleGridLayout->addLayout(grid, 1);
 
     layout->addWidget(titleGridFrame);
 
@@ -71,6 +73,10 @@ void ItemsPanel::applyStyling() {
             background-color: #a8a8a8;
             border-radius: 10px;
             padding: 15px;
+        }
+
+        QSpacerItem {
+            background-color: #9b5454;
         }
 
         QLabel#panelTitle {
