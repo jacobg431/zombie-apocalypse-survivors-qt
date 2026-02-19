@@ -82,12 +82,9 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
     component->setLabelAlignment(Qt::AlignLeft);
     component->setFormAlignment(Qt::AlignTop);
 
-    component->addRow(new QLabel("Choose a name:"));
+    component->addRow(new QLabel("Choose a name & class:"));
     component->addRow(nameEdit_);
-
-    component->addRow(new QLabel("Choose a class:"));
     component->addRow(classSelect_);
-    
     component->addRow(submitButton_);
 
     return component;
@@ -200,8 +197,8 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
 
-    const int IMAGE_WIDTH = 640;
-    const int IMAGE_HEIGHT = 640 * 1.25;
+    const int IMAGE_WIDTH = 650;
+    const int IMAGE_HEIGHT = 650 * 1.25;
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
     glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
