@@ -35,6 +35,8 @@ private:
 
     void initRoleMap();
 
+    void glitchSwapPixmap(const QPixmap &finalPm);
+
     QFormLayout *heroFormComponent();
     QLineEdit *nameEdit_ = nullptr;
     QComboBox *classSelect_ = nullptr;
@@ -42,6 +44,7 @@ private:
     QVBoxLayout *heroImageComponent();
 
     QVBoxLayout *HeroDescComponent();
+
 
 signals:
     void characterCreated();

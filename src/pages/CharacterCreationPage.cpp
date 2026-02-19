@@ -1,4 +1,5 @@
 #include "pages/CharacterCreationPage.hpp"
+#include "utils.hpp"
 
 #include <ZasLib/Skill.hpp>
 
@@ -10,6 +11,10 @@
 #include <QString>
 #include <QLabel>
 #include <QGroupBox>
+
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QPainter>
 
 int MAX_COL_WIDTH = 300;
 QString TITLE_STYLE = "font-size: 32px; color: #FF5733; border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch; padding: 4px 16px;";
@@ -24,7 +29,7 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setObjectName("pageTitle");
     titleLabel->setStyleSheet(TITLE_STYLE);
-    titleLabel->setFixedWidth(2*MAX_COL_WIDTH);
+    titleLabel->setFixedWidth(2 * MAX_COL_WIDTH);
     title_wrapper->addWidget(titleLabel, 0, Qt::AlignHCenter);
 
     auto *layout = new QHBoxLayout();
@@ -107,7 +112,7 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
     skillList_ = new QLabel(this);
     skillList_->setWordWrap(true);
     skillList_->setAlignment(Qt::AlignTop);
-    
+
     auto *attributeForm = new QFormLayout();
 
     const QStringList attribute_order = {
@@ -189,11 +194,10 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
 
-
     const int IMAGE_WIDTH = 640;
-    const int IMAGE_HEIGHT = 640*1.25;
+    const int IMAGE_HEIGHT = 640 * 1.25;
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
-    classImageLabel_->setPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void CharacterCreationPage::initRoleMap()
@@ -202,4 +206,29 @@ void CharacterCreationPage::initRoleMap()
     role_map_.insert("CareGiver", &caregiver_);
     role_map_.insert("Outlaw", &outlaw_);
     role_map_.insert("Jester", &jester_);
+}
+
+void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
+{
+    const int frames = 8;
+    const int intervalMs = 16;
+
+    QPixmap base = finalPixmap;
+
+    int *i = new int(0);
+    auto *timer = new QTimer(this);
+
+    connect(timer, &QTimer::timeout, this, [this, timer, base, finalPixmap, i]() mutable
+            {
+        if (*i < 8) {
+            classImageLabel_->setPixmap(makeGlitchFrame(base));
+            (*i)++;
+        } else {
+            classImageLabel_->setPixmap(finalPixmap);
+            timer->stop();
+            timer->deleteLater();
+            delete i;
+        } });
+
+    timer->start(intervalMs);
 }
