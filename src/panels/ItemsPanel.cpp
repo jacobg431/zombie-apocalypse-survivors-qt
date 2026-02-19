@@ -10,15 +10,29 @@
 
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
 {
+
     auto *layout = new QVBoxLayout(this);
 
-    auto *labelTitle = new QLabel(title);
-    labelTitle->setAlignment(Qt::AlignCenter);
-    labelTitle->setObjectName("panelTitle");
+    auto *innerWrapper = createInnerWrapper(title, buttonText);
+    layout->addWidget(innerWrapper);
+    layout->setAlignment(m_button, Qt::AlignCenter);
 
-    // 4x4 Grid
+    applyStyling();
+}
+
+QLabel* ItemsPanel::createTitleLabel(const QString& title)
+{
+    auto *label = new QLabel(title);
+    label->setAlignment(Qt::AlignCenter);
+    label->setObjectName("panelTitle");
+    return label;
+}
+
+QFrame* ItemsPanel::createGrid()
+{
     auto *gridWrapperFrame = new QFrame;
     gridWrapperFrame->setObjectName("gridWrapper");
+
     auto *grid = new QGridLayout(gridWrapperFrame);
     grid->setSpacing(8);
     grid->setContentsMargins(0,0,0,0); 
@@ -28,7 +42,6 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
         for (int col = 0; col < 4; ++col)
         {
             auto *button = new ItemPushButton("Empty");
-
             m_itemButtons.append(button);
             grid->addWidget(button, row, col);
 
@@ -44,6 +57,11 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
 
     grid->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum), 4, 0);
 
+    return gridWrapperFrame;
+}
+
+QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
+{
     m_selectedItemLabel = new QLabel("No item selected");
     m_selectedItemLabel->setObjectName("selectedItemText");
     m_selectedItemLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
@@ -53,26 +71,29 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
 
     auto *bottomWrapperFrame = new QFrame;
     bottomWrapperFrame->setObjectName("bottomWrapper");
-    auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
-    bottomWrapperLayout->setContentsMargins(0,0,0,0);    
 
+    auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
+    bottomWrapperLayout->setContentsMargins(0,0,0,0);
     bottomWrapperLayout->addWidget(m_selectedItemLabel);
     bottomWrapperLayout->addStretch();
     bottomWrapperLayout->addWidget(m_button);
 
+    return bottomWrapperFrame;
+}
+
+QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& buttonText)
+{
     auto *innerWrapperFrame = new QFrame;
     innerWrapperFrame->setObjectName("innerWrapper");
-    auto *innerWrapperLayout = new QVBoxLayout(innerWrapperFrame);
 
-    innerWrapperLayout->addWidget(labelTitle, 0);
-    innerWrapperLayout->addWidget(gridWrapperFrame, 1);
-    innerWrapperLayout->addSpacing(10);
-    innerWrapperLayout->addWidget(bottomWrapperFrame, 0);
+    auto *innerLayout = new QVBoxLayout(innerWrapperFrame);
 
-    layout->addWidget(innerWrapperFrame);
-    layout->setAlignment(m_button, Qt::AlignCenter);
+    innerLayout->addWidget(createTitleLabel(title), 0);
+    innerLayout->addWidget(createGrid(), 1);
+    innerLayout->addSpacing(10);
+    innerLayout->addWidget(createBottomWrapper(buttonText), 0);
 
-    applyStyling();
+    return innerWrapperFrame;
 }
 
 void ItemsPanel::applyStyling() {

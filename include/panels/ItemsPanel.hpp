@@ -14,6 +14,11 @@ public:
     void applyStyling();
 
 private:
+    QLabel* createTitleLabel(const QString& title);
+    QFrame* createGrid();
+    QFrame* createBottomWrapper(const QString& buttonText);
+    QFrame* createInnerWrapper(const QString& title, const QString& buttonText);
+
     QPushButton* m_button = nullptr;
     QVector<QPushButton*> m_itemButtons;
     QLabel* m_selectedItemLabel = nullptr;
