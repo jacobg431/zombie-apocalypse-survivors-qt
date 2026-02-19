@@ -3,6 +3,9 @@
 
 #include <ZasLib/Skill.hpp>
 
+#include <algorithm>
+#include <random>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -132,28 +135,28 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
         attributeForm->addRow(label, value);
     }
 
-    const int MIN_BOX_HEIGHT = 200;
-    const int MIN_BOX_WIDTH = 230;
+    const int BOX_HEIGHT = 200;
+    const int BOX_WIDTH = 230;
 
     auto *descBox = new QGroupBox("Class description");
     auto *descLay = new QVBoxLayout(descBox);
     descLay->addWidget(descriptionLabel_);
-    descBox->setMinimumHeight(MIN_BOX_HEIGHT);
-    descBox->setFixedWidth(MIN_BOX_WIDTH);
+    descBox->setFixedHeight(BOX_HEIGHT);
+    descBox->setFixedWidth(BOX_WIDTH);
     descBox->setObjectName("woodenBox");
 
     auto *attrBox = new QGroupBox("Class Attributes");
     auto *attrLay = new QVBoxLayout(attrBox);
     attrLay->addLayout(attributeForm);
     attrBox->setObjectName("woodenBox");
-    attrBox->setMinimumHeight(MIN_BOX_HEIGHT);
-    attrBox->setFixedWidth(MIN_BOX_WIDTH);
+    attrBox->setFixedHeight(BOX_HEIGHT);
+    attrBox->setFixedWidth(BOX_WIDTH);
 
     auto *skillsBox = new QGroupBox("Class Skills");
     auto *skillsLay = new QVBoxLayout(skillsBox);
     skillsLay->addWidget(skillList_);
-    skillsBox->setMinimumHeight(MIN_BOX_HEIGHT);
-    skillsBox->setFixedWidth(MIN_BOX_WIDTH);
+    skillsBox->setFixedHeight(BOX_HEIGHT);
+    skillsBox->setFixedWidth(BOX_WIDTH);
     skillsBox->setObjectName("woodenBox");
 
     auto *component = new QVBoxLayout();
@@ -171,34 +174,43 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     auto attributes = class_object->GetAttributes();
     auto skills = class_object->GetSkills();
 
-    descriptionLabel_->setText(QString::fromStdString(class_object->GetRoleDescription()));
-
-    attributesMap_["Strength"]->setText(QString::number(attributes.GetStrength()));
-    attributesMap_["Endurance"]->setText(QString::number(attributes.GetEndurance()));
-    attributesMap_["Agility"]->setText(QString::number(attributes.GetAgility()));
-    attributesMap_["Courage"]->setText(QString::number(attributes.GetCourage()));
-    attributesMap_["Intelligence"]->setText(QString::number(attributes.GetIntelligence()));
-    attributesMap_["Leadership"]->setText(QString::number(attributes.GetLeadership()));
-    attributesMap_["Trustworthiness"]->setText(QString::number(attributes.GetTrustworthiness()));
-
     QStringList skillLines;
     for (const auto &skill : skills)
     {
         skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
     }
 
+    // attributes
+    setGlitchText(attributesMap_["Strength"], QString::number(attributes.GetStrength()));
+    setGlitchText(attributesMap_["Endurance"], QString::number(attributes.GetEndurance()));
+    setGlitchText(attributesMap_["Agility"], QString::number(attributes.GetAgility()));
+    setGlitchText(attributesMap_["Courage"], QString::number(attributes.GetCourage()));
+    setGlitchText(attributesMap_["Intelligence"], QString::number(attributes.GetIntelligence()));
+    setGlitchText(attributesMap_["Leadership"], QString::number(attributes.GetLeadership()));
+    setGlitchText(attributesMap_["Trustworthiness"], QString::number(attributes.GetTrustworthiness()));
+
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
     {
-        skillLines.fill("???", skillLines.size());
+        QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬" };
+        QStringList attributeSymbols = {"♠", "♥", "♦", "♣"};
+
+        std::mt19937 rng(QRandomGenerator::global()->generate());
+        
+        std::shuffle(skillSymbols.begin(), skillSymbols.end(), rng);
+        std::shuffle(attributeSymbols.begin(), attributeSymbols.end(), rng);
+
+        skillLines.clear();
+        skillLines << skillSymbols.join("");
 
         for (auto *attribute : attributesMap_)
         {
-            attribute->setText("???");
+            setGlitchText(attribute, attributeSymbols[rng() % attributeSymbols.size()]);
         }
     }
 
-    skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
+    setGlitchText(descriptionLabel_, QString::fromStdString(class_object->GetRoleDescription()));
+    setGlitchText(skillList_, "Skills:\n• " + skillLines.join("\n• "));
 
     const int IMAGE_WIDTH = 650;
     const int IMAGE_HEIGHT = 650 * 1.25;

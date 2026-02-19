@@ -2,6 +2,9 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QPainter>
+#include <QLabel>
+#include <QElapsedTimer>
+#include <QString>
 
 QPixmap makeGlitchFrame(const QPixmap &src)
 {
@@ -55,4 +58,87 @@ QPixmap makeGlitchFrame(const QPixmap &src)
     }
 
     return out;
+}
+
+QString glitchify(const QString &target, double progress)
+{
+    static const QString glyphs = "!@#$%^&*()-_=+[]{};:,.<>/?|\\~`█▓▒░≋≣≢≠∿∆∑√πΩµ¢£¥÷×";
+
+    QString outString = target;
+    auto *rng = QRandomGenerator::global();
+
+    // The earlier the progress, the more characters we corrupt.
+    // Example: progress 0.2 -> ~80% corrupted, progress 0.8 -> ~20% corrupted.
+    double corruptRate = 1.0 - progress;
+    for (int i = 0; i < outString.size(); ++i)
+    {
+        QChar character = outString[i];
+
+        // Keep line breaks and bullet points stable
+        if (character == '\n' || character == QChar(0x2022) || character == '\t')
+            continue;
+
+        // Don't glitch spaces too aggressively
+        if (character.isSpace())
+        {
+            if (rng->bounded(1000) < int(120 * corruptRate))
+                outString[i] = glyphs[rng->bounded(glyphs.size())];
+            continue;
+        }
+
+        if (rng->generateDouble() < corruptRate)
+        {
+            // replace with random glyph sometimes, or random letter/number
+            if (rng->bounded(100) < 70)
+            {
+                outString[i] = glyphs[rng->bounded(glyphs.size())];
+            }
+            // random alnum
+            int r = rng->bounded(36);
+            outString[i] = (r < 10) ? QChar('0' + r) : QChar('A' + (r - 10));
+        }
+    }
+
+    return outString;
+}
+
+void setGlitchText(QLabel *label, const QString &finalText, int durationMs, int intervalMs)
+{
+    if (!label)
+        return;
+
+    // Keep any existing timer from stacking (optional)
+    // If you want multiple labels simultaneously, this is fine as-is.
+
+    auto *timer = new QTimer(label);
+    auto *elapsed = new QElapsedTimer();
+    elapsed->start();
+
+    const QString startText = label->text();
+
+    // If start is empty, use final length for nicer "boot-up" effect
+    QString base = startText.isEmpty() ? finalText : startText;
+
+    QObject::connect(timer, &QTimer::timeout, label,
+                     [label, timer, elapsed, finalText, durationMs, base]() mutable
+                     {
+                         double t = double(elapsed->elapsed()) / double(durationMs);
+                         if (t >= 1.0)
+                         {
+                             label->setText(finalText);
+                             timer->stop();
+                             timer->deleteLater();
+                             delete elapsed;
+                             return;
+                         }
+
+                         if (base.size() != finalText.size())
+                         {
+                             base = base.leftJustified(finalText.size(), ' ');
+                         }
+
+                         label->setText(glitchify(finalText, t));
+                     });
+
+    timer->start(intervalMs);
 }
