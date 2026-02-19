@@ -9,6 +9,13 @@
     <file>images/jester.png</file>
     <file>images/outlaw.png</file>
 
+
+    <file>images/hero-fried.png</file>
+    <file>images/caregiver-fried.png</file>
+    <file>images/jester-fried.png</file>
+    <file>images/outlaw-fried.png</file>
+
+
     <file>styles/dark_theme.qss</file>
     
     </qresource>

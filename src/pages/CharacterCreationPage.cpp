@@ -181,7 +181,7 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
 
-    QPixmap pixmap(":/resources/images/" + class_string.toLower() + ".png");
+    QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
     classImageLabel_->setPixmap(pixmap.scaled(564, 564*125, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
