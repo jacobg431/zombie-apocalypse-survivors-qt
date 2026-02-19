@@ -35,7 +35,7 @@ QFrame* ItemsPanel::createGrid()
 
     auto *grid = new QGridLayout(gridWrapperFrame);
     grid->setSpacing(8);
-    grid->setContentsMargins(0,0,0,0); 
+    grid->setContentsMargins(0, 0, 0, 0); 
 
     for (int row = 0; row < 4; ++row)
     {
@@ -50,7 +50,17 @@ QFrame* ItemsPanel::createGrid()
                     if (b != button)
                         b->setChecked(false);
 
+                const bool isSelected = button->isChecked();
                 m_button->setEnabled(button->isChecked());
+
+                if (isSelected) 
+                {
+                    m_selectedItemLabel->setText(button->text());
+                }
+                else
+                {
+                    m_selectedItemLabel->setText("No item selected");
+                } 
             });
         }
     }
@@ -73,7 +83,7 @@ QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
     bottomWrapperFrame->setObjectName("bottomWrapper");
 
     auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
-    bottomWrapperLayout->setContentsMargins(0,0,0,0);
+    bottomWrapperLayout->setContentsMargins(0, 0, 0, 0);
     bottomWrapperLayout->addWidget(m_selectedItemLabel);
     bottomWrapperLayout->addStretch();
     bottomWrapperLayout->addWidget(m_button);
