@@ -5,6 +5,7 @@
 #include <QString>
 #include <QPushButton>
 #include <QVector>
+#include <QLabel>
 
 class ItemsPanel : public QFrame
 {
@@ -15,4 +16,5 @@ public:
 private:
     QPushButton* m_button = nullptr;
     QVector<QPushButton*> m_itemButtons;
+    QLabel* m_selectedItemLabel = nullptr;
 };
