@@ -9,6 +9,7 @@ DefaultPushButton::DefaultPushButton(const QString& text, QWidget* parent)
     : QPushButton(text, parent) 
 {
     setCheckable(true);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     applyStyling();
 }
 
@@ -19,6 +20,7 @@ void DefaultPushButton::applyStyling()
             background-color: #3a3a3a;
             border: 1px solid #555;
             border-radius: 6px;
+            font-size: 40px;
         }
 
         QPushButton:hover {

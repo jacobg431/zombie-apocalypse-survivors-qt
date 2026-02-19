@@ -56,6 +56,7 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
 
     layout->addSpacing(10);
     layout->addWidget(m_button);
+    layout->setAlignment(m_button, Qt::AlignCenter);
 
     applyStyling();
 }
