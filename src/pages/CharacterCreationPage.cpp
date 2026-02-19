@@ -12,7 +12,7 @@
 #include <QGroupBox>
 
 int MAX_COL_WIDTH = 300;
-QString TITLE_STYLE = "font-size: 32px; color: #FF5733;";
+QString TITLE_STYLE = "font-size: 32px; color: #FF5733; border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch; padding: 4px 16px;";
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
@@ -24,7 +24,8 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setObjectName("pageTitle");
     titleLabel->setStyleSheet(TITLE_STYLE);
-    title_wrapper->addWidget(titleLabel);
+    titleLabel->setFixedWidth(2*MAX_COL_WIDTH);
+    title_wrapper->addWidget(titleLabel, 0, Qt::AlignHCenter);
 
     auto *layout = new QHBoxLayout();
     title_wrapper->addLayout(layout);
