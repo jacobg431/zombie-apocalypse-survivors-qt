@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 
     // --- Global styling ---
     app.setStyleSheet(R"(
-        QMainWindow { background-color: #2E2E2E; }
+        QMainWindow { background-color: #1e1e1e; }
 
         QLabel { color: white; }
 
