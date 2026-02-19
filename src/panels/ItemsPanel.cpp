@@ -70,13 +70,8 @@ void ItemsPanel::applyStyling() {
         }
 
         QFrame#innerWrapper {
-            background-color: #a8a8a8;
             border-radius: 10px;
             padding: 15px;
-        }
-
-        QSpacerItem {
-            background-color: #9b5454;
         }
 
         QLabel#panelTitle {
