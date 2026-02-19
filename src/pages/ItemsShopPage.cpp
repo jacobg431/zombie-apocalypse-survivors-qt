@@ -9,17 +9,8 @@ ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 {
     auto *mainLayout = new QVBoxLayout(this);
 
-    auto *panelsWrapperFrame = new QFrame;
-    panelsWrapperFrame->setObjectName("panelsWrapper");
-    auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
-    panelsWrapperLayout->setSpacing(30);
-    panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
-
-    panelsWrapperLayout->addWidget(createShopPanel());
-    panelsWrapperLayout->addWidget(createInventoryPanel());
-
     mainLayout->addWidget(createGoBackPanel());
-    mainLayout->addWidget(panelsWrapperFrame);
+    mainLayout->addWidget(createWrapper());
 
     applyStyling();
 }
@@ -47,6 +38,19 @@ QWidget* ItemsShopPage::createInventoryPanel()
     return container;
 }
 
+QFrame* ItemsShopPage::createWrapper()
+{
+    auto *panelsWrapperFrame = new QFrame;
+    panelsWrapperFrame->setObjectName("panelsWrapper");
+    auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
+    panelsWrapperLayout->setSpacing(30);
+    panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
+
+    panelsWrapperLayout->addWidget(createShopPanel());
+    panelsWrapperLayout->addWidget(createInventoryPanel());
+
+    return panelsWrapperFrame;
+}
 
 void ItemsShopPage::applyStyling()
 {

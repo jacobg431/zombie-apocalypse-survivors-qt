@@ -21,5 +21,6 @@ private:
     QWidget* createGoBackPanel();
     QWidget* createShopPanel();
     QWidget* createInventoryPanel();
+    QFrame* createWrapper();
     void applyStyling();
 };
