@@ -106,11 +106,12 @@ QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& butt
     return innerWrapperFrame;
 }
 
-void ItemsPanel::applyStyling() {
+void ItemsPanel::applyStyling() 
+{
     setStyleSheet(R"(
 
         QFrame {
-            background-color: #2b2b2b;
+            background-color: #2E2E2E;
             border-radius: 10px;
             padding: 15px;
         }

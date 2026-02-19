@@ -1,21 +1,33 @@
 #include "pages/ItemsShopPage.hpp"
 #include "panels/ItemsPanel.hpp"
+#include "panels/GoBackPanel.hpp"
+#include "widgets/DefaultPushButton.hpp"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QLabel>
-#include <QFrame>
-#include <QGridLayout>
 
 ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 {
-    auto *mainLayout = new QHBoxLayout(this);
-    mainLayout->setSpacing(30);
-    mainLayout->setContentsMargins(20, 20, 20, 20);
+    auto *mainLayout = new QVBoxLayout(this);
 
-    mainLayout->addWidget(createShopPanel());
-    mainLayout->addWidget(createInventoryPanel());
+    auto *panelsWrapperFrame = new QFrame;
+    panelsWrapperFrame->setObjectName("panelsWrapper");
+    auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
+    panelsWrapperLayout->setSpacing(30);
+    panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
+
+    panelsWrapperLayout->addWidget(createShopPanel());
+    panelsWrapperLayout->addWidget(createInventoryPanel());
+
+    mainLayout->addWidget(createGoBackPanel());
+    mainLayout->addWidget(panelsWrapperFrame);
 
     applyStyling();
+}
+
+QWidget* ItemsShopPage::createGoBackPanel()
+{
+    auto *container = new GoBackPanel();
+    return container;
 }
 
 QWidget* ItemsShopPage::createShopPanel()
