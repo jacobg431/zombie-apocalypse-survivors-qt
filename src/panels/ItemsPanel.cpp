@@ -16,10 +16,6 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     labelTitle->setAlignment(Qt::AlignCenter);
     labelTitle->setObjectName("panelTitle");
 
-    auto *innerWrapperFrame = new QFrame;
-    innerWrapperFrame->setObjectName("innerWrapper");
-    auto *innerWrapperLayout = new QVBoxLayout(innerWrapperFrame);
-
     // 4x4 Grid
     auto *grid = new QGridLayout;
     grid->setSpacing(8);
@@ -60,6 +56,10 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     bottomWrapperLayout->addWidget(m_selectedItemLabel);
     bottomWrapperLayout->addStretch();
     bottomWrapperLayout->addWidget(m_button);
+
+    auto *innerWrapperFrame = new QFrame;
+    innerWrapperFrame->setObjectName("innerWrapper");
+    auto *innerWrapperLayout = new QVBoxLayout(innerWrapperFrame);
 
     innerWrapperLayout->addWidget(labelTitle, 0);
     innerWrapperLayout->addLayout(grid, 1);
