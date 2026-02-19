@@ -139,18 +139,21 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
     auto *descLay = new QVBoxLayout(descBox);
     descLay->addWidget(descriptionLabel_);
     descBox->setMinimumHeight(MIN_BOX_HEIGHT);
-    descBox->setMinimumWidth(MIN_BOX_WIDTH);
+    descBox->setFixedWidth(MIN_BOX_WIDTH);
     descBox->setObjectName("woodenBox");
 
     auto *attrBox = new QGroupBox("Class Attributes");
     auto *attrLay = new QVBoxLayout(attrBox);
     attrLay->addLayout(attributeForm);
     attrBox->setObjectName("woodenBox");
+    attrBox->setMinimumHeight(MIN_BOX_HEIGHT);
+    attrBox->setFixedWidth(MIN_BOX_WIDTH);
 
     auto *skillsBox = new QGroupBox("Class Skills");
     auto *skillsLay = new QVBoxLayout(skillsBox);
     skillsLay->addWidget(skillList_);
     skillsBox->setMinimumHeight(MIN_BOX_HEIGHT);
+    skillsBox->setFixedWidth(MIN_BOX_WIDTH);
     skillsBox->setObjectName("woodenBox");
 
     auto *component = new QVBoxLayout();
@@ -168,7 +171,7 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     auto attributes = class_object->GetAttributes();
     auto skills = class_object->GetSkills();
 
-    descriptionLabel_->setText("[Description of " + class_string + " class goes here]");
+    descriptionLabel_->setText(QString::fromStdString(class_object->GetRoleDescription()));
 
     attributesMap_["Strength"]->setText(QString::number(attributes.GetStrength()));
     attributesMap_["Endurance"]->setText(QString::number(attributes.GetEndurance()));
