@@ -17,8 +17,11 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     labelTitle->setObjectName("panelTitle");
 
     // 4x4 Grid
-    auto *grid = new QGridLayout;
+    auto *gridWrapperFrame = new QFrame;
+    gridWrapperFrame->setObjectName("gridWrapper");
+    auto *grid = new QGridLayout(gridWrapperFrame);
     grid->setSpacing(8);
+    grid->setContentsMargins(0,0,0,0); 
 
     for (int row = 0; row < 4; ++row)
     {
@@ -62,7 +65,7 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     auto *innerWrapperLayout = new QVBoxLayout(innerWrapperFrame);
 
     innerWrapperLayout->addWidget(labelTitle, 0);
-    innerWrapperLayout->addLayout(grid, 1);
+    innerWrapperLayout->addWidget(gridWrapperFrame, 1);
     innerWrapperLayout->addSpacing(10);
     innerWrapperLayout->addWidget(bottomWrapperFrame, 0);
 
@@ -84,6 +87,10 @@ void ItemsPanel::applyStyling() {
         QFrame#innerWrapper {
             border-radius: 10px;
             padding: 15px;
+        }
+
+        QFrame#gridWrapper {
+            padding: 0px;
         }
 
         QFrame#bottomWrapper {
