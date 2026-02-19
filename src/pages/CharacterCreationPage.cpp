@@ -6,11 +6,12 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QPushButton>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QGroupBox>
 #include <QString>
 #include <QLabel>
-#include <QGroupBox>
 
 #include <QTimer>
 #include <QRandomGenerator>
@@ -36,9 +37,9 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     title_wrapper->addLayout(layout);
 
     // --- Character form and class description ---
-    auto *left_layout = new QVBoxLayout();
-    left_layout->setContentsMargins(12, 12, 12, 12);
-    left_layout->setSpacing(12);
+    auto *leftLayout = new QVBoxLayout();
+    leftLayout->setContentsMargins(12, 12, 12, 12);
+    leftLayout->setSpacing(12);
 
     auto *formWidget = new QWidget(this);
     formWidget->setLayout(heroFormComponent());
@@ -46,19 +47,19 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *descWidget = new QWidget(this);
     descWidget->setLayout(HeroDescComponent());
 
-    left_layout->addWidget(formWidget);
-    left_layout->addWidget(descWidget);
+    leftLayout->addWidget(formWidget);
+    leftLayout->addWidget(descWidget);
 
-    auto *left_panel = new QWidget(this);
-    left_panel->setLayout(left_layout);
+    auto *leftPanel = new QWidget(this);
+    leftPanel->setLayout(leftLayout);
 
     // --- Character image ---
-    auto *right_panel = heroImageComponent();
+    auto *rightPanel = heroImageComponent();
 
     // --- Layout & connections ---
     layout->addStretch();
-    layout->addWidget(left_panel, 0, Qt::AlignCenter);
-    layout->addLayout(right_panel, 0);
+    layout->addWidget(leftPanel, 0, Qt::AlignCenter);
+    layout->addLayout(rightPanel, 0);
     layout->addStretch();
 
     connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
@@ -74,6 +75,9 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
     classSelect_->addItems(role_map_.keys());
     classSelect_->setMaximumWidth(MAX_COL_WIDTH);
 
+    submitButton_ = new QPushButton("Create Character", this);
+    submitButton_->setMaximumWidth(MAX_COL_WIDTH);
+
     auto *component = new QFormLayout();
     component->setLabelAlignment(Qt::AlignLeft);
     component->setFormAlignment(Qt::AlignTop);
@@ -83,6 +87,8 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
 
     component->addRow(new QLabel("Choose a class:"));
     component->addRow(classSelect_);
+    
+    component->addRow(submitButton_);
 
     return component;
 }

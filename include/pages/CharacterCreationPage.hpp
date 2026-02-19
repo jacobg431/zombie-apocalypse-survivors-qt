@@ -7,11 +7,12 @@
 // Forward declare to reduce compile time
 class QVBoxLayout;
 class QFormLayout;
+class QPushButton;
 class QLineEdit;
 class QComboBox;
 class QString;
-class QLabel;
 class QPixmap;
+class QLabel;
 
 class CharacterCreationPage : public QWidget
 {
@@ -29,22 +30,23 @@ private:
 
     QMap<QString, Survivor *> role_map_;
     QMap<QString, QLabel *> attributesMap_;
+
     QLabel *skillList_;
     QLabel *descriptionLabel_;
     QLabel *classImageLabel_;
 
-    void initRoleMap();
-
-    void glitchSwapPixmap(const QPixmap &finalPm);
-
+    // UI component builders
     QFormLayout *heroFormComponent();
-    QLineEdit *nameEdit_ = nullptr;
-    QComboBox *classSelect_ = nullptr;
-
     QVBoxLayout *heroImageComponent();
-
     QVBoxLayout *HeroDescComponent();
 
+    QLineEdit *nameEdit_ = nullptr;
+    QComboBox *classSelect_ = nullptr;
+    QPushButton *submitButton_ = nullptr;
+
+    // Helper functions
+    void initRoleMap();
+    void glitchSwapPixmap(const QPixmap &finalPm);
 
 signals:
     void characterCreated();
