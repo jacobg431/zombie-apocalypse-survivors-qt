@@ -16,9 +16,9 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     labelTitle->setAlignment(Qt::AlignCenter);
     labelTitle->setObjectName("panelTitle");
 
-    auto *titleGridFrame = new QFrame;
-    titleGridFrame->setObjectName("innerWrapper");
-    auto *titleGridLayout = new QVBoxLayout(titleGridFrame);
+    auto *innerWrapperFrame = new QFrame;
+    innerWrapperFrame->setObjectName("innerWrapper");
+    auto *innerWrapperLayout = new QVBoxLayout(innerWrapperFrame);
 
     // 4x4 Grid
     auto *grid = new QGridLayout;
@@ -45,17 +45,26 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
 
     grid->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum), 4, 0);
 
-    titleGridLayout->addWidget(labelTitle, 0);
-    titleGridLayout->addLayout(grid, 1);
+    m_selectedItemLabel = new QLabel("No item selected");
+    m_selectedItemLabel->setObjectName("selectedItemText");
 
-    layout->addWidget(titleGridFrame);
-
-    // Buy Button
     m_button = new DefaultPushButton(buttonText);
     m_button->setEnabled(false);
 
-    layout->addSpacing(10);
-    layout->addWidget(m_button);
+    auto *bottomWrapperFrame = new QFrame;
+    bottomWrapperFrame->setObjectName("bottomWrapper");
+    auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
+
+    bottomWrapperLayout->addWidget(m_selectedItemLabel);
+    bottomWrapperLayout->addStretch();
+    bottomWrapperLayout->addWidget(m_button);
+
+    innerWrapperLayout->addWidget(labelTitle, 0);
+    innerWrapperLayout->addLayout(grid, 1);
+    innerWrapperLayout->addSpacing(10);
+    innerWrapperLayout->addWidget(bottomWrapperFrame, 0);
+
+    layout->addWidget(innerWrapperFrame);
     layout->setAlignment(m_button, Qt::AlignCenter);
 
     applyStyling();
@@ -75,11 +84,21 @@ void ItemsPanel::applyStyling() {
             padding: 15px;
         }
 
+        QFrame#bottomWrapper {
+            padding: 0px;
+        }
+
         QLabel#panelTitle {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
             max-height: 64px;
+        }
+
+        QLabel#selectedItemText {
+            font-size: 16px;
+            color: #ddd;
+            padding: 0px;
         }
 
     )");
