@@ -47,6 +47,7 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
 
     m_selectedItemLabel = new QLabel("No item selected");
     m_selectedItemLabel->setObjectName("selectedItemText");
+    m_selectedItemLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 
     m_button = new DefaultPushButton(buttonText);
     m_button->setEnabled(false);
@@ -54,6 +55,7 @@ ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget 
     auto *bottomWrapperFrame = new QFrame;
     bottomWrapperFrame->setObjectName("bottomWrapper");
     auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
+    bottomWrapperLayout->setContentsMargins(0,0,0,0);    
 
     bottomWrapperLayout->addWidget(m_selectedItemLabel);
     bottomWrapperLayout->addStretch();
