@@ -29,6 +29,7 @@ void GoBackPanel::applyStyling()
 
         QFrame {
             background-color: #2E2E2E;
+            border-radius: 10px;
             margin: 0px;
             padding: 15px;
         }

@@ -27,6 +27,7 @@ ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 QWidget* ItemsShopPage::createGoBackPanel()
 {
     auto *container = new GoBackPanel();
+    container->setContentsMargins(15, 15, 15, 15);
     return container;
 }
 
