@@ -1,4 +1,9 @@
-QMainWindow { background-color: #2E2E2E; }
+
+QMainWindow { 
+    background-color: #2E2E2E; 
+    background-image: url(:/resources/images/background.png); 
+    background-repeat: no-repeat; 
+    background-position: center; }
 
 QLabel { color: white; }
 
@@ -54,7 +59,18 @@ QGroupBox {
 }
 
 QGroupBox#woodenBox {
+    background-color: transparent;
     border-image: url(:/resources/images/wooden-sign-square-fried.png);
+    margin: -8px;
+    margin-top: -8px;
+    margin-bottom: -16px;
+    margin-left: -34px;
+    margin-right: -34px;
+    padding-top: -12px;
+}
+
+QGroupBox#woodenBoxWide {
+    border-image: url(:/resources/images/wooden-sign-square-wide.png);
     margin: -8px;
     margin-top: -8px;
     margin-bottom: -16px;
@@ -65,14 +81,16 @@ QGroupBox#woodenBox {
 
 
 QGroupBox::title {
+    border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch stretch;
     subcontrol-origin: margin;
     subcontrol-position: top left;
-
-    left: 14px;
-    padding: 0 8px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    margin: 8px;
+    padding: 4px 16px;
 
     color: #FF5733;
-    background-color: #2E2E2E;
 }
 
 QComboBox::down-arrow {
