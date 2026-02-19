@@ -5,7 +5,7 @@ QLabel { color: white; }
 QPushButton {
     background-color: #444;
     color: white;
-    border: 4px solid #666;
+    border: 2px solid #666;
     padding: 8px;
     border-radius: 12px;
     qproperty-flat: false;
@@ -22,7 +22,7 @@ QPushButton:pressed {
 QComboBox {
     background-color: #444;
     color: white;
-    border: 4px solid #666;
+    border: 2px solid #666;
     padding: 4px;
     border-radius: 6px;
 }
@@ -30,7 +30,7 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 28px;
-    border-left: 4px solid #666;
+    border-left: 2px solid #666;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     background: #444;
@@ -40,18 +40,29 @@ QComboBox::drop-down {
 QLineEdit {
     background-color: #444;
     color: white;
-    border: 4px solid #666;
+    border: 2px solid #666;
     padding: 4px;
     border-radius: 6px;
 }
 
 QGroupBox {
-    border: 4px solid #666;
+    border: 2px solid #222;
     border-radius: 6px;
 
     margin-top: 20px;
     padding: 14px;
 }
+
+QGroupBox#woodenBox {
+    border-image: url(:/resources/images/wooden-sign-square-fried.png);
+    margin: -8px;
+    margin-top: -8px;
+    margin-bottom: -16px;
+    margin-left: -34px;
+    margin-right: -34px;
+    padding-top: -12px;
+}
+
 
 QGroupBox::title {
     subcontrol-origin: margin;
@@ -72,7 +83,7 @@ QComboBox::down-arrow {
 QComboBox QAbstractItemView {
     background-color: #444;
     color: white;
-    border: 4px solid #666;
+    border: 2px solid #666;
     selection-background-color: #555;
     selection-color: white;
     border-radius: 6px;

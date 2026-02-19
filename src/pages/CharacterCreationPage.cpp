@@ -50,8 +50,10 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *right_panel = heroImageComponent();
 
     // --- Layout & connections ---
-    layout->addWidget(left_panel, 1, Qt::AlignCenter);
-    layout->addLayout(right_panel, 1);
+    layout->addStretch();
+    layout->addWidget(left_panel, 0, Qt::AlignCenter);
+    layout->addLayout(right_panel, 0);
+    layout->addStretch();
 
     connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
     classSelectUpdated(classSelect_->currentText());
@@ -104,7 +106,7 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
     skillList_ = new QLabel(this);
     skillList_->setWordWrap(true);
     skillList_->setAlignment(Qt::AlignTop);
-
+    
     auto *attributeForm = new QFormLayout();
 
     const QStringList attribute_order = {
@@ -121,21 +123,26 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
         attributeForm->addRow(label, value);
     }
 
-    const int MIN_BOX_HEIGHT = 150;
+    const int MIN_BOX_HEIGHT = 200;
+    const int MIN_BOX_WIDTH = 230;
 
     auto *descBox = new QGroupBox("Class description");
     auto *descLay = new QVBoxLayout(descBox);
     descLay->addWidget(descriptionLabel_);
     descBox->setMinimumHeight(MIN_BOX_HEIGHT);
+    descBox->setMinimumWidth(MIN_BOX_WIDTH);
+    descBox->setObjectName("woodenBox");
 
     auto *attrBox = new QGroupBox("Class Attributes");
     auto *attrLay = new QVBoxLayout(attrBox);
     attrLay->addLayout(attributeForm);
+    attrBox->setObjectName("woodenBox");
 
     auto *skillsBox = new QGroupBox("Class Skills");
     auto *skillsLay = new QVBoxLayout(skillsBox);
     skillsLay->addWidget(skillList_);
     skillsBox->setMinimumHeight(MIN_BOX_HEIGHT);
+    skillsBox->setObjectName("woodenBox");
 
     auto *component = new QVBoxLayout();
     component->addWidget(descBox);
@@ -181,8 +188,11 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
     skillList_->setText("Skills:\n• " + skillLines.join("\n• "));
 
+
+    const int IMAGE_WIDTH = 640;
+    const int IMAGE_HEIGHT = 640*1.25;
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
-    classImageLabel_->setPixmap(pixmap.scaled(564, 564*125, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    classImageLabel_->setPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void CharacterCreationPage::initRoleMap()
