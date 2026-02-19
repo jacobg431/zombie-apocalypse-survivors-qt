@@ -15,8 +15,12 @@
     <file>images/jester-fried.png</file>
     <file>images/outlaw-fried.png</file>
 
-    <file>images/wooden-sign-fried.png</file>
     <file>images/wooden-sign-square-fried.png</file>
+    <file>images/wooden-sign-wide-fried.png</file>
+
+    <file>images/slash.png</file>
+
+    <file>images/background.png</file>
 
     <file>styles/dark_theme.qss</file>
     
