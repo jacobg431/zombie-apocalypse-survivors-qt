@@ -15,6 +15,7 @@ GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 QFrame* GoBackPanel::createWrapper()
 {
     auto *wrapperFrame = new QFrame;
+    wrapperFrame->setObjectName("goBackWrapper");
     auto *wrapperLayout = new QHBoxLayout(wrapperFrame);
     
     m_button = new DefaultPushButton("Go Back");
@@ -30,7 +31,7 @@ void GoBackPanel::applyStyling()
 {
     setStyleSheet(R"(
 
-        QFrame {
+        QFrame#goBackWrapper {
             background-color: #2E2E2E;
             border-radius: 10px;
             margin: 0px;
