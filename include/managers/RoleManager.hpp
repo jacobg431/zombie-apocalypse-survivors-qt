@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <QMap>
+#include <map>
 #include <QString>
 
 #include "ZasLib/Roles.hpp"
@@ -19,5 +19,5 @@ public:
 
 private:
     RoleManager();
-    QMap<QString, std::unique_ptr<Survivor>> _roles;
+    std::map<QString, std::unique_ptr<Survivor>> _roles;
 };

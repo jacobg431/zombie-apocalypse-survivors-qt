@@ -1,4 +1,10 @@
+#include <QString>
+#include <QStringList>
+
+#include <ZasLib/Roles.hpp>
+
 #include "managers/RoleManager.hpp"
+
 
 RoleManager& RoleManager::instance()
 {
@@ -8,26 +14,28 @@ RoleManager& RoleManager::instance()
 
 RoleManager::RoleManager()
 {
-    _roles.insert("Hero",
-        std::make_unique<Hero>("Hero Class"));
-    _roles.insert("CareGiver",
-        std::make_unique<CareGiver>("CareGiver Class"));
-    _roles.insert("Outlaw",
-        std::make_unique<Outlaw>("Outlaw Class"));
-    _roles.insert("Jester",
-        std::make_unique<Jester>("Jester Class"));
+    _roles.emplace("Hero", std::make_unique<Hero>("Hero Class"));
+    _roles.emplace("CareGiver", std::make_unique<CareGiver>("CareGiver Class"));
+    _roles.emplace("Outlaw", std::make_unique<Outlaw>("Outlaw Class"));
+    _roles.emplace("Jester", std::make_unique<Jester>("Jester Class"));
 }
 
 const Survivor* RoleManager::getRole(const QString& name) const
 {
     auto it = _roles.find(name);
     if (it != _roles.end())
-        return it.value().get();
+        return it->second.get();
 
     return nullptr;
 }
 
 QStringList RoleManager::availableRoles() const
 {
-    return _roles.keys();
+    QStringList rolesStringList;
+    for (const auto& role : _roles)
+    {
+        rolesStringList.append(role.first);
+    }
+
+    return rolesStringList;
 }
