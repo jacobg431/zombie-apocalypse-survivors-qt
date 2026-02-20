@@ -20,113 +20,104 @@
 #include <QRandomGenerator>
 #include <QPainter>
 
-int MAX_COL_WIDTH = 300;
+int MAX_COLUMN_WIDTH = 400;
+int FIXED_COLUMN_HEIGHT = 875;
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
     initRoleMap();
+    applyStyling();
 
-    auto *title_wrapper = new QVBoxLayout(this);
-
+    // --- Title ---
     auto *titleLabel = new QLabel("Create Your Survivor");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setObjectName("pageTitle");
-    titleLabel->setFixedWidth(2 * MAX_COL_WIDTH);
-    title_wrapper->addWidget(titleLabel, 0, Qt::AlignHCenter);
+    titleLabel->setFixedWidth(2 * MAX_COLUMN_WIDTH);
 
-    auto *layout = new QHBoxLayout();
-    title_wrapper->addLayout(layout);
+    // --- Character form and description ---
+    auto *leftPanel = new QWidget();
+    leftPanel->setLayout(new QVBoxLayout());
+    leftPanel->layout()->addWidget(createSurvivorForm());
+    leftPanel->layout()->addWidget(createSurvivorDesc());
 
-    // --- Character form and class description ---
-    auto *leftLayout = new QVBoxLayout();
-    leftLayout->setContentsMargins(12, 12, 12, 12);
-    leftLayout->setSpacing(12);
-
-    auto *formWidget = new QWidget(this);
-    formWidget->setLayout(heroFormComponent());
-
-    auto *descWidget = new QWidget(this);
-    descWidget->setLayout(HeroDescComponent());
-
-    auto *wrapper = new QGroupBox();
-    wrapper->setLayout(formWidget->layout());
-    wrapper->setObjectName("survivorInfoBox");
-    wrapper->setTitle("Name and Class");
-    wrapper->setFixedWidth(230);
-
-    leftLayout->addWidget(wrapper);
-    leftLayout->addWidget(descWidget);
-
-    auto *leftPanel = new QWidget(this);
-    leftPanel->setLayout(leftLayout);
-
-    // --- Character image ---
-    auto *rightPanel = heroImageComponent();
+    // --- Class image ---
+    auto *rightPanel = createSurvivorImage();
 
     // --- Layout & connections ---
-    layout->addStretch();
-    layout->addWidget(leftPanel, 0, Qt::AlignCenter);
-    layout->addLayout(rightPanel, 0);
-    layout->addStretch();
+    auto *uiLayout = new QHBoxLayout();
+    uiLayout->addStretch();
+    uiLayout->addWidget(leftPanel, 0, Qt::AlignCenter);
+    uiLayout->addWidget(rightPanel, 0, Qt::AlignCenter);
+    uiLayout->addStretch();
+
+    auto *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(titleLabel, 0, Qt::AlignHCenter);
+    mainLayout->addLayout(uiLayout);
 
     connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
+
     classSelectUpdated(classSelect_->currentText());
-    applyStyling();
 }
 
-QFormLayout *CharacterCreationPage::heroFormComponent()
+QWidget *CharacterCreationPage::createSurvivorForm()
 {
+
+    const int INPUT_WIDTH = 160;
+
     nameEdit_ = new QLineEdit(this);
     nameEdit_->setObjectName("survivorNameEdit");
-    nameEdit_->setMaximumWidth(MAX_COL_WIDTH);
+    nameEdit_->setFixedWidth(INPUT_WIDTH);
 
     classSelect_ = new QComboBox(this);
     classSelect_->setObjectName("survivorClassSelect");
     classSelect_->addItems(role_map_.keys());
-    classSelect_->setMaximumWidth(MAX_COL_WIDTH);
+    classSelect_->setFixedWidth(INPUT_WIDTH);
 
     submitButton_ = new QPushButton("Create Character", this);
     submitButton_->setObjectName("submitButton");
-    submitButton_->setMaximumWidth(MAX_COL_WIDTH);
     submitButton_->setCursor(Qt::PointingHandCursor);
+    submitButton_->setFixedWidth(INPUT_WIDTH);
 
-    auto *component = new QFormLayout();
-    component->setLabelAlignment(Qt::AlignLeft);
-    component->setFormAlignment(Qt::AlignTop);
+    auto *layout = new QFormLayout();
+    layout->setContentsMargins(16, 16, 32, 16);
+    layout->setLabelAlignment(Qt::AlignHCenter);
+    layout->setFormAlignment(Qt::AlignHCenter);
+    layout->addRow(nameEdit_);
+    layout->addRow(classSelect_);
+    layout->addRow(submitButton_);
 
-    component->addRow(nameEdit_);
-    component->addRow(classSelect_);
-    component->addRow(submitButton_);
+    auto *component = new QGroupBox();
+    component->setLayout(layout);
+    component->setObjectName("survivorInfoBox");
+    component->setTitle("Name and Class");
 
     return component;
 }
 
-QVBoxLayout *CharacterCreationPage::heroImageComponent()
+QWidget *CharacterCreationPage::createSurvivorImage()
 {
     classImageLabel_ = new QLabel(this);
     classImageLabel_->setScaledContents(true);
     classImageLabel_->setAlignment(Qt::AlignCenter);
     classImageLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    auto *component = new QVBoxLayout();
-    component->addStretch();
-    component->addSpacing(60);
-    component->addWidget(classImageLabel_, 0, Qt::AlignHCenter);
-    component->addStretch();
+    auto *component = new QWidget(this);
+    component->setLayout(new QVBoxLayout());
+    component->layout()->addWidget(classImageLabel_);
 
     return component;
 }
 
-QVBoxLayout *CharacterCreationPage::HeroDescComponent()
+QWidget *CharacterCreationPage::createSurvivorDesc()
 {
     descriptionLabel_ = new QLabel(this);
     descriptionLabel_->setWordWrap(true);
-    descriptionLabel_->setMinimumHeight(parentWidget()->height() / 3);
+    descriptionLabel_->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
     descriptionLabel_->setAlignment(Qt::AlignTop);
 
     skillList_ = new QLabel(this);
     skillList_->setWordWrap(true);
-    skillList_->setMinimumHeight(parentWidget()->height() / 3);
+    skillList_->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
     skillList_->setAlignment(Qt::AlignTop);
 
     auto *attributeForm = new QFormLayout();
@@ -175,11 +166,11 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
     skillsBox->setFixedWidth(BOX_WIDTH);
     skillsBox->setObjectName("survivorInfoBox");
 
-    auto *component = new QVBoxLayout();
-    component->addWidget(descBox);
-    component->addWidget(attrBox);
-    component->addWidget(skillsBox);
-    component->addStretch();
+    auto *component = new QWidget();
+    component->setLayout(new QVBoxLayout());
+    component->layout()->addWidget(descBox);
+    component->layout()->addWidget(attrBox);
+    component->layout()->addWidget(skillsBox);
 
     return component;
 }
@@ -227,8 +218,8 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     setGlitchText(descriptionLabel_, QString::fromStdString(class_object->GetRoleDescription()));
     setGlitchText(skillList_, "Skills:\n• " + skillLines.join("\n• "));
 
-    const int IMAGE_WIDTH = 700;
-    const int IMAGE_HEIGHT = IMAGE_WIDTH * 1.25;
+    const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
+    const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
 
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
     glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -274,7 +265,6 @@ void CharacterCreationPage::applyStyling()
             font-size: 32px;
             color: #FF5733;
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
-            padding: 4px 16px;
         }
 
         QLineEdit#survivorNameEdit {
@@ -382,7 +372,7 @@ void CharacterCreationPage::applyStyling()
 
             padding-left: 32px;
             padding-top: 32px;
-            }
+        }
 
         QGroupBox#survivorInfoBox::title {
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch stretch;

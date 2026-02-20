@@ -30,19 +30,19 @@ private:
 
     QMap<QString, Survivor *> role_map_;
     QMap<QString, QLabel *> attributesMap_;
-
-    QLabel *skillList_;
-    QLabel *descriptionLabel_;
-    QLabel *classImageLabel_;
-
+    
     // UI component builders
-    QFormLayout *heroFormComponent();
-    QVBoxLayout *heroImageComponent();
-    QVBoxLayout *HeroDescComponent();
+    QWidget *createSurvivorForm();
+    QWidget *createSurvivorImage();
+    QWidget *createSurvivorDesc();
 
     QLineEdit *nameEdit_ = nullptr;
     QComboBox *classSelect_ = nullptr;
     QPushButton *submitButton_ = nullptr;
+
+    QLabel *skillList_;
+    QLabel *descriptionLabel_;
+    QLabel *classImageLabel_;
 
     // Helper functions
     void initRoleMap();
