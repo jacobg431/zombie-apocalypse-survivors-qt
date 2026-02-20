@@ -2,6 +2,7 @@
 
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
+#include "pages/DisplayCharacterPage.hpp"
 #include "pages/ItemsShopPage.hpp"
 #include "panels/GoBackPanel.hpp"
 #include "widgets/PauseMenu.hpp"
@@ -15,66 +16,75 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     setWindowTitle("Zombie Apocalypse Survivors");
 
     // --- Pages ---
-    stack = new QStackedWidget(this);
-    setCentralWidget(stack);
+    _stack = new QStackedWidget(this);
+    setCentralWidget(_stack);
 
-    // --- Pause menu ---
-    pauseOverlay = new PauseMenu(this);
-    pauseOverlay->hide();
-    pauseOverlay->raise();
+    // --- Pause _menu ---
+    _pauseOverlay = new PauseMenu(this);
+    _pauseOverlay->hide();
+    _pauseOverlay->raise();
 
-    connect(pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
+    connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
             { setPaused(false); });
-    connect(pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
+    connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
             { setPaused(false); showMenu(); });
 
     // --- Pages ---
-    menu = new MainMenuPage(this);
-    characterCreation = new CharacterCreationPage(this);
-    itemsShop = new ItemsShopPage(this);
+    _menu = new MainMenuPage(this);
+    _characterCreation = new CharacterCreationPage(this);
+    _displayCharacter = new DisplayCharacterPage(this);
+    _itemsShop = new ItemsShopPage(this);
 
-    stack->addWidget(menu);
-    stack->addWidget(characterCreation);
-    stack->addWidget(itemsShop);
+    _stack->addWidget(_menu);
+    _stack->addWidget(_characterCreation);
+    _stack->addWidget(_displayCharacter);
+    _stack->addWidget(_itemsShop);
 
     // --- Connections ---
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
 
-    connect(menu, &MainMenuPage::StartGameClicked, 
+    connect(_menu, &MainMenuPage::StartGameClicked, 
         this, &AppWindow::showItemsShop);
-    connect(menu, &MainMenuPage::QuitGameClicked, 
+    connect(_menu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
-    connect(itemsShop, &ItemsShopPage::GoBackClicked,
+    connect(_characterCreation, &CharacterCreationPage::characterCreated,
+        this, &AppWindow::showDisplayCharacter);
+    connect(_itemsShop, &ItemsShopPage::GoBackClicked,
         this, &AppWindow::showCharacterCreation);
 
 
-    // --- Show menu at startup ---
+    // --- Show _menu at startup ---
     showMenu();
 }
 
 void AppWindow::showMenu()
 {
-    stack->setCurrentWidget(menu);
+    _stack->setCurrentWidget(_menu);
 }
 
 void AppWindow::showCharacterCreation()
 {
-    stack->setCurrentWidget(characterCreation);
+    _stack->setCurrentWidget(_characterCreation);
+}
+
+void AppWindow::showDisplayCharacter()
+{
+    _stack->setCurrentWidget(_displayCharacter);
 }
 
 void AppWindow::showItemsShop()
 {
-    stack->setCurrentWidget(itemsShop);
+    _stack->setCurrentWidget(_itemsShop);
 }
 
 void AppWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
-    if (pauseOverlay)
+    if (_pauseOverlay)
     {
-        pauseOverlay->setGeometry(centralWidget()->rect());
+        _pauseOverlay->setGeometry(centralWidget()->rect());
     }
 }
 
@@ -89,20 +99,20 @@ void AppWindow::keyPressEvent(QKeyEvent *event)
 
 bool AppWindow::isPaused() const
 {
-    return pauseOverlay->isVisible();
+    return _pauseOverlay->isVisible();
 }
 
 bool AppWindow::pauseAllowed() const
 {
-    return stack->currentWidget() != menu;
+    return _stack->currentWidget() != _menu;
 }
 
 void AppWindow::setPaused(bool on)
 {
-    pauseOverlay->setVisible(on);
+    _pauseOverlay->setVisible(on);
     if (on)
     {
-        pauseOverlay->raise();
+        _pauseOverlay->raise();
     }
 
     // pause game things here

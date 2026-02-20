@@ -80,6 +80,8 @@ QWidget *CharacterCreationPage::createSurvivorForm()
     _submitButton->setObjectName("submitButton");
     _submitButton->setCursor(Qt::PointingHandCursor);
     _submitButton->setFixedWidth(INPUT_WIDTH);
+    connect(_submitButton, &QPushButton::clicked, 
+        this, &CharacterCreationPage::characterCreated);
 
     auto *layout = new QFormLayout();
     layout->setContentsMargins(16, 16, 32, 16);

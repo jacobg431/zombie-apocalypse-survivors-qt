@@ -7,6 +7,7 @@ class QStackedWidget;
 class MainMenuPage;
 class CharacterCreationPage;
 class ItemsShopPage;
+class DisplayCharacterPage;
 class PauseMenu;
 class GoBackPanel;
 
@@ -22,13 +23,13 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    QStackedWidget *stack;
-    MainMenuPage *menu;
-    CharacterCreationPage *characterCreation;
-    ItemsShopPage *itemsShop;
-    PauseMenu *pauseOverlay;
-    GoBackPanel *goBackPanel;
-
+    QStackedWidget *_stack;
+    MainMenuPage *_menu;
+    CharacterCreationPage *_characterCreation;
+    ItemsShopPage *_itemsShop;
+    DisplayCharacterPage *_displayCharacter;
+    PauseMenu *_pauseOverlay;
+    GoBackPanel *_goBackPanel;
 
     void setPaused(bool on);
     bool isPaused() const;
@@ -37,5 +38,6 @@ private:
 public slots:
     void showMenu();
     void showCharacterCreation();
+    void showDisplayCharacter();
     void showItemsShop();
 };
