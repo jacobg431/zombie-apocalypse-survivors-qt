@@ -21,7 +21,6 @@
 #include <QPainter>
 
 int MAX_COL_WIDTH = 300;
-QString TITLE_STYLE = "font-size: 32px; color: #FF5733; border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch; padding: 4px 16px;";
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
@@ -32,7 +31,6 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *titleLabel = new QLabel("Create Your Survivor");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setObjectName("pageTitle");
-    titleLabel->setStyleSheet(TITLE_STYLE);
     titleLabel->setFixedWidth(2 * MAX_COL_WIDTH);
     title_wrapper->addWidget(titleLabel, 0, Qt::AlignHCenter);
 
@@ -67,6 +65,7 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 
     connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
     classSelectUpdated(classSelect_->currentText());
+    applyStyling();
 }
 
 QFormLayout *CharacterCreationPage::heroFormComponent()
@@ -113,10 +112,12 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
 {
     descriptionLabel_ = new QLabel(this);
     descriptionLabel_->setWordWrap(true);
+    descriptionLabel_->setMinimumHeight(parentWidget()->height() / 3);
     descriptionLabel_->setAlignment(Qt::AlignTop);
 
     skillList_ = new QLabel(this);
     skillList_->setWordWrap(true);
+    skillList_->setMinimumHeight(parentWidget()->height() / 3);
     skillList_->setAlignment(Qt::AlignTop);
 
     auto *attributeForm = new QFormLayout();
@@ -141,23 +142,29 @@ QVBoxLayout *CharacterCreationPage::HeroDescComponent()
     auto *descBox = new QGroupBox("Class description");
     auto *descLay = new QVBoxLayout(descBox);
     descLay->addWidget(descriptionLabel_);
+    descLay->setAlignment(Qt::AlignTop);
+    descLay->setContentsMargins(24, 8, 32, 0);
     descBox->setFixedHeight(BOX_HEIGHT);
     descBox->setFixedWidth(BOX_WIDTH);
-    descBox->setObjectName("woodenBox");
+    descBox->setObjectName("survivorInfoBox");
 
     auto *attrBox = new QGroupBox("Class Attributes");
     auto *attrLay = new QVBoxLayout(attrBox);
     attrLay->addLayout(attributeForm);
-    attrBox->setObjectName("woodenBox");
+    descLay->setAlignment(Qt::AlignTop);
+    attrLay->setContentsMargins(24, 8, 40, 0);
+    attrBox->setObjectName("survivorInfoBox");
     attrBox->setFixedHeight(BOX_HEIGHT);
     attrBox->setFixedWidth(BOX_WIDTH);
 
     auto *skillsBox = new QGroupBox("Class Skills");
     auto *skillsLay = new QVBoxLayout(skillsBox);
     skillsLay->addWidget(skillList_);
+    skillsLay->setAlignment(Qt::AlignTop);
+    skillsLay->setContentsMargins(24, 8, 30, 0);
     skillsBox->setFixedHeight(BOX_HEIGHT);
     skillsBox->setFixedWidth(BOX_WIDTH);
-    skillsBox->setObjectName("woodenBox");
+    skillsBox->setObjectName("survivorInfoBox");
 
     auto *component = new QVBoxLayout();
     component->addWidget(descBox);
@@ -180,7 +187,6 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
     }
 
-    // attributes
     setGlitchText(attributesMap_["Strength"], QString::number(attributes.GetStrength()));
     setGlitchText(attributesMap_["Endurance"], QString::number(attributes.GetEndurance()));
     setGlitchText(attributesMap_["Agility"], QString::number(attributes.GetAgility()));
@@ -192,11 +198,11 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
     {
-        QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬" };
+        QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬"};
         QStringList attributeSymbols = {"♠", "♥", "♦", "♣"};
 
         std::mt19937 rng(QRandomGenerator::global()->generate());
-        
+
         std::shuffle(skillSymbols.begin(), skillSymbols.end(), rng);
         std::shuffle(attributeSymbols.begin(), attributeSymbols.end(), rng);
 
@@ -249,4 +255,56 @@ void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
         } });
 
     timer->start(intervalMs);
+}
+
+void CharacterCreationPage::applyStyling()
+{
+    setStyleSheet(R"(
+
+        #pageTitle {
+            font-size: 32px;
+            color: #FF5733;
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
+            padding: 4px 16px;
+        }
+
+        QGroupBox {
+            border: 2px solid #222;
+            border-radius: 6px;
+
+            margin-top: 20px;
+            padding: 14px;
+        }
+    
+        QGroupBox#survivorInfoBox {
+            background-color: transparent;
+            border-image: url(:/resources/images/wooden-sign-square-fried.png);
+            border: none;
+
+            margin: -8px;
+
+            margin-top: -4px;
+            margin-bottom: -8px;
+            margin-left: -16px;
+            margin-right: -16px;
+
+            padding-left: 32px;
+            padding-top: 32px;
+            }
+
+        QGroupBox#survivorInfoBox::title {
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch stretch;
+            subcontrol-origin: margin;
+            subcontrol-position: top left;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+
+            color: #FF5733;
+        }
+
+    )");
+    style()->unpolish(this);
+    style()->polish(this);
+    update();
 }

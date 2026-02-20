@@ -47,6 +47,7 @@ private:
     // Helper functions
     void initRoleMap();
     void glitchSwapPixmap(const QPixmap &finalPm);
+    void applyStyling();
 
 signals:
     void characterCreated();
