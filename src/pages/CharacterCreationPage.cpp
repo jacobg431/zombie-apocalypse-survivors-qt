@@ -24,7 +24,8 @@
 int MAX_COLUMN_WIDTH = 400;
 int FIXED_COLUMN_HEIGHT = 875;
 
-CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
+CharacterCreationPage::CharacterCreationPage(QWidget *parent) 
+    : QWidget(parent)
 {
     initRoleMap();
     applyStyling();
@@ -55,7 +56,8 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(titleLabel, 0, Qt::AlignHCenter);
     mainLayout->addLayout(uiLayout);
 
-    connect(_classSelect, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
+    connect(_classSelect, &QComboBox::currentTextChanged, this, 
+        &CharacterCreationPage::classSelectUpdated);
 
     classSelectUpdated(_classSelect->currentText());
 }
@@ -188,13 +190,34 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
     }
 
-    setGlitchText(_attributesMap["Strength"], QString::number(attributes.GetStrength()));
-    setGlitchText(_attributesMap["Endurance"], QString::number(attributes.GetEndurance()));
-    setGlitchText(_attributesMap["Agility"], QString::number(attributes.GetAgility()));
-    setGlitchText(_attributesMap["Courage"], QString::number(attributes.GetCourage()));
-    setGlitchText(_attributesMap["Intelligence"], QString::number(attributes.GetIntelligence()));
-    setGlitchText(_attributesMap["Leadership"], QString::number(attributes.GetLeadership()));
-    setGlitchText(_attributesMap["Trustworthiness"], QString::number(attributes.GetTrustworthiness()));
+    setGlitchText(
+        _attributesMap["Strength"], 
+        QString::number(attributes.GetStrength())
+    );
+    setGlitchText(
+        _attributesMap["Endurance"], 
+        QString::number(attributes.GetEndurance())
+    );
+    setGlitchText(
+        _attributesMap["Agility"], 
+        QString::number(attributes.GetAgility())
+    );
+    setGlitchText(
+        _attributesMap["Courage"], 
+        QString::number(attributes.GetCourage())
+    );
+    setGlitchText(
+        _attributesMap["Intelligence"], 
+        QString::number(attributes.GetIntelligence())
+    );
+    setGlitchText(
+        _attributesMap["Leadership"], 
+        QString::number(attributes.GetLeadership())
+    );
+    setGlitchText(
+        _attributesMap["Trustworthiness"], 
+        QString::number(attributes.GetTrustworthiness())
+    );
 
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
@@ -212,18 +235,27 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
         for (auto *attribute : _attributesMap)
         {
-            setGlitchText(attribute, attributeSymbols[rng() % attributeSymbols.size()]);
+            setGlitchText(
+                attribute, 
+                attributeSymbols[rng() % attributeSymbols.size()]
+            );
         }
     }
 
-    setGlitchText(_descriptionLabel, QString::fromStdString(class_object->GetRoleDescription()));
-    setGlitchText(_skillList, "Skills:\n• " + skillLines.join("\n• "));
+    setGlitchText(
+        _descriptionLabel, QString::fromStdString(class_object->GetRoleDescription())
+    );
+    setGlitchText(
+        _skillList, "Skills:\n• " + skillLines.join("\n• ")
+    );
 
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
     const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
 
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
-    glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    glitchSwapPixmap(
+        pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+    );
 }
 
 void CharacterCreationPage::initRoleMap()
@@ -391,6 +423,7 @@ void CharacterCreationPage::applyStyling()
             color: #FF5733;
         }
     )");
+    
     style()->unpolish(this);
     style()->polish(this);
     update();
