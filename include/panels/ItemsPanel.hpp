@@ -1,0 +1,25 @@
+#pragma once
+
+#include <QFrame>
+#include <QWidget>
+#include <QString>
+#include <QPushButton>
+#include <QVector>
+#include <QLabel>
+
+class ItemsPanel : public QFrame
+{
+public:
+    explicit ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent = nullptr);
+    void applyStyling();
+
+private:
+    QLabel* createTitleLabel(const QString& title);
+    QFrame* createGrid();
+    QFrame* createBottomWrapper(const QString& buttonText);
+    QFrame* createInnerWrapper(const QString& title, const QString& buttonText);
+
+    QPushButton* m_button = nullptr;
+    QVector<QPushButton*> m_itemButtons;
+    QLabel* m_selectedItemLabel = nullptr;
+};
