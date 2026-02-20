@@ -1,7 +1,9 @@
 #include "pages/CharacterCreationPage.hpp"
 #include "utils.hpp"
 
+#include <ZasLib/Roles.hpp>
 #include <ZasLib/Skill.hpp>
+#include "managers/RoleManager.hpp"
 
 #include <algorithm>
 #include <random>
@@ -54,9 +56,9 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(titleLabel, 0, Qt::AlignHCenter);
     mainLayout->addLayout(uiLayout);
 
-    connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
+    connect(_classSelect, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
 
-    classSelectUpdated(classSelect_->currentText());
+    classSelectUpdated(_classSelect->currentText());
 }
 
 QWidget *CharacterCreationPage::createSurvivorForm()
@@ -64,27 +66,27 @@ QWidget *CharacterCreationPage::createSurvivorForm()
 
     const int INPUT_WIDTH = 160;
 
-    nameEdit_ = new QLineEdit(this);
-    nameEdit_->setObjectName("survivorNameEdit");
-    nameEdit_->setFixedWidth(INPUT_WIDTH);
+    _nameEdit = new QLineEdit(this);
+    _nameEdit->setObjectName("survivorNameEdit");
+    _nameEdit->setFixedWidth(INPUT_WIDTH);
 
-    classSelect_ = new QComboBox(this);
-    classSelect_->setObjectName("survivorClassSelect");
-    classSelect_->addItems(role_map_.keys());
-    classSelect_->setFixedWidth(INPUT_WIDTH);
+    _classSelect = new QComboBox(this);
+    _classSelect->setObjectName("survivorClassSelect");
+    _classSelect->addItems(_role_map.keys());
+    _classSelect->setFixedWidth(INPUT_WIDTH);
 
-    submitButton_ = new QPushButton("Create Character", this);
-    submitButton_->setObjectName("submitButton");
-    submitButton_->setCursor(Qt::PointingHandCursor);
-    submitButton_->setFixedWidth(INPUT_WIDTH);
+    _submitButton = new QPushButton("Create Character", this);
+    _submitButton->setObjectName("submitButton");
+    _submitButton->setCursor(Qt::PointingHandCursor);
+    _submitButton->setFixedWidth(INPUT_WIDTH);
 
     auto *layout = new QFormLayout();
     layout->setContentsMargins(16, 16, 32, 16);
     layout->setLabelAlignment(Qt::AlignHCenter);
     layout->setFormAlignment(Qt::AlignHCenter);
-    layout->addRow(nameEdit_);
-    layout->addRow(classSelect_);
-    layout->addRow(submitButton_);
+    layout->addRow(_nameEdit);
+    layout->addRow(_classSelect);
+    layout->addRow(_submitButton);
 
     auto *component = new QGroupBox();
     component->setLayout(layout);
@@ -96,29 +98,29 @@ QWidget *CharacterCreationPage::createSurvivorForm()
 
 QWidget *CharacterCreationPage::createSurvivorImage()
 {
-    classImageLabel_ = new QLabel(this);
-    classImageLabel_->setScaledContents(true);
-    classImageLabel_->setAlignment(Qt::AlignCenter);
-    classImageLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _classImageLabel = new QLabel(this);
+    _classImageLabel->setScaledContents(true);
+    _classImageLabel->setAlignment(Qt::AlignCenter);
+    _classImageLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     auto *component = new QWidget(this);
     component->setLayout(new QVBoxLayout());
-    component->layout()->addWidget(classImageLabel_);
+    component->layout()->addWidget(_classImageLabel);
 
     return component;
 }
 
 QWidget *CharacterCreationPage::createSurvivorDesc()
 {
-    descriptionLabel_ = new QLabel(this);
-    descriptionLabel_->setWordWrap(true);
-    descriptionLabel_->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
-    descriptionLabel_->setAlignment(Qt::AlignTop);
+    _descriptionLabel = new QLabel(this);
+    _descriptionLabel->setWordWrap(true);
+    _descriptionLabel->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
+    _descriptionLabel->setAlignment(Qt::AlignTop);
 
-    skillList_ = new QLabel(this);
-    skillList_->setWordWrap(true);
-    skillList_->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
-    skillList_->setAlignment(Qt::AlignTop);
+    _skillList = new QLabel(this);
+    _skillList->setWordWrap(true);
+    _skillList->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
+    _skillList->setAlignment(Qt::AlignTop);
 
     auto *attributeForm = new QFormLayout();
 
@@ -128,9 +130,9 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 
     for (const QString &attribute : attribute_order)
     {
-        attributesMap_[attribute] = new QLabel(this);
+        _attributesMap[attribute] = new QLabel(this);
         QLabel *label = new QLabel(attribute);
-        QLabel *value = attributesMap_[attribute];
+        QLabel *value = _attributesMap[attribute];
 
         value->setAlignment(Qt::AlignRight);
         attributeForm->addRow(label, value);
@@ -141,7 +143,7 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 
     auto *descBox = new QGroupBox("Class description");
     auto *descLay = new QVBoxLayout(descBox);
-    descLay->addWidget(descriptionLabel_);
+    descLay->addWidget(_descriptionLabel);
     descLay->setAlignment(Qt::AlignTop);
     descLay->setContentsMargins(24, 8, 32, 0);
     descBox->setFixedHeight(BOX_HEIGHT);
@@ -159,7 +161,7 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 
     auto *skillsBox = new QGroupBox("Class Skills");
     auto *skillsLay = new QVBoxLayout(skillsBox);
-    skillsLay->addWidget(skillList_);
+    skillsLay->addWidget(_skillList);
     skillsLay->setAlignment(Qt::AlignTop);
     skillsLay->setContentsMargins(24, 8, 30, 0);
     skillsBox->setFixedHeight(BOX_HEIGHT);
@@ -177,7 +179,7 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 
 void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 {
-    Survivor *class_object = role_map_[class_string];
+    Survivor *class_object = _role_map[class_string];
     auto attributes = class_object->GetAttributes();
     auto skills = class_object->GetSkills();
 
@@ -187,13 +189,13 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
     }
 
-    setGlitchText(attributesMap_["Strength"], QString::number(attributes.GetStrength()));
-    setGlitchText(attributesMap_["Endurance"], QString::number(attributes.GetEndurance()));
-    setGlitchText(attributesMap_["Agility"], QString::number(attributes.GetAgility()));
-    setGlitchText(attributesMap_["Courage"], QString::number(attributes.GetCourage()));
-    setGlitchText(attributesMap_["Intelligence"], QString::number(attributes.GetIntelligence()));
-    setGlitchText(attributesMap_["Leadership"], QString::number(attributes.GetLeadership()));
-    setGlitchText(attributesMap_["Trustworthiness"], QString::number(attributes.GetTrustworthiness()));
+    setGlitchText(_attributesMap["Strength"], QString::number(attributes.GetStrength()));
+    setGlitchText(_attributesMap["Endurance"], QString::number(attributes.GetEndurance()));
+    setGlitchText(_attributesMap["Agility"], QString::number(attributes.GetAgility()));
+    setGlitchText(_attributesMap["Courage"], QString::number(attributes.GetCourage()));
+    setGlitchText(_attributesMap["Intelligence"], QString::number(attributes.GetIntelligence()));
+    setGlitchText(_attributesMap["Leadership"], QString::number(attributes.GetLeadership()));
+    setGlitchText(_attributesMap["Trustworthiness"], QString::number(attributes.GetTrustworthiness()));
 
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
@@ -209,14 +211,14 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         skillLines.clear();
         skillLines << skillSymbols.join("");
 
-        for (auto *attribute : attributesMap_)
+        for (auto *attribute : _attributesMap)
         {
             setGlitchText(attribute, attributeSymbols[rng() % attributeSymbols.size()]);
         }
     }
 
-    setGlitchText(descriptionLabel_, QString::fromStdString(class_object->GetRoleDescription()));
-    setGlitchText(skillList_, "Skills:\n• " + skillLines.join("\n• "));
+    setGlitchText(_descriptionLabel, QString::fromStdString(class_object->GetRoleDescription()));
+    setGlitchText(_skillList, "Skills:\n• " + skillLines.join("\n• "));
 
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
     const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
@@ -227,10 +229,15 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 
 void CharacterCreationPage::initRoleMap()
 {
-    role_map_.insert("Hero", &hero_);
-    role_map_.insert("CareGiver", &caregiver_);
-    role_map_.insert("Outlaw", &outlaw_);
-    role_map_.insert("Jester", &jester_);
+    auto& manager = RoleManager::instance();
+
+    for (const QString& roleName : manager.availableRoles())
+    {
+        _role_map.insert(
+            roleName,
+            const_cast<Survivor*>(
+                manager.getRole(roleName)));
+    }
 }
 
 void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
@@ -246,10 +253,10 @@ void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
     connect(timer, &QTimer::timeout, this, [this, timer, base, finalPixmap, i]() mutable
             {
         if (*i < 8) {
-            classImageLabel_->setPixmap(makeGlitchFrame(base));
+            _classImageLabel->setPixmap(makeGlitchFrame(base));
             (*i)++;
         } else {
-            classImageLabel_->setPixmap(finalPixmap);
+            _classImageLabel->setPixmap(finalPixmap);
             timer->stop();
             timer->deleteLater();
             delete i;

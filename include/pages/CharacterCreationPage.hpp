@@ -1,8 +1,9 @@
 #pragma once
-#include "ZasLib/Roles.hpp"
 
 #include <QWidget>
 #include <QMap>
+
+#include "managers/RoleManager.hpp"
 
 // Forward declare to reduce compile time
 class QVBoxLayout;
@@ -22,27 +23,21 @@ public:
     explicit CharacterCreationPage(QWidget *parent = nullptr);
 
 private:
-    // Example data for populating the page
-    Hero hero_{"Example Hero Class"};
-    CareGiver caregiver_{"Example CareGiver Class"};
-    Outlaw outlaw_{"Example Outlaw Class"};
-    Jester jester_{"Example Jester Class"};
-
-    QMap<QString, Survivor *> role_map_;
-    QMap<QString, QLabel *> attributesMap_;
+    QMap<QString, Survivor *> _role_map;
+    QMap<QString, QLabel *> _attributesMap;
     
     // UI component builders
     QWidget *createSurvivorForm();
     QWidget *createSurvivorImage();
     QWidget *createSurvivorDesc();
 
-    QLineEdit *nameEdit_ = nullptr;
-    QComboBox *classSelect_ = nullptr;
-    QPushButton *submitButton_ = nullptr;
+    QLineEdit *_nameEdit = nullptr;
+    QComboBox *_classSelect = nullptr;
+    QPushButton *_submitButton = nullptr;
 
-    QLabel *skillList_;
-    QLabel *descriptionLabel_;
-    QLabel *classImageLabel_;
+    QLabel *_skillList;
+    QLabel *_descriptionLabel;
+    QLabel *_classImageLabel;
 
     // Helper functions
     void initRoleMap();
