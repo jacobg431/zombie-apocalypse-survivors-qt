@@ -48,7 +48,13 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
     auto *descWidget = new QWidget(this);
     descWidget->setLayout(HeroDescComponent());
 
-    leftLayout->addWidget(formWidget);
+    auto *wrapper = new QGroupBox();
+    wrapper->setLayout(formWidget->layout());
+    wrapper->setObjectName("survivorInfoBox");
+    wrapper->setTitle("Name and Class");
+    wrapper->setFixedWidth(230);
+
+    leftLayout->addWidget(wrapper);
     leftLayout->addWidget(descWidget);
 
     auto *leftPanel = new QWidget(this);
@@ -80,13 +86,14 @@ QFormLayout *CharacterCreationPage::heroFormComponent()
     classSelect_->setMaximumWidth(MAX_COL_WIDTH);
 
     submitButton_ = new QPushButton("Create Character", this);
+    submitButton_->setObjectName("submitButton");
     submitButton_->setMaximumWidth(MAX_COL_WIDTH);
+    submitButton_->setCursor(Qt::PointingHandCursor);
 
     auto *component = new QFormLayout();
     component->setLabelAlignment(Qt::AlignLeft);
     component->setFormAlignment(Qt::AlignTop);
 
-    component->addRow(new QLabel("Choose a name & class:"));
     component->addRow(nameEdit_);
     component->addRow(classSelect_);
     component->addRow(submitButton_);
@@ -270,58 +277,86 @@ void CharacterCreationPage::applyStyling()
         }
 
         QLineEdit#survivorNameEdit {
-            background-color: #444;
+            background-color: #c91e1e1e;
             color: white;
-            border: 2px solid #666;
-            padding: 4px;
+            padding-left: 12px;
+            border: 2px solid #c91e1e1e;
             border-radius: 6px;
+            height: 30px; 
+        }
+
+        QLineEdit#survivorNameEdit:focus {
+            border-color: #c9ff5733;
         }
 
         QComboBox#survivorClassSelect {
-            background-color: #444;
+            background-color: #c91e1e1e;
             color: white;
-            border: 2px solid #666;
-            padding: 4px;
+            border: 2px solid #c91e1e1e;
             border-radius: 6px;
+
+            height: 30px; 
+            padding-left: 12px;
+            
         }
 
         QComboBox#survivorClassSelect::drop-down {
             subcontrol-origin: padding;
             subcontrol-position: top right;
             width: 28px;
-            border-left: 2px solid #666;
+            border-left: 2px solid #c91e1e1e;
             border-top-right-radius: 6px;
             border-bottom-right-radius: 6px;
-            background: #444;
+            background: #c91e1e1e;
+            padding: 6px 6px;
         }
 
         QComboBox#survivorClassSelect::down-arrow {
-            width: 12px;
-            height: 12px;
+            image: url(:/resources/images/chevron-down.png);
         }
 
         QComboBox#survivorClassSelect QAbstractItemView {
-            background-color: #444;
+            background-color: #c91e1e1e;
             color: white;
-            border: 2px solid #666;
-            selection-background-color: #555;
+            border: 2px solid #c9ff5733;
+            selection-background-color: #c91e1e1e;
             selection-color: white;
-            border-radius: 6px;
-            outline: 0;
             background-clip: border;
         }
 
         QComboBox#survivorClassSelect QAbstractItemView::item {
-            background: #444;     /* force item background */
-            padding: 6px 10px;
+            background: #c91e1e1e;
+            padding: 6px 12px;
+            margin: 2px;
         }
 
         QComboBox#survivorClassSelect QAbstractItemView::item:selected {
-            background: #555;
+            background: #c91e1e1e;
         }
 
         QComboBox#survivorClassSelect QAbstractItemView::item:hover {
-            background: #555;
+            background: #c91e1e1e;
+        }
+
+        QPushButton#submitButton {
+            background-color: #c91e1e1e;
+            color: white;
+            border: 2px solid #c91e1e1e;
+            border-radius: 6px;
+            padding: 6px 12px;
+            text-align: center;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            }
+
+        QPushButton#submitButton:hover {
+            background-color: #c91e1e1e;
+            border-color: #5bff5733;
+        }
+
+        QPushButton#submitButton:pressed {
+            background-color: #c9ff5733;
+            padding: 4px 10px;
         }
 
         QGroupBox {
