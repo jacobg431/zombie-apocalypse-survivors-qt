@@ -3,5 +3,26 @@
     <file>fonts/alagard.ttf</file>
     <file>fonts/GrapeSoda.ttf</file>
     <file>fonts/DoubleHomicide.ttf</file>
-  </qresource>
+
+    <file>images/hero.png</file>
+    <file>images/caregiver.png</file>
+    <file>images/jester.png</file>
+    <file>images/outlaw.png</file>
+
+
+    <file>images/hero-fried.png</file>
+    <file>images/caregiver-fried.png</file>
+    <file>images/jester-fried.png</file>
+    <file>images/outlaw-fried.png</file>
+
+    <file>images/wooden-sign-square-fried.png</file>
+    <file>images/wooden-sign-wide-fried.png</file>
+
+    <file>images/slash.png</file>
+
+    <file>images/background.png</file>
+
+    <file>styles/dark_theme.qss</file>
+    
+    </qresource>
 </RCC>

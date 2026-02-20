@@ -1,45 +1,252 @@
 #include "pages/CharacterCreationPage.hpp"
+#include "utils.hpp"
+
+#include <ZasLib/Skill.hpp>
+
+#include <algorithm>
+#include <random>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QLabel>
+#include <QFormLayout>
+#include <QPushButton>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QFormLayout>
+#include <QGroupBox>
+#include <QString>
+#include <QLabel>
+
+#include <QTimer>
+#include <QRandomGenerator>
+#include <QPainter>
+
+int MAX_COL_WIDTH = 300;
+QString TITLE_STYLE = "font-size: 32px; color: #FF5733; border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch; padding: 4px 16px;";
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 {
-    auto *layout = new QHBoxLayout(this);
+    initRoleMap();
 
+    auto *title_wrapper = new QVBoxLayout(this);
 
-    // --- Left panel (pick name & class) ---
+    auto *titleLabel = new QLabel("Create Your Survivor");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setObjectName("pageTitle");
+    titleLabel->setStyleSheet(TITLE_STYLE);
+    titleLabel->setFixedWidth(2 * MAX_COL_WIDTH);
+    title_wrapper->addWidget(titleLabel, 0, Qt::AlignHCenter);
 
-    auto *name_input = new QLineEdit(this);
-    name_input->setMaximumWidth(250);
+    auto *layout = new QHBoxLayout();
+    title_wrapper->addLayout(layout);
 
-    auto *class_select = new QComboBox(this);
-    class_select->addItems({"Option 1", "Option 2", "Option 3"});
-    class_select->setMaximumWidth(250);
+    // --- Character form and class description ---
+    auto *leftLayout = new QVBoxLayout();
+    leftLayout->setContentsMargins(12, 12, 12, 12);
+    leftLayout->setSpacing(12);
 
+    auto *formWidget = new QWidget(this);
+    formWidget->setLayout(heroFormComponent());
 
-    auto *hero_form = new QFormLayout();
-    hero_form->setLabelAlignment(Qt::AlignLeft);
-    hero_form->setFormAlignment(Qt::AlignTop);
-    hero_form->addRow("Hero Name:", name_input);
-    hero_form->addRow("Hero Class:", class_select);
+    auto *descWidget = new QWidget(this);
+    descWidget->setLayout(HeroDescComponent());
 
+    leftLayout->addWidget(formWidget);
+    leftLayout->addWidget(descWidget);
 
-    // --- Middle panel (class picture) ---
-    auto *middle_panel = new QVBoxLayout();
-    middle_panel->addWidget(new QLabel("Placeholder image"));
+    auto *leftPanel = new QWidget(this);
+    leftPanel->setLayout(leftLayout);
 
+    // --- Character image ---
+    auto *rightPanel = heroImageComponent();
 
-    // --- Right panel (class descriptions) ---
-    auto *right_panel = new QVBoxLayout();
-    right_panel->addWidget(new QLabel("Placeholder description"));
+    // --- Layout & connections ---
+    layout->addStretch();
+    layout->addWidget(leftPanel, 0, Qt::AlignCenter);
+    layout->addLayout(rightPanel, 0);
+    layout->addStretch();
 
+    connect(classSelect_, &QComboBox::currentTextChanged, this, &CharacterCreationPage::classSelectUpdated);
+    classSelectUpdated(classSelect_->currentText());
+}
 
-    
-    layout->addLayout(hero_form);
-    layout->addLayout(middle_panel);
-    layout->addLayout(right_panel);
+QFormLayout *CharacterCreationPage::heroFormComponent()
+{
+    nameEdit_ = new QLineEdit(this);
+    nameEdit_->setMaximumWidth(MAX_COL_WIDTH);
+
+    classSelect_ = new QComboBox(this);
+    classSelect_->addItems(role_map_.keys());
+    classSelect_->setMaximumWidth(MAX_COL_WIDTH);
+
+    submitButton_ = new QPushButton("Create Character", this);
+    submitButton_->setMaximumWidth(MAX_COL_WIDTH);
+
+    auto *component = new QFormLayout();
+    component->setLabelAlignment(Qt::AlignLeft);
+    component->setFormAlignment(Qt::AlignTop);
+
+    component->addRow(new QLabel("Choose a name & class:"));
+    component->addRow(nameEdit_);
+    component->addRow(classSelect_);
+    component->addRow(submitButton_);
+
+    return component;
+}
+
+QVBoxLayout *CharacterCreationPage::heroImageComponent()
+{
+    classImageLabel_ = new QLabel(this);
+    classImageLabel_->setScaledContents(true);
+    classImageLabel_->setAlignment(Qt::AlignCenter);
+    classImageLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    auto *component = new QVBoxLayout();
+    component->addStretch();
+    component->addSpacing(60);
+    component->addWidget(classImageLabel_, 0, Qt::AlignHCenter);
+    component->addStretch();
+
+    return component;
+}
+
+QVBoxLayout *CharacterCreationPage::HeroDescComponent()
+{
+    descriptionLabel_ = new QLabel(this);
+    descriptionLabel_->setWordWrap(true);
+    descriptionLabel_->setAlignment(Qt::AlignTop);
+
+    skillList_ = new QLabel(this);
+    skillList_->setWordWrap(true);
+    skillList_->setAlignment(Qt::AlignTop);
+
+    auto *attributeForm = new QFormLayout();
+
+    const QStringList attribute_order = {
+        "Strength", "Agility", "Endurance", "Intelligence",
+        "Leadership", "Trustworthiness", "Courage"};
+
+    for (const QString &attribute : attribute_order)
+    {
+        attributesMap_[attribute] = new QLabel(this);
+        QLabel *label = new QLabel(attribute);
+        QLabel *value = attributesMap_[attribute];
+
+        value->setAlignment(Qt::AlignRight);
+        attributeForm->addRow(label, value);
+    }
+
+    const int BOX_HEIGHT = 200;
+    const int BOX_WIDTH = 230;
+
+    auto *descBox = new QGroupBox("Class description");
+    auto *descLay = new QVBoxLayout(descBox);
+    descLay->addWidget(descriptionLabel_);
+    descBox->setFixedHeight(BOX_HEIGHT);
+    descBox->setFixedWidth(BOX_WIDTH);
+    descBox->setObjectName("woodenBox");
+
+    auto *attrBox = new QGroupBox("Class Attributes");
+    auto *attrLay = new QVBoxLayout(attrBox);
+    attrLay->addLayout(attributeForm);
+    attrBox->setObjectName("woodenBox");
+    attrBox->setFixedHeight(BOX_HEIGHT);
+    attrBox->setFixedWidth(BOX_WIDTH);
+
+    auto *skillsBox = new QGroupBox("Class Skills");
+    auto *skillsLay = new QVBoxLayout(skillsBox);
+    skillsLay->addWidget(skillList_);
+    skillsBox->setFixedHeight(BOX_HEIGHT);
+    skillsBox->setFixedWidth(BOX_WIDTH);
+    skillsBox->setObjectName("woodenBox");
+
+    auto *component = new QVBoxLayout();
+    component->addWidget(descBox);
+    component->addWidget(attrBox);
+    component->addWidget(skillsBox);
+    component->addStretch();
+
+    return component;
+}
+
+void CharacterCreationPage::classSelectUpdated(const QString &class_string)
+{
+    Survivor *class_object = role_map_[class_string];
+    auto attributes = class_object->GetAttributes();
+    auto skills = class_object->GetSkills();
+
+    QStringList skillLines;
+    for (const auto &skill : skills)
+    {
+        skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
+    }
+
+    // attributes
+    setGlitchText(attributesMap_["Strength"], QString::number(attributes.GetStrength()));
+    setGlitchText(attributesMap_["Endurance"], QString::number(attributes.GetEndurance()));
+    setGlitchText(attributesMap_["Agility"], QString::number(attributes.GetAgility()));
+    setGlitchText(attributesMap_["Courage"], QString::number(attributes.GetCourage()));
+    setGlitchText(attributesMap_["Intelligence"], QString::number(attributes.GetIntelligence()));
+    setGlitchText(attributesMap_["Leadership"], QString::number(attributes.GetLeadership()));
+    setGlitchText(attributesMap_["Trustworthiness"], QString::number(attributes.GetTrustworthiness()));
+
+    bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
+    if (isJester)
+    {
+        QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬" };
+        QStringList attributeSymbols = {"♠", "♥", "♦", "♣"};
+
+        std::mt19937 rng(QRandomGenerator::global()->generate());
+        
+        std::shuffle(skillSymbols.begin(), skillSymbols.end(), rng);
+        std::shuffle(attributeSymbols.begin(), attributeSymbols.end(), rng);
+
+        skillLines.clear();
+        skillLines << skillSymbols.join("");
+
+        for (auto *attribute : attributesMap_)
+        {
+            setGlitchText(attribute, attributeSymbols[rng() % attributeSymbols.size()]);
+        }
+    }
+
+    setGlitchText(descriptionLabel_, QString::fromStdString(class_object->GetRoleDescription()));
+    setGlitchText(skillList_, "Skills:\n• " + skillLines.join("\n• "));
+
+    const int IMAGE_WIDTH = 650;
+    const int IMAGE_HEIGHT = 650 * 1.25;
+    QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
+    glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
+
+void CharacterCreationPage::initRoleMap()
+{
+    role_map_.insert("Hero", &hero_);
+    role_map_.insert("CareGiver", &caregiver_);
+    role_map_.insert("Outlaw", &outlaw_);
+    role_map_.insert("Jester", &jester_);
+}
+
+void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
+{
+    const int frames = 8;
+    const int intervalMs = 16;
+
+    QPixmap base = finalPixmap;
+
+    int *i = new int(0);
+    auto *timer = new QTimer(this);
+
+    connect(timer, &QTimer::timeout, this, [this, timer, base, finalPixmap, i]() mutable
+            {
+        if (*i < 8) {
+            classImageLabel_->setPixmap(makeGlitchFrame(base));
+            (*i)++;
+        } else {
+            classImageLabel_->setPixmap(finalPixmap);
+            timer->stop();
+            timer->deleteLater();
+            delete i;
+        } });
+
+    timer->start(intervalMs);
 }
