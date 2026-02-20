@@ -227,8 +227,9 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     setGlitchText(descriptionLabel_, QString::fromStdString(class_object->GetRoleDescription()));
     setGlitchText(skillList_, "Skills:\n• " + skillLines.join("\n• "));
 
-    const int IMAGE_WIDTH = 650;
-    const int IMAGE_HEIGHT = 650 * 1.25;
+    const int IMAGE_WIDTH = 700;
+    const int IMAGE_HEIGHT = IMAGE_WIDTH * 1.25;
+
     QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
     glitchSwapPixmap(pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
