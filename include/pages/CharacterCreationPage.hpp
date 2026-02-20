@@ -6,7 +6,6 @@
 #include "managers/RoleManager.hpp"
 
 // Forward declare to reduce compile time
-class QVBoxLayout;
 class QFormLayout;
 class QPushButton;
 class QLineEdit;
