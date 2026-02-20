@@ -71,9 +71,11 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent) : QWidget(parent)
 QFormLayout *CharacterCreationPage::heroFormComponent()
 {
     nameEdit_ = new QLineEdit(this);
+    nameEdit_->setObjectName("survivorNameEdit");
     nameEdit_->setMaximumWidth(MAX_COL_WIDTH);
 
     classSelect_ = new QComboBox(this);
+    classSelect_->setObjectName("survivorClassSelect");
     classSelect_->addItems(role_map_.keys());
     classSelect_->setMaximumWidth(MAX_COL_WIDTH);
 
@@ -260,12 +262,66 @@ void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
 void CharacterCreationPage::applyStyling()
 {
     setStyleSheet(R"(
-
         #pageTitle {
             font-size: 32px;
             color: #FF5733;
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
             padding: 4px 16px;
+        }
+
+        QLineEdit#survivorNameEdit {
+            background-color: #444;
+            color: white;
+            border: 2px solid #666;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        QComboBox#survivorClassSelect {
+            background-color: #444;
+            color: white;
+            border: 2px solid #666;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        QComboBox#survivorClassSelect::drop-down {
+            subcontrol-origin: padding;
+            subcontrol-position: top right;
+            width: 28px;
+            border-left: 2px solid #666;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            background: #444;
+        }
+
+        QComboBox#survivorClassSelect::down-arrow {
+            width: 12px;
+            height: 12px;
+        }
+
+        QComboBox#survivorClassSelect QAbstractItemView {
+            background-color: #444;
+            color: white;
+            border: 2px solid #666;
+            selection-background-color: #555;
+            selection-color: white;
+            border-radius: 6px;
+            outline: 0;
+            background-clip: border;
+        }
+
+        QComboBox#survivorClassSelect QAbstractItemView::item {
+            background: #444;     /* force item background */
+            padding: 6px 10px;
+        }
+
+        QComboBox#survivorClassSelect QAbstractItemView::item:selected {
+            background: #555;
+        }
+
+        QComboBox#survivorClassSelect QAbstractItemView::item:hover {
+            background: #555;
         }
 
         QGroupBox {
@@ -302,7 +358,6 @@ void CharacterCreationPage::applyStyling()
 
             color: #FF5733;
         }
-
     )");
     style()->unpolish(this);
     style()->polish(this);
