@@ -1,10 +1,3 @@
-#include "pages/CharacterCreationPage.hpp"
-#include "utils.hpp"
-
-#include <ZasLib/Roles.hpp>
-#include <ZasLib/Skill.hpp>
-#include "managers/RoleManager.hpp"
-
 #include <algorithm>
 #include <random>
 
@@ -17,10 +10,16 @@
 #include <QGroupBox>
 #include <QString>
 #include <QLabel>
-
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QPainter>
+
+#include <ZasLib/Roles.hpp>
+#include <ZasLib/Skill.hpp>
+
+#include "pages/CharacterCreationPage.hpp"
+#include "managers/RoleManager.hpp"
+#include "utils.hpp"
 
 int MAX_COLUMN_WIDTH = 400;
 int FIXED_COLUMN_HEIGHT = 875;
