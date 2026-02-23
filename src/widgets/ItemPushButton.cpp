@@ -17,8 +17,8 @@ void ItemPushButton::applyStyling()
 {
     setStyleSheet(R"(
         QPushButton {
-            background-color: #8c000000;
-            border: 2px solid #5b000000;
+            background-color: #3b000000;
+            border: 2px solid #3b000000;
             max-height: 96px;
             min-height: 96px;
             max-width: 96px;
@@ -30,7 +30,8 @@ void ItemPushButton::applyStyling()
         }
 
         QPushButton:checked {
-            background-color: #c9ff5733;
+            border-color: #c9ff5733;
+            background-color: #4aff5733;
         }
 
         QPushButton:disabled {
