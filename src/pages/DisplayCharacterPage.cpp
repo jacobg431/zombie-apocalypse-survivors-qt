@@ -9,6 +9,7 @@
 
 #include "pages/DisplayCharacterPage.hpp"
 #include "panels/CharacterStatsPanel.hpp"
+#include "panels/CharacterActionsPanel.hpp"
 #include "panels/ItemsPanel.hpp"
 #include "managers/RoleManager.hpp"
 
@@ -29,7 +30,8 @@ QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 
 QWidget* DisplayCharacterPage::createCharacterActionsPanel()
 {
-    return new QWidget();
+    auto *container = new CharacterActionsPanel();
+    return container;
 }
 
 QWidget* DisplayCharacterPage::createInventoryPanel()
