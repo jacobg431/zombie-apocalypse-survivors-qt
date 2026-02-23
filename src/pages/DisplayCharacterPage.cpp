@@ -36,6 +36,8 @@ QWidget* DisplayCharacterPage::createCharacterActionsPanel()
         this, &DisplayCharacterPage::itemsShopClicked);
     connect(_characterActionsPanel, &CharacterActionsPanel::fightClicked,
         this, &DisplayCharacterPage::fightClicked);
+    connect(_characterActionsPanel, &CharacterActionsPanel::mainMenuClicked,
+        this, &DisplayCharacterPage::mainMenuClicked);
 
     return _characterActionsPanel;
 }

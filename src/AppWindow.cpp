@@ -45,7 +45,6 @@ void AppWindow::stackPages()
 
 void AppWindow::wireConnections()
 {
-
     // --- Main Menu ---
     connect(_menu, &MainMenuPage::StartGameClicked, 
         this, &AppWindow::showDisplayCharacter);
@@ -70,6 +69,8 @@ void AppWindow::wireConnections()
         this, &AppWindow::showItemsShop);
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
+    connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
+        this, &AppWindow::showMenu);
 }
 
 void AppWindow::showMenu()

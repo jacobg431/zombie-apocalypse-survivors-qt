@@ -28,11 +28,14 @@ QFrame* CharacterActionsPanel::createButtonWrapper()
 {
     _itemsShopButton = new DefaultPushButton("Item Shop");
     _fightButton = new DefaultPushButton("Fight!");
+    _mainMenuButton = new DefaultPushButton("Main Menu");
 
     connect(_itemsShopButton, &QPushButton::clicked, 
         this, &CharacterActionsPanel::itemsShopClicked);
     connect(_fightButton, &QPushButton::clicked, 
         this, &CharacterActionsPanel::fightClicked);
+    connect(_mainMenuButton, &QPushButton::clicked, 
+        this, &CharacterActionsPanel::mainMenuClicked);
 
     auto *buttonWrapperFrame = new QFrame;
     buttonWrapperFrame->setObjectName("buttonWrapper");
@@ -42,8 +45,12 @@ QFrame* CharacterActionsPanel::createButtonWrapper()
     buttonWrapperLayout->addWidget(_itemsShopButton);
     buttonWrapperLayout->addSpacing(10);
     buttonWrapperLayout->addWidget(_fightButton);
+    buttonWrapperLayout->addSpacing(10);
+    buttonWrapperLayout->addWidget(_mainMenuButton);
+
     buttonWrapperLayout->setAlignment(_itemsShopButton, Qt::AlignCenter);
     buttonWrapperLayout->setAlignment(_fightButton, Qt::AlignCenter);
+    buttonWrapperLayout->setAlignment(_mainMenuButton, Qt::AlignCenter);
 
     return buttonWrapperFrame;
 }
@@ -73,10 +80,6 @@ void CharacterActionsPanel::applyStyling()
         QFrame#wrapper {
             border-radius: 10px;
             padding: 15px;
-        }
-
-        QFrame#buttonWrapper {
-            background-color: #797979;
         }
 
         QLabel#panelTitle {

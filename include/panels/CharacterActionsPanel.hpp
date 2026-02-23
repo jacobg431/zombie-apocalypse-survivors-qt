@@ -14,6 +14,7 @@ public:
 signals:
     void itemsShopClicked();
     void fightClicked();
+    void mainMenuClicked();
 
 private:
     QWidget* createTitleLabel();
@@ -23,5 +24,6 @@ private:
 
     QPushButton* _itemsShopButton;
     QPushButton* _fightButton;
+    QPushButton* _mainMenuButton;
 
 };

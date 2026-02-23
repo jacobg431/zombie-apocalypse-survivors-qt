@@ -31,7 +31,7 @@ private:
     CharacterActionsPanel* _characterActionsPanel;
 
 signals:
-    void fightClicked();
     void itemsShopClicked();
+    void fightClicked();
     void mainMenuClicked();
 };
