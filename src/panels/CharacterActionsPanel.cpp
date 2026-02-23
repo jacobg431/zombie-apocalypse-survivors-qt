@@ -26,16 +26,19 @@ QWidget* CharacterActionsPanel::createTitleLabel()
 
 QFrame* CharacterActionsPanel::createButtonWrapper()
 {
-    auto *buttonWrapperFrame = new QFrame;
-    buttonWrapperFrame->setObjectName("buttonWrapper");
-    auto buttonWrapperLayout = new QVBoxLayout(buttonWrapperFrame);
-    buttonWrapperLayout->setAlignment(Qt::AlignCenter);
-
     _itemsShopButton = new DefaultPushButton("Item Shop");
     _fightButton = new DefaultPushButton("Fight!");
 
+    auto *buttonWrapperFrame = new QFrame;
+    buttonWrapperFrame->setObjectName("buttonWrapper");
+
+    auto buttonWrapperLayout = new QVBoxLayout(buttonWrapperFrame);
+    buttonWrapperLayout->setAlignment(Qt::AlignCenter);
     buttonWrapperLayout->addWidget(_itemsShopButton);
+    buttonWrapperLayout->addSpacing(10);
     buttonWrapperLayout->addWidget(_fightButton);
+    buttonWrapperLayout->setAlignment(_itemsShopButton, Qt::AlignCenter);
+    buttonWrapperLayout->setAlignment(_fightButton, Qt::AlignCenter);
 
     return buttonWrapperFrame;
 }
