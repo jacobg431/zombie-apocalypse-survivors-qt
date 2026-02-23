@@ -8,7 +8,6 @@
 DefaultPushButton::DefaultPushButton(const QString& text, QWidget* parent) 
     : QPushButton(text, parent) 
 {
-    setCheckable(true);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     applyStyling();
 }
