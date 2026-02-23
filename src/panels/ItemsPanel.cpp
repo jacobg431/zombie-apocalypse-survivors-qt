@@ -111,7 +111,8 @@ void ItemsPanel::applyStyling()
     setStyleSheet(R"(
 
         QFrame {
-            background-color: #2E2E2E;
+            background-color: transparent;
+            
             border-radius: 10px;
             padding: 15px;
         }
@@ -119,6 +120,8 @@ void ItemsPanel::applyStyling()
         QFrame#innerWrapper {
             border-radius: 10px;
             padding: 15px;
+
+            border-image: url(:resources/images/parchment.png) 0 0 0 0 stretch stretch;
         }
 
         QFrame#gridWrapper {
@@ -131,16 +134,20 @@ void ItemsPanel::applyStyling()
 
         QLabel#panelTitle {
             font-size: 32px;
-            font-weight: bold;
             margin-bottom: 10px;
             max-height: 64px;
+            color: #FF5733;
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
+            margin-left: 64px;
+            margin-right: 64px;
         }
 
         QLabel#selectedItemText {
             font-size: 16px;
-            color: #ddd;
+            color: #FF5733;
             padding: 0px;
+            margin: 12px;
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
         }
-
     )");
 }
