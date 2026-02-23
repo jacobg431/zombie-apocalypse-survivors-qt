@@ -24,11 +24,6 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     _pauseOverlay->hide();
     _pauseOverlay->raise();
 
-    connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
-            { setPaused(false); });
-    connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
-            { setPaused(false); showMenu(); });
-
     // --- Pages ---
     _menu = new MainMenuPage(this);
     _characterCreation = new CharacterCreationPage(this);
@@ -41,14 +36,31 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     _stack->addWidget(_itemsShop);
 
     // --- Connections ---
-    auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(esc, &QShortcut::activated, this, [this]
-            { if (!pauseAllowed()) return;setPaused(!isPaused()); });
+    wireConnections();
 
+    // --- Main Menu at startup ---
+    showMenu();
+}
+
+void AppWindow::wireConnections()
+{
+
+    // --- Main Menu ---
     connect(_menu, &MainMenuPage::StartGameClicked, 
         this, &AppWindow::showDisplayCharacter);
     connect(_menu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
+
+    // --- Paused Menu ---
+    auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(esc, &QShortcut::activated, this, [this]
+            { if (!pauseAllowed()) return;setPaused(!isPaused()); });
+    connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
+            { setPaused(false); });
+    connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
+            { setPaused(false); showMenu(); });
+
+    // --- Ingame Routing ---
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::showDisplayCharacter);
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
@@ -57,10 +69,6 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
         this, &AppWindow::showItemsShop);
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
-
-
-    // --- Show _menu at startup ---
-    showMenu();
 }
 
 void AppWindow::showMenu()
