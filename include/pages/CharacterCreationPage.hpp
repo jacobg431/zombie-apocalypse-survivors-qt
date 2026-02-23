@@ -13,6 +13,7 @@ class QComboBox;
 class QString;
 class QPixmap;
 class QLabel;
+class QFrame;
 
 class CharacterCreationPage : public QWidget
 {
@@ -26,17 +27,21 @@ private:
     QMap<QString, QLabel *> _attributesMap;
     
     // UI component builders
-    QWidget *createSurvivorForm();
-    QWidget *createSurvivorImage();
-    QWidget *createSurvivorDesc();
+    QWidget* createTitleLabel();
+    QWidget* createLeftPanel();
+    QWidget* createSurvivorForm();
+    QWidget* createSurvivorImage();
+    QWidget* createSurvivorDesc();
+    QFrame* createInnerWrapper();
+    QFrame* createWrapper();
 
-    QLineEdit *_nameEdit = nullptr;
-    QComboBox *_classSelect = nullptr;
-    QPushButton *_submitButton = nullptr;
+    QLineEdit* _nameEdit = nullptr;
+    QComboBox* _classSelect = nullptr;
+    QPushButton* _submitButton = nullptr;
 
-    QLabel *_skillList;
-    QLabel *_descriptionLabel;
-    QLabel *_classImageLabel;
+    QLabel* _skillList;
+    QLabel* _descriptionLabel;
+    QLabel* _classImageLabel;
 
     // Helper functions
     void initRoleMap();

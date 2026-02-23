@@ -47,7 +47,7 @@ void AppWindow::wireConnections()
 {
     // --- Main Menu ---
     connect(_menu, &MainMenuPage::StartGameClicked, 
-        this, &AppWindow::showDisplayCharacter);
+        this, &AppWindow::showCharacterCreation);
     connect(_menu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
 

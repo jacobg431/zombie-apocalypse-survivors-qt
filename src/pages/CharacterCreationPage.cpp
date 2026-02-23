@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QPainter>
+#include <QFrame>
 
 #include <ZasLib/Roles.hpp>
 #include <ZasLib/Skill.hpp>
@@ -28,38 +29,36 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent)
     : QWidget(parent)
 {
     initRoleMap();
-    applyStyling();
-
-    // --- Title ---
-    auto *titleLabel = new QLabel("Create Your Survivor");
-    titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setObjectName("pageTitle");
-    titleLabel->setFixedWidth(2 * MAX_COLUMN_WIDTH);
-
-    // --- Character form and description ---
-    auto *leftPanel = new QWidget();
-    leftPanel->setLayout(new QVBoxLayout());
-    leftPanel->layout()->addWidget(createSurvivorForm());
-    leftPanel->layout()->addWidget(createSurvivorDesc());
-
-    // --- Class image ---
-    auto *rightPanel = createSurvivorImage();
-
-    // --- Layout & connections ---
-    auto *uiLayout = new QHBoxLayout();
-    uiLayout->addStretch();
-    uiLayout->addWidget(leftPanel, 0, Qt::AlignCenter);
-    uiLayout->addWidget(rightPanel, 0, Qt::AlignCenter);
-    uiLayout->addStretch();
 
     auto *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(titleLabel, 0, Qt::AlignHCenter);
-    mainLayout->addLayout(uiLayout);
+    mainLayout->addWidget(createWrapper());
+
+    applyStyling();
 
     connect(_classSelect, &QComboBox::currentTextChanged, this, 
         &CharacterCreationPage::classSelectUpdated);
 
     classSelectUpdated(_classSelect->currentText());
+}
+
+QWidget* CharacterCreationPage::createTitleLabel()
+{
+    auto *titleLabel = new QLabel("Create Your Survivor");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setObjectName("pageTitle");
+    titleLabel->setFixedWidth(2 * MAX_COLUMN_WIDTH);
+
+    return titleLabel;
+}
+
+QWidget* CharacterCreationPage::createLeftPanel()
+{
+    auto *leftPanel = new QWidget();
+    leftPanel->setLayout(new QVBoxLayout());
+    leftPanel->layout()->addWidget(createSurvivorForm());
+    leftPanel->layout()->addWidget(createSurvivorDesc());
+
+    return leftPanel;
 }
 
 QWidget *CharacterCreationPage::createSurvivorForm()
@@ -178,6 +177,32 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
     component->layout()->addWidget(skillsBox);
 
     return component;
+}
+
+QFrame* CharacterCreationPage::createInnerWrapper()
+{
+    auto *innerWrapperFrame = new QFrame;
+    innerWrapperFrame->setObjectName("innerWrapper");
+
+    auto *innerWrapperLayout = new QHBoxLayout(innerWrapperFrame);
+    innerWrapperLayout->addStretch();
+    innerWrapperLayout->addWidget(createLeftPanel(), 0, Qt::AlignCenter);
+    innerWrapperLayout->addWidget(createSurvivorImage(), 0, Qt::AlignCenter);
+    innerWrapperLayout->addStretch();
+
+    return innerWrapperFrame;
+}
+
+QFrame* CharacterCreationPage::createWrapper()
+{
+    auto *wrapperFrame = new QFrame;
+    wrapperFrame->setObjectName("wrapper");
+
+    auto *wrapperLayout = new QVBoxLayout(wrapperFrame);
+    wrapperLayout->addWidget(createTitleLabel(), 0, Qt::AlignHCenter);
+    wrapperLayout->addWidget(createInnerWrapper());
+
+    return wrapperFrame;
 }
 
 void CharacterCreationPage::classSelectUpdated(const QString &class_string)

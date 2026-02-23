@@ -52,5 +52,12 @@ void CharacterStatsPanel::applyStyling()
             padding: 15px;
         }
 
+        QLabel#panelTitle {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            max-height: 64px;
+        }
+
     )");
 }
