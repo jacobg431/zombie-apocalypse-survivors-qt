@@ -20,12 +20,12 @@ DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
     applyStyling();
 }
 
-QWidget* DisplayCharacterPage::createSurvivorImagePanel()
+QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
     return new QWidget();
 }
 
-QWidget* DisplayCharacterPage::createSurviorDescriptionPanel()
+QWidget* DisplayCharacterPage::createCharacterActionsPanel()
 {
     return new QWidget();
 }

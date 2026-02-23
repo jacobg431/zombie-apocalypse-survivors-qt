@@ -20,8 +20,8 @@ public:
 private:
     QMap<QString, QLabel *> _attributesMap;
 
-    QWidget* createSurvivorImagePanel();
-    QWidget* createSurviorDescriptionPanel();
+    QWidget* createCharacterStatsPanel();
+    QWidget* createCharacterActionsPanel();
     QWidget* createInventoryPanel();
     QFrame* createWrapper();
 
