@@ -19,7 +19,7 @@ ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 QWidget* ItemsShopPage::createGoBackPanel()
 {
     m_goBackPanel = new GoBackPanel(this);
-    m_goBackPanel->setContentsMargins(15, 0, 15, 15);
+    m_goBackPanel->setContentsMargins(0, 0, 0, 0);
 
     connect(m_goBackPanel, &GoBackPanel::GoBackClicked,
             this, &ItemsShopPage::GoBackClicked);
@@ -43,10 +43,10 @@ QFrame* ItemsShopPage::createWrapper()
 {
     auto *panelsWrapperFrame = new QFrame;
     panelsWrapperFrame->setObjectName("panelsWrapper");
+
     auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
     panelsWrapperLayout->setSpacing(30);
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
-
     panelsWrapperLayout->addWidget(createShopPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
 

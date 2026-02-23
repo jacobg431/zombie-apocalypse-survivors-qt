@@ -34,7 +34,7 @@ QFrame* ItemsPanel::createGrid()
     gridWrapperFrame->setObjectName("gridWrapper");
 
     auto *grid = new QGridLayout(gridWrapperFrame);
-    grid->setSpacing(8);
+    grid->setSpacing(16);
     grid->setContentsMargins(0, 0, 0, 0); 
 
     for (int row = 0; row < 4; ++row)
@@ -100,7 +100,7 @@ QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& butt
 
     innerLayout->addWidget(createTitleLabel(title), 0);
     innerLayout->addWidget(createGrid(), 1);
-    innerLayout->addSpacing(10);
+    innerLayout->addSpacing(32);
     innerLayout->addWidget(createBottomWrapper(buttonText), 0);
 
     return innerWrapperFrame;
@@ -112,9 +112,8 @@ void ItemsPanel::applyStyling()
 
         QFrame {
             background-color: transparent;
-            
             border-radius: 10px;
-            padding: 15px;
+            padding: 0px;
         }
 
         QFrame#innerWrapper {
@@ -125,7 +124,7 @@ void ItemsPanel::applyStyling()
         }
 
         QFrame#gridWrapper {
-            padding: 0px;
+            padding: 32px;
         }
 
         QFrame#bottomWrapper {
