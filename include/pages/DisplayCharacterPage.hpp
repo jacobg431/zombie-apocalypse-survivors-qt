@@ -9,6 +9,7 @@ class QPushButton;
 class QString;
 class QLabel;
 class QFrame;
+class CharacterActionsPanel;
 
 class DisplayCharacterPage : public QWidget
 {
@@ -27,12 +28,10 @@ private:
 
     void applyStyling();
 
-    QPushButton* _actionsButton = nullptr;
-    QPushButton* _itemsShopButton = nullptr;
-    QPushButton* _mainMenuButton = nullptr;
+    CharacterActionsPanel* _characterActionsPanel;
 
 signals:
-    void actionsClicked();
+    void fightClicked();
     void itemsShopClicked();
     void mainMenuClicked();
 };

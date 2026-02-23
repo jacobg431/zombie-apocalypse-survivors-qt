@@ -30,8 +30,14 @@ QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 
 QWidget* DisplayCharacterPage::createCharacterActionsPanel()
 {
-    auto *container = new CharacterActionsPanel();
-    return container;
+    _characterActionsPanel = new CharacterActionsPanel();
+    
+    connect(_characterActionsPanel, &CharacterActionsPanel::itemsShopClicked,
+        this, &DisplayCharacterPage::itemsShopClicked);
+    connect(_characterActionsPanel, &CharacterActionsPanel::fightClicked,
+        this, &DisplayCharacterPage::fightClicked);
+
+    return _characterActionsPanel;
 }
 
 QWidget* DisplayCharacterPage::createInventoryPanel()

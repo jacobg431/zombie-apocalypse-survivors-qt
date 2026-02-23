@@ -11,6 +11,10 @@ class CharacterActionsPanel : public QWidget
 public:
     explicit CharacterActionsPanel(QWidget *parent = nullptr);
 
+signals:
+    void itemsShopClicked();
+    void fightClicked();
+
 private:
     QWidget* createTitleLabel();
     QFrame* createButtonWrapper();

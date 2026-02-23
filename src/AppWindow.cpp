@@ -46,13 +46,17 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
 
     connect(_menu, &MainMenuPage::StartGameClicked, 
-        this, &AppWindow::showItemsShop);
+        this, &AppWindow::showDisplayCharacter);
     connect(_menu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::showDisplayCharacter);
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
-        this, &AppWindow::showCharacterCreation);
+        this, &AppWindow::showDisplayCharacter);
+    connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
+        this, &AppWindow::showItemsShop);
+    connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
+        this, &AppWindow::showFight);
 
 
     // --- Show _menu at startup ---
@@ -77,6 +81,11 @@ void AppWindow::showDisplayCharacter()
 void AppWindow::showItemsShop()
 {
     _stack->setCurrentWidget(_itemsShop);
+}
+
+void AppWindow::showFight()
+{
+    return;
 }
 
 void AppWindow::resizeEvent(QResizeEvent *event)

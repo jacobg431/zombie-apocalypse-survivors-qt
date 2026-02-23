@@ -10,6 +10,7 @@ class ItemsShopPage;
 class DisplayCharacterPage;
 class PauseMenu;
 class GoBackPanel;
+class CharacterActionsPanel;
 
 class AppWindow : public QMainWindow
 {
@@ -30,6 +31,7 @@ private:
     DisplayCharacterPage *_displayCharacter;
     PauseMenu *_pauseOverlay;
     GoBackPanel *_goBackPanel;
+    CharacterActionsPanel *_characterActionsPanel;
 
     void setPaused(bool on);
     bool isPaused() const;
@@ -40,4 +42,5 @@ public slots:
     void showCharacterCreation();
     void showDisplayCharacter();
     void showItemsShop();
+    void showFight();
 };

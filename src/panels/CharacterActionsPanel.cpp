@@ -29,6 +29,11 @@ QFrame* CharacterActionsPanel::createButtonWrapper()
     _itemsShopButton = new DefaultPushButton("Item Shop");
     _fightButton = new DefaultPushButton("Fight!");
 
+    connect(_itemsShopButton, &QPushButton::clicked, 
+        this, &CharacterActionsPanel::itemsShopClicked);
+    connect(_fightButton, &QPushButton::clicked, 
+        this, &CharacterActionsPanel::fightClicked);
+
     auto *buttonWrapperFrame = new QFrame;
     buttonWrapperFrame->setObjectName("buttonWrapper");
 
