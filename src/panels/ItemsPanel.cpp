@@ -10,9 +10,7 @@
 
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
 {
-
     auto *layout = new QVBoxLayout(this);
-
     auto *innerWrapper = createInnerWrapper(title, buttonText);
     layout->addWidget(innerWrapper);
     layout->setAlignment(m_button, Qt::AlignCenter);
@@ -25,6 +23,7 @@ QLabel* ItemsPanel::createTitleLabel(const QString& title)
     auto *label = new QLabel(title);
     label->setAlignment(Qt::AlignCenter);
     label->setObjectName("panelTitle");
+    label->setMinimumWidth(500);
     return label;
 }
 
@@ -84,7 +83,7 @@ QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
 
     auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
     bottomWrapperLayout->setContentsMargins(0, 0, 0, 0);
-    bottomWrapperLayout->addWidget(m_selectedItemLabel);
+    bottomWrapperLayout->addWidget(m_selectedItemLabel, 0);
     bottomWrapperLayout->addStretch();
     bottomWrapperLayout->addWidget(m_button);
 
@@ -95,13 +94,15 @@ QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& butt
 {
     auto *innerWrapperFrame = new QFrame;
     innerWrapperFrame->setObjectName("innerWrapper");
-
+    
+    auto *itemGrid = createGrid();
+    auto *bottomWrapper = createBottomWrapper(buttonText);
+    bottomWrapper->setFixedWidth(itemGrid->sizeHint().width());
+    
     auto *innerLayout = new QVBoxLayout(innerWrapperFrame);
-
-    innerLayout->addWidget(createTitleLabel(title), 0);
-    innerLayout->addWidget(createGrid(), 1);
-    innerLayout->addSpacing(32);
-    innerLayout->addWidget(createBottomWrapper(buttonText), 0);
+    innerLayout->addWidget(createTitleLabel(title), 0, Qt::AlignHCenter);
+    innerLayout->addWidget(itemGrid, 1, Qt::AlignHCenter);
+    innerLayout->addWidget(bottomWrapper, 0, Qt::AlignHCenter);
 
     return innerWrapperFrame;
 }
@@ -118,7 +119,7 @@ void ItemsPanel::applyStyling()
 
         QFrame#innerWrapper {
             border-radius: 10px;
-            padding: 15px;
+            padding: 16px;
 
             border-image: url(:resources/images/parchment.png) 0 0 0 0 stretch stretch;
         }
