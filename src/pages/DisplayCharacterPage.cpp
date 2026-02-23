@@ -8,6 +8,7 @@
 #include <ZasLib/SurvivorAttributes.hpp>
 
 #include "pages/DisplayCharacterPage.hpp"
+#include "panels/CharacterStatsPanel.hpp"
 #include "panels/ItemsPanel.hpp"
 #include "managers/RoleManager.hpp"
 
@@ -22,7 +23,8 @@ DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
 
 QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
-    return new QWidget();
+    auto *container = new CharacterStatsPanel(new CareGiver("Character Name"));
+    return container;
 }
 
 QWidget* DisplayCharacterPage::createCharacterActionsPanel()

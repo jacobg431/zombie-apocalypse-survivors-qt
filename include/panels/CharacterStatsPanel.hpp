@@ -11,11 +11,11 @@ class CharacterStatsPanel : public QWidget
     Q_OBJECT
 
 public:
-    CharacterStatsPanel(const QString& name, const Survivor *characterClass, QWidget *parent = nullptr);
+    CharacterStatsPanel(Survivor *characterClass = nullptr, QWidget *parent = nullptr);
 
 private: 
-    QWidget* createTitleLabel(const QString& title);
-    QFrame* createWrapper(const QString& title);
+    QWidget* createTitleLabel();
+    QFrame* createWrapper();
     void applyStyling();
     Survivor* _characterClass;
 };

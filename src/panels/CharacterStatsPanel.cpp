@@ -5,31 +5,34 @@
 #include <QVBoxLayout>
 
 #include <ZasLib/Skill.hpp>
+
 #include "panels/CharacterStatsPanel.hpp"
 #include "managers/RoleManager.hpp"
 
-CharacterStatsPanel::CharacterStatsPanel(const QString& title, const Survivor *characterClass, QWidget *parent)
+CharacterStatsPanel::CharacterStatsPanel(Survivor *characterClass, QWidget *parent)
+    : _characterClass(characterClass), QWidget(parent)
 {
     auto *layout = new QVBoxLayout(this);
-    layout->addWidget(createWrapper());    
+    layout->addWidget(createWrapper());
 
     applyStyling();
 }
 
-QWdiget* CharacterStatsPanel::createTitleLabel(const QString& title)
+QWidget* CharacterStatsPanel::createTitleLabel()
 {
-    auto *label = new QLabel(title);
+    // add this later: new QLabel(_characterClass->getName());
+    auto *label = new QLabel("Character Name");
     label->setAlignment(Qt::AlignCenter);
     label->setObjectName("panelTitle");
     return label;
 }
 
-QFrame* CharacterStatsPanel::createWrapper(const QString& title)
+QFrame* CharacterStatsPanel::createWrapper()
 {
     auto *wrapperFrame = new QFrame;
     wrapperFrame->setObjectName("wrapper");
-    auto wrapperLayout = new QVBoxLayout(this);
-    wrapperLayout->createTitleLabel(title);
+    auto wrapperLayout = new QVBoxLayout(wrapperFrame);
+    wrapperLayout->addWidget(createTitleLabel());
 
     return wrapperFrame;
 }
@@ -37,6 +40,17 @@ QFrame* CharacterStatsPanel::createWrapper(const QString& title)
 void CharacterStatsPanel::applyStyling()
 {
     setStyleSheet(R"(
+
+        QFrame {
+            background-color: #2E2E2E;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        QFrame#innerWrapper {
+            border-radius: 10px;
+            padding: 15px;
+        }
 
     )");
 }
