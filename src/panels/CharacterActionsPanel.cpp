@@ -18,7 +18,7 @@ CharacterActionsPanel::CharacterActionsPanel(QWidget *parent)
 
 QWidget* CharacterActionsPanel::createTitleLabel()
 {
-    auto *label = new QLabel("Character Name");
+    auto *label = new QLabel("Actions");
     label->setAlignment(Qt::AlignCenter);
     label->setObjectName("panelTitle");
     return label;
