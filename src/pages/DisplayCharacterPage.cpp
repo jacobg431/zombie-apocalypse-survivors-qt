@@ -42,8 +42,8 @@ QFrame* DisplayCharacterPage::createWrapper()
     auto panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
 
-    panelsWrapperLayout->addWidget(createSurvivorImagePanel());
-    panelsWrapperLayout->addWidget(createSurviorDescriptionPanel());
+    panelsWrapperLayout->addWidget(createCharacterStatsPanel());
+    panelsWrapperLayout->addWidget(createCharacterActionsPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
 
     return panelsWrapperFrame;
