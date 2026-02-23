@@ -1,9 +1,12 @@
 #include <QWidget>
 #include <QFrame>
 #include <QString>
+#include <QLabel>
 #include <QVBoxLayout>
+#include <QPushButton>
 
 #include "panels/CharacterActionsPanel.hpp"
+#include "widgets/DefaultPushButton.hpp"
 
 CharacterActionsPanel::CharacterActionsPanel(QWidget *parent) 
     : QWidget(parent)
@@ -13,11 +16,38 @@ CharacterActionsPanel::CharacterActionsPanel(QWidget *parent)
     applyStyling();
 }
 
+QWidget* CharacterActionsPanel::createTitleLabel()
+{
+    auto *label = new QLabel("Character Name");
+    label->setAlignment(Qt::AlignCenter);
+    label->setObjectName("panelTitle");
+    return label;
+}
+
+QFrame* CharacterActionsPanel::createButtonWrapper()
+{
+    auto *buttonWrapperFrame = new QFrame;
+    buttonWrapperFrame->setObjectName("buttonWrapper");
+    auto buttonWrapperLayout = new QVBoxLayout(buttonWrapperFrame);
+    buttonWrapperLayout->setAlignment(Qt::AlignCenter);
+
+    _itemsShopButton = new DefaultPushButton("Item Shop");
+    _fightButton = new DefaultPushButton("Fight!");
+
+    buttonWrapperLayout->addWidget(_itemsShopButton);
+    buttonWrapperLayout->addWidget(_fightButton);
+
+    return buttonWrapperFrame;
+}
+
 QFrame* CharacterActionsPanel::createWrapper()
 {
     auto *wrapperFrame = new QFrame;
     wrapperFrame->setObjectName("wrapper");
     auto *wrapperLayout = new QVBoxLayout(wrapperFrame);
+
+    wrapperLayout->addWidget(createTitleLabel());
+    wrapperLayout->addWidget(createButtonWrapper());
 
     return wrapperFrame;
 }
@@ -35,6 +65,17 @@ void CharacterActionsPanel::applyStyling()
         QFrame#wrapper {
             border-radius: 10px;
             padding: 15px;
+        }
+
+        QFrame#buttonWrapper {
+            background-color: #797979;
+        }
+
+        QLabel#panelTitle {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            max-height: 64px;
         }
 
     )");
