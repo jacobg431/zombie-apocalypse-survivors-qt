@@ -33,6 +33,8 @@ private:
     GoBackPanel *_goBackPanel;
     CharacterActionsPanel *_characterActionsPanel;
 
+    void readyPauseMenu();
+    void stackPages();
     void wireConnections();
     void setPaused(bool on);
     bool isPaused() const;

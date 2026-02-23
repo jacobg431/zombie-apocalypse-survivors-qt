@@ -15,16 +15,23 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
 
-    // --- Pages ---
-    _stack = new QStackedWidget(this);
-    setCentralWidget(_stack);
+    readyPauseMenu();
+    stackPages();
+    wireConnections();
+    showMenu();
+}
 
-    // --- Pause _menu ---
+void AppWindow::readyPauseMenu()
+{
     _pauseOverlay = new PauseMenu(this);
     _pauseOverlay->hide();
     _pauseOverlay->raise();
+}
 
-    // --- Pages ---
+void AppWindow::stackPages()
+{   
+    _stack = new QStackedWidget(this);
+    setCentralWidget(_stack);
     _menu = new MainMenuPage(this);
     _characterCreation = new CharacterCreationPage(this);
     _displayCharacter = new DisplayCharacterPage(this);
@@ -34,12 +41,6 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     _stack->addWidget(_characterCreation);
     _stack->addWidget(_displayCharacter);
     _stack->addWidget(_itemsShop);
-
-    // --- Connections ---
-    wireConnections();
-
-    // --- Main Menu at startup ---
-    showMenu();
 }
 
 void AppWindow::wireConnections()
