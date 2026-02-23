@@ -47,8 +47,10 @@ QFrame* ItemsShopPage::createWrapper()
     auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
     panelsWrapperLayout->setSpacing(30);
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
+    panelsWrapperLayout->addStretch();
     panelsWrapperLayout->addWidget(createShopPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
+    panelsWrapperLayout->addStretch();
 
     return panelsWrapperFrame;
 }
