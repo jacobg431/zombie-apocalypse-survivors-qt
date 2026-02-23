@@ -8,9 +8,18 @@
 #include <QLabel>
 #include <QFrame>
 
+ItemsPanel::ItemsPanel(const QString& title, QWidget *parent)
+{
+    auto *layout = new QVBoxLayout(this);
+
+    auto *innerWrapper = createInnerWrapper(title);
+    layout->addWidget(innerWrapper);
+
+    applyStyling();
+}
+
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
 {
-
     auto *layout = new QVBoxLayout(this);
 
     auto *innerWrapper = createInnerWrapper(title, buttonText);
@@ -89,6 +98,19 @@ QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
     bottomWrapperLayout->addWidget(m_button);
 
     return bottomWrapperFrame;
+}
+
+QFrame* ItemsPanel::createInnerWrapper(const QString& title)
+{
+    auto *innerWrapperFrame = new QFrame;
+    innerWrapperFrame->setObjectName("innerWrapper");
+
+    auto *innerLayout = new QVBoxLayout(innerWrapperFrame);
+
+    innerLayout->addWidget(createTitleLabel(title), 0);
+    innerLayout->addWidget(createGrid(), 1);
+
+    return innerWrapperFrame;
 }
 
 QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& buttonText)

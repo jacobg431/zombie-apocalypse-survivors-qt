@@ -10,6 +10,7 @@
 class ItemsPanel : public QFrame
 {
 public:
+    explicit ItemsPanel(const QString& title, QWidget *parent = nullptr);
     explicit ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent = nullptr);
     void applyStyling();
 
@@ -17,6 +18,7 @@ private:
     QLabel* createTitleLabel(const QString& title);
     QFrame* createGrid();
     QFrame* createBottomWrapper(const QString& buttonText);
+    QFrame* createInnerWrapper(const QString& title);
     QFrame* createInnerWrapper(const QString& title, const QString& buttonText);
 
     QPushButton* m_button = nullptr;

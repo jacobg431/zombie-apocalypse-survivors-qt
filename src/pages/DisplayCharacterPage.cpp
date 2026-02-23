@@ -32,7 +32,7 @@ QWidget* DisplayCharacterPage::createSurviorDescriptionPanel()
 
 QWidget* DisplayCharacterPage::createInventoryPanel()
 {
-    auto *container = new ItemsPanel("Inventory", "Sell");
+    auto *container = new ItemsPanel("Inventory");
     return container;
 }
 
