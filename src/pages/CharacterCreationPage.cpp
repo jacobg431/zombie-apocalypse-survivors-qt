@@ -15,6 +15,7 @@
 #include <ZasLib/Skill.hpp>
 
 #include "pages/CharacterCreationPage.hpp"
+#include "widgets/CreateCharacterFormBox.hpp"
 #include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
 #include "utils.hpp"
@@ -31,11 +32,7 @@ CharacterCreationPage::CharacterCreationPage(QWidget *parent)
     mainLayout->addWidget(createWrapper());
 
     applyStyling();
-
-    connect(_classSelect, &QComboBox::currentTextChanged, this, 
-        &CharacterCreationPage::classSelectUpdated);
-
-    classSelectUpdated(_classSelect->currentText());
+    updateSelectedClass();
 }
 
 QWidget* CharacterCreationPage::createTitleLabel()
@@ -60,39 +57,12 @@ QWidget* CharacterCreationPage::createLeftPanel()
 
 QWidget *CharacterCreationPage::createSurvivorForm()
 {
+    _formBox = new CreateCharacterFormBox(_role_map.keys());
 
-    const int INPUT_WIDTH = 160;
+    connect(_formBox, &CreateCharacterFormBox::classSelectUpdated,
+        this, &CharacterCreationPage::updateSelectedClass);
 
-    _nameEdit = new QLineEdit(this);
-    _nameEdit->setObjectName("survivorNameEdit");
-    _nameEdit->setFixedWidth(INPUT_WIDTH);
-
-    _classSelect = new QComboBox(this);
-    _classSelect->setObjectName("survivorClassSelect");
-    _classSelect->addItems(_role_map.keys());
-    _classSelect->setFixedWidth(INPUT_WIDTH);
-
-    _submitButton = new QPushButton("Create Character", this);
-    _submitButton->setObjectName("submitButton");
-    _submitButton->setCursor(Qt::PointingHandCursor);
-    _submitButton->setFixedWidth(INPUT_WIDTH);
-    connect(_submitButton, &QPushButton::clicked, 
-        this, &CharacterCreationPage::characterCreated);
-
-    auto *layout = new QFormLayout();
-    layout->setContentsMargins(16, 16, 32, 16);
-    layout->setLabelAlignment(Qt::AlignHCenter);
-    layout->setFormAlignment(Qt::AlignHCenter);
-    layout->addRow(_nameEdit);
-    layout->addRow(_classSelect);
-    layout->addRow(_submitButton);
-
-    auto *component = new QGroupBox();
-    component->setLayout(layout);
-    component->setObjectName("survivorInfoBox");
-    component->setTitle("Name and Class");
-
-    return component;
+    return _formBox;
 }
 
 QWidget *CharacterCreationPage::createSurvivorImage()
@@ -152,9 +122,10 @@ QFrame* CharacterCreationPage::createWrapper()
     return wrapperFrame;
 }
 
-void CharacterCreationPage::classSelectUpdated(const QString &class_string)
+void CharacterCreationPage::updateSelectedClass()
 {
-    Survivor *class_object = _role_map[class_string];
+    const QString &className = _formBox->getCurrentSelectorText();
+    Survivor *class_object = _role_map[className];
     
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
@@ -194,7 +165,7 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
     const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
 
-    QPixmap pixmap(":/resources/images/" + class_string.toLower() + "-fried.png");
+    QPixmap pixmap(":/resources/images/" + className.toLower() + "-fried.png");
     glitchSwapPixmap(
         pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)
     );
@@ -245,97 +216,6 @@ void CharacterCreationPage::applyStyling()
             font-size: 32px;
             color: #FF5733;
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
-        }
-
-        QLineEdit#survivorNameEdit {
-            background-color: #c91e1e1e;
-            color: white;
-            padding-left: 12px;
-            border: 2px solid #c91e1e1e;
-            border-radius: 6px;
-            height: 30px; 
-        }
-
-        QLineEdit#survivorNameEdit:focus {
-            border-color: #c9ff5733;
-        }
-
-        QComboBox#survivorClassSelect {
-            background-color: #c91e1e1e;
-            color: white;
-            border: 2px solid #c91e1e1e;
-            border-radius: 6px;
-
-            height: 30px; 
-            padding-left: 12px;
-            
-        }
-
-        QComboBox#survivorClassSelect::drop-down {
-            subcontrol-origin: padding;
-            subcontrol-position: top right;
-            width: 28px;
-            border-left: 2px solid #c91e1e1e;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-            background: #c91e1e1e;
-            padding: 6px 6px;
-        }
-
-        QComboBox#survivorClassSelect::down-arrow {
-            image: url(:/resources/images/chevron-down.png);
-        }
-
-        QComboBox#survivorClassSelect QAbstractItemView {
-            background-color: #c91e1e1e;
-            color: white;
-            border: 2px solid #c9ff5733;
-            selection-background-color: #c91e1e1e;
-            selection-color: white;
-            background-clip: border;
-        }
-
-        QComboBox#survivorClassSelect QAbstractItemView::item {
-            background: #c91e1e1e;
-            padding: 6px 12px;
-            margin: 2px;
-        }
-
-        QComboBox#survivorClassSelect QAbstractItemView::item:selected {
-            background: #c91e1e1e;
-        }
-
-        QComboBox#survivorClassSelect QAbstractItemView::item:hover {
-            background: #c91e1e1e;
-        }
-
-        QPushButton#submitButton {
-            background-color: #c91e1e1e;
-            color: white;
-            border: 2px solid #c91e1e1e;
-            border-radius: 6px;
-            padding: 6px 12px;
-            text-align: center;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            }
-
-        QPushButton#submitButton:hover {
-            background-color: #c91e1e1e;
-            border-color: #5bff5733;
-        }
-
-        QPushButton#submitButton:pressed {
-            background-color: #c9ff5733;
-            padding: 4px 10px;
-        }
-
-        QGroupBox {
-            border: 2px solid #222;
-            border-radius: 6px;
-
-            margin-top: 20px;
-            padding: 14px;
         }
     )");
     

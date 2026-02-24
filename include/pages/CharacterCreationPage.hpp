@@ -15,6 +15,7 @@ class QPixmap;
 class QLabel;
 class QFrame;
 class InfoBox;
+class CreateCharacterFormBox;
 
 class CharacterCreationPage : public QWidget
 {
@@ -42,25 +43,21 @@ private:
     QFrame* createInnerWrapper();
     QFrame* createWrapper();
 
-    QLineEdit* _nameEdit = nullptr;
-    QComboBox* _classSelect = nullptr;
-    QPushButton* _submitButton = nullptr;
-
     InfoBox* _descriptionInfoBox = nullptr;
     InfoBox* _attributesInfoBox = nullptr;
     InfoBox* _skillsInfoBox = nullptr;
 
-    QLabel* _skillList;
-    QLabel* _descriptionLabel;
+    CreateCharacterFormBox* _formBox = nullptr;
     QLabel* _classImageLabel;
 
     void initRoleMap();
-    void glitchSwapPixmap(const QPixmap &finalPm);
+    void wireConnections();
+    void glitchSwapPixmap(const QPixmap& finalPm);
     void applyStyling();
 
 signals:
     void characterCreated();
 
 private slots:
-    void classSelectUpdated(const QString &class_name);
+    void updateSelectedClass();
 };
