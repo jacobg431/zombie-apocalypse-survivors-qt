@@ -91,6 +91,9 @@ QWidget *CharacterCreationPage::createSurvivorForm()
     component->setObjectName("survivorInfoBox");
     component->setTitle("Name and Class");
 
+    connect(submitButton_, &QPushButton::clicked,
+            this, &CharacterCreationPage::characterCreated);
+
     return component;
 }
 
