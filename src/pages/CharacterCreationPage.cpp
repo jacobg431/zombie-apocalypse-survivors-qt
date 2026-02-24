@@ -117,31 +117,25 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 {
     auto *attributeForm = new QFormLayout();
 
-    const QStringList attribute_order = {
+    const QStringList attributeStringList = {
         "Strength", "Agility", "Endurance", "Intelligence",
-        "Leadership", "Trustworthiness", "Courage"};
+        "Leadership", "Trustworthiness", "Courage"
+    };
+    const QStringList valueStringList = {"0", "0", "0", "0", "0", "0", "0"};
 
-    for (const QString &attribute : attribute_order)
-    {
-        _attributesMap[attribute] = new QLabel(this);
-        QLabel *label = new QLabel(attribute);
-        QLabel *value = _attributesMap[attribute];
-
-        value->setAlignment(Qt::AlignRight);
-        attributeForm->addRow(label, value);
-    }
+    
 
     _descriptionInfoBox = new InfoBox("Class Description", "Some description");
-    _attributesInfoBox = new InfoBox("Class Attributes", "Some attributes");
+    _attributesInfoBox = new InfoBox("Class Attributes", attributeStringList, valueStringList);
     _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
 
-    auto *component = new QWidget();
-    component->setLayout(new QVBoxLayout());
-    component->layout()->addWidget(_descriptionInfoBox);
-    component->layout()->addWidget(_attributesInfoBox);
-    component->layout()->addWidget(_skillsInfoBox);
+    auto *infoBoxWrapper = new QWidget();
+    auto *infoBoxWrapperLayout = new QVBoxLayout(infoBoxWrapper);
+    infoBoxWrapperLayout->addWidget(_descriptionInfoBox);
+    infoBoxWrapperLayout->addWidget(_attributesInfoBox);
+    infoBoxWrapperLayout->addWidget(_skillsInfoBox);
 
-    return component;
+    return infoBoxWrapper;
 }
 
 QFrame* CharacterCreationPage::createInnerWrapper()
@@ -182,34 +176,13 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
     }
 
-    setGlitchText(
-        _attributesMap["Strength"], 
-        QString::number(attributes.GetStrength())
-    );
-    setGlitchText(
-        _attributesMap["Endurance"], 
-        QString::number(attributes.GetEndurance())
-    );
-    setGlitchText(
-        _attributesMap["Agility"], 
-        QString::number(attributes.GetAgility())
-    );
-    setGlitchText(
-        _attributesMap["Courage"], 
-        QString::number(attributes.GetCourage())
-    );
-    setGlitchText(
-        _attributesMap["Intelligence"], 
-        QString::number(attributes.GetIntelligence())
-    );
-    setGlitchText(
-        _attributesMap["Leadership"], 
-        QString::number(attributes.GetLeadership())
-    );
-    setGlitchText(
-        _attributesMap["Trustworthiness"], 
-        QString::number(attributes.GetTrustworthiness())
-    );
+    _attributesInfoBox->setContentFormRow("Strength", QString::number(attributes.GetStrength()));
+    _attributesInfoBox->setContentFormRow("Endurance", QString::number(attributes.GetEndurance()));
+    _attributesInfoBox->setContentFormRow("Agility", QString::number(attributes.GetAgility()));
+    _attributesInfoBox->setContentFormRow("Courage", QString::number(attributes.GetCourage()));
+    _attributesInfoBox->setContentFormRow("Intelligence", QString::number(attributes.GetIntelligence()));
+    _attributesInfoBox->setContentFormRow("Leadership", QString::number(attributes.GetLeadership()));
+    _attributesInfoBox->setContentFormRow("Trustworthiness", QString::number(attributes.GetTrustworthiness()));
 
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
