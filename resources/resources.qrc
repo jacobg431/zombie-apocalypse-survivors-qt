@@ -3,6 +3,7 @@
     <file>fonts/alagard.ttf</file>
     <file>fonts/GrapeSoda.ttf</file>
     <file>fonts/DoubleHomicide.ttf</file>
+    <file>fonts/IBM-EGA-8x14.ttf</file>
 
     <file>images/hero.png</file>
     <file>images/caregiver.png</file>
@@ -21,6 +22,7 @@
     <file>images/slash.png</file>
     <file>images/chevron-down.png</file>
     <file>images/background.png</file>
+    <file>images/computer.gif</file>
 
     <file>styles/dark_theme.qss</file>
     
