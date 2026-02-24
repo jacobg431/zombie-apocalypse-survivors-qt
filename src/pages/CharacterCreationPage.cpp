@@ -19,6 +19,7 @@
 #include <ZasLib/Skill.hpp>
 
 #include "pages/CharacterCreationPage.hpp"
+#include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
 #include "utils.hpp"
 
@@ -114,16 +115,6 @@ QWidget *CharacterCreationPage::createSurvivorImage()
 
 QWidget *CharacterCreationPage::createSurvivorDesc()
 {
-    _descriptionLabel = new QLabel(this);
-    _descriptionLabel->setWordWrap(true);
-    _descriptionLabel->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
-    _descriptionLabel->setAlignment(Qt::AlignTop);
-
-    _skillList = new QLabel(this);
-    _skillList->setWordWrap(true);
-    _skillList->setMinimumHeight(FIXED_COLUMN_HEIGHT / 4);
-    _skillList->setAlignment(Qt::AlignTop);
-
     auto *attributeForm = new QFormLayout();
 
     const QStringList attribute_order = {
@@ -140,41 +131,15 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
         attributeForm->addRow(label, value);
     }
 
-    const int BOX_HEIGHT = 200;
-    const int BOX_WIDTH = 230;
-
-    auto *descBox = new QGroupBox("Class description");
-    auto *descLay = new QVBoxLayout(descBox);
-    descLay->addWidget(_descriptionLabel);
-    descLay->setAlignment(Qt::AlignTop);
-    descLay->setContentsMargins(24, 8, 32, 0);
-    descBox->setFixedHeight(BOX_HEIGHT);
-    descBox->setFixedWidth(BOX_WIDTH);
-    descBox->setObjectName("survivorInfoBox");
-
-    auto *attrBox = new QGroupBox("Class Attributes");
-    auto *attrLay = new QVBoxLayout(attrBox);
-    attrLay->addLayout(attributeForm);
-    descLay->setAlignment(Qt::AlignTop);
-    attrLay->setContentsMargins(24, 8, 40, 0);
-    attrBox->setObjectName("survivorInfoBox");
-    attrBox->setFixedHeight(BOX_HEIGHT);
-    attrBox->setFixedWidth(BOX_WIDTH);
-
-    auto *skillsBox = new QGroupBox("Class Skills");
-    auto *skillsLay = new QVBoxLayout(skillsBox);
-    skillsLay->addWidget(_skillList);
-    skillsLay->setAlignment(Qt::AlignTop);
-    skillsLay->setContentsMargins(24, 8, 30, 0);
-    skillsBox->setFixedHeight(BOX_HEIGHT);
-    skillsBox->setFixedWidth(BOX_WIDTH);
-    skillsBox->setObjectName("survivorInfoBox");
+    _descriptionInfoBox = new InfoBox("Class Description", "Some description");
+    _attributesInfoBox = new InfoBox("Class Attributes", "Some attributes");
+    _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
 
     auto *component = new QWidget();
     component->setLayout(new QVBoxLayout());
-    component->layout()->addWidget(descBox);
-    component->layout()->addWidget(attrBox);
-    component->layout()->addWidget(skillsBox);
+    component->layout()->addWidget(_descriptionInfoBox);
+    component->layout()->addWidget(_attributesInfoBox);
+    component->layout()->addWidget(_skillsInfoBox);
 
     return component;
 }
@@ -269,12 +234,8 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         }
     }
 
-    setGlitchText(
-        _descriptionLabel, QString::fromStdString(class_object->GetRoleDescription())
-    );
-    setGlitchText(
-        _skillList, "Skills:\n• " + skillLines.join("\n• ")
-    );
+    _descriptionInfoBox->setContentLabel(QString::fromStdString(class_object->GetRoleDescription()));
+    _skillsInfoBox->setContentLabel("Skills:\n• " + skillLines.join("\n• "));
 
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
     const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
@@ -421,33 +382,6 @@ void CharacterCreationPage::applyStyling()
 
             margin-top: 20px;
             padding: 14px;
-        }
-    
-        QGroupBox#survivorInfoBox {
-            background-color: transparent;
-            border-image: url(:/resources/images/wooden-sign-square-fried.png);
-            border: none;
-
-            margin: -8px;
-
-            margin-top: -4px;
-            margin-bottom: -8px;
-            margin-left: -16px;
-            margin-right: -16px;
-
-            padding-left: 32px;
-            padding-top: 32px;
-        }
-
-        QGroupBox#survivorInfoBox::title {
-            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch stretch;
-            subcontrol-origin: margin;
-            subcontrol-position: top left;
-            left: 0px;
-            right: 0px;
-            width: 100%;
-
-            color: #FF5733;
         }
     )");
     

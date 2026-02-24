@@ -14,6 +14,7 @@ class QString;
 class QPixmap;
 class QLabel;
 class QFrame;
+class InfoBox;
 
 class CharacterCreationPage : public QWidget
 {
@@ -38,6 +39,10 @@ private:
     QLineEdit* _nameEdit = nullptr;
     QComboBox* _classSelect = nullptr;
     QPushButton* _submitButton = nullptr;
+
+    InfoBox* _descriptionInfoBox = nullptr;
+    InfoBox* _attributesInfoBox = nullptr;
+    InfoBox* _skillsInfoBox = nullptr;
 
     QLabel* _skillList;
     QLabel* _descriptionLabel;
