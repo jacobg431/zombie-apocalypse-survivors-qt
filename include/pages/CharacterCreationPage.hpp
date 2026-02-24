@@ -24,10 +24,16 @@ public:
     explicit CharacterCreationPage(QWidget *parent = nullptr);
 
 private:
+    inline static const QStringList ATTRIBUTES = {
+        "Strength", "Agility", "Endurance", "Intelligence",
+        "Leadership", "Trustworthiness", "Courage"
+    };
+    inline static const QStringList ATTRIBUTES_DEFAULT_VALUES = {
+        "0", "0", "0", "0", "0", "0", "0"
+    };
+
     QMap<QString, Survivor *> _role_map;
-    QMap<QString, QLabel *> _attributesMap;
     
-    // UI component builders
     QWidget* createTitleLabel();
     QWidget* createLeftPanel();
     QWidget* createSurvivorForm();
@@ -48,7 +54,6 @@ private:
     QLabel* _descriptionLabel;
     QLabel* _classImageLabel;
 
-    // Helper functions
     void initRoleMap();
     void glitchSwapPixmap(const QPixmap &finalPm);
     void applyStyling();

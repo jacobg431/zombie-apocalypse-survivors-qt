@@ -113,16 +113,8 @@ QWidget *CharacterCreationPage::createSurvivorDesc()
 {
     auto *attributeForm = new QFormLayout();
 
-    const QStringList attributeStringList = {
-        "Strength", "Agility", "Endurance", "Intelligence",
-        "Leadership", "Trustworthiness", "Courage"
-    };
-    const QStringList valueStringList = {"0", "0", "0", "0", "0", "0", "0"};
-
-    
-
     _descriptionInfoBox = new InfoBox("Class Description", "Some description");
-    _attributesInfoBox = new InfoBox("Class Attributes", attributeStringList, valueStringList);
+    _attributesInfoBox = new InfoBox("Class Attributes", ATTRIBUTES, ATTRIBUTES_DEFAULT_VALUES);
     _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
 
     auto *infoBoxWrapper = new QWidget();
@@ -163,23 +155,7 @@ QFrame* CharacterCreationPage::createWrapper()
 void CharacterCreationPage::classSelectUpdated(const QString &class_string)
 {
     Survivor *class_object = _role_map[class_string];
-    auto attributes = class_object->GetAttributes();
-    auto skills = class_object->GetSkills();
-
-    QStringList skillLines;
-    for (const auto &skill : skills)
-    {
-        skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
-    }
-
-    _attributesInfoBox->setContentFormRow("Strength", QString::number(attributes.GetStrength()));
-    _attributesInfoBox->setContentFormRow("Endurance", QString::number(attributes.GetEndurance()));
-    _attributesInfoBox->setContentFormRow("Agility", QString::number(attributes.GetAgility()));
-    _attributesInfoBox->setContentFormRow("Courage", QString::number(attributes.GetCourage()));
-    _attributesInfoBox->setContentFormRow("Intelligence", QString::number(attributes.GetIntelligence()));
-    _attributesInfoBox->setContentFormRow("Leadership", QString::number(attributes.GetLeadership()));
-    _attributesInfoBox->setContentFormRow("Trustworthiness", QString::number(attributes.GetTrustworthiness()));
-
+    
     bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
     if (isJester)
     {
@@ -189,10 +165,32 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         _attributesInfoBox->setContentFormRandom(attributeSymbols);
         _skillsInfoBox->setContentLabelRandom(skillSymbols);
     }
+    else {
+        auto attributes = class_object->GetAttributes();
+        auto skills = class_object->GetSkills();
 
-    _descriptionInfoBox->setContentLabel(QString::fromStdString(class_object->GetRoleDescription()));
-    _skillsInfoBox->setContentLabel("Skills:\n• " + skillLines.join("\n• "));
+        QStringList skillLines;
+        for (const auto &skill : skills)
+        {
+            skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
+        }
 
+        const QStringList attributeValues = {
+            QString::number(attributes.GetStrength()),
+            QString::number(attributes.GetEndurance()),
+            QString::number(attributes.GetAgility()),
+            QString::number(attributes.GetCourage()),
+            QString::number(attributes.GetIntelligence()),
+            QString::number(attributes.GetLeadership()),
+            QString::number(attributes.GetTrustworthiness())
+        };
+
+        _attributesInfoBox->setContentForm(attributeValues);
+
+        _descriptionInfoBox->setContentLabel(QString::fromStdString(class_object->GetRoleDescription()));
+        _skillsInfoBox->setContentLabel(skillLines.join("\n"));
+    }
+    
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
     const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
 
