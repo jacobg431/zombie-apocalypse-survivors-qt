@@ -2,7 +2,9 @@
 
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
+#include "pages/ActionsMenuPage.hpp"
 #include "pages/ItemsShopPage.hpp"
+
 #include "panels/GoBackPanel.hpp"
 #include "widgets/PauseMenu.hpp"
 
@@ -26,37 +28,58 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     connect(pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
             { setPaused(false); });
     connect(pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
-            { setPaused(false); showMenu(); });
+            { setPaused(false); showMainMenu(); });
 
     // --- Pages ---
-    menu = new MainMenuPage(this);
+    mainMenu = new MainMenuPage(this);
     characterCreation = new CharacterCreationPage(this);
+    actionsMenu = new ActionsMenuPage(this);
     itemsShop = new ItemsShopPage(this);
 
-    stack->addWidget(menu);
+    stack->addWidget(mainMenu);
     stack->addWidget(characterCreation);
+    stack->addWidget(actionsMenu);
     stack->addWidget(itemsShop);
 
     // --- Connections ---
+
+    // Keyboard shortcuts
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
 
-    connect(menu, &MainMenuPage::StartGameClicked, 
-        this, &AppWindow::showItemsShop);
-    connect(menu, &MainMenuPage::QuitGameClicked, 
-        this, &QWidget::close);
-    connect(itemsShop, &ItemsShopPage::GoBackClicked,
-        this, &AppWindow::showCharacterCreation);
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
+    connect(shortcut, &QShortcut::activated, this, [=]()
+            {
+                if (windowState() & Qt::WindowFullScreen)
+                    showNormal();
+                else
+                    showFullScreen();
+            });
 
+    // Page navigation
+    connect(mainMenu, &MainMenuPage::StartGameClicked,
+            this, &AppWindow::showCharacterCreation);
+
+    connect(mainMenu, &MainMenuPage::QuitGameClicked,
+            this, &QWidget::close);
+
+    connect(characterCreation, &CharacterCreationPage::characterCreated,
+            this, &AppWindow::showActionsMenu);
+
+    connect(actionsMenu, &ActionsMenuPage::GoToShopClicked,
+            this, &AppWindow::showShopMenu);
+
+    connect(itemsShop, &ItemsShopPage::GoBackClicked,
+            this, &AppWindow::showActionsMenu);
 
     // --- Show menu at startup ---
-    showMenu();
+    showMainMenu();
 }
 
-void AppWindow::showMenu()
+void AppWindow::showMainMenu()
 {
-    stack->setCurrentWidget(menu);
+    stack->setCurrentWidget(mainMenu);
 }
 
 void AppWindow::showCharacterCreation()
@@ -64,7 +87,12 @@ void AppWindow::showCharacterCreation()
     stack->setCurrentWidget(characterCreation);
 }
 
-void AppWindow::showItemsShop()
+void AppWindow::showActionsMenu()
+{
+    stack->setCurrentWidget(actionsMenu);
+}
+
+void AppWindow::showShopMenu()
 {
     stack->setCurrentWidget(itemsShop);
 }
@@ -94,7 +122,7 @@ bool AppWindow::isPaused() const
 
 bool AppWindow::pauseAllowed() const
 {
-    return stack->currentWidget() != menu;
+    return stack->currentWidget() != mainMenu;
 }
 
 void AppWindow::setPaused(bool on)
