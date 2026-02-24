@@ -21,6 +21,8 @@ CreateCharacterFormBox::CreateCharacterFormBox(
     layout->addRow(createNameInput());
     layout->addRow(createClassSelector(roles));
     layout->addRow(createSubmitButton());
+
+    applyStyling();
 }
 
 QString CreateCharacterFormBox::getCurrentSelectorText()
@@ -89,7 +91,7 @@ void CreateCharacterFormBox::applyStyling()
             
         }
 
-        QComboBox#survivorClassSelect::drop-down {
+        QComboBox#survivorClassSelect:drop-down {
             subcontrol-origin: padding;
             subcontrol-position: top right;
             width: 28px;
@@ -100,7 +102,7 @@ void CreateCharacterFormBox::applyStyling()
             padding: 6px 6px;
         }
 
-        QComboBox#survivorClassSelect::down-arrow {
+        QComboBox#survivorClassSelect:down-arrow {
             image: url(:/resources/images/chevron-down.png);
         }
 
@@ -113,17 +115,17 @@ void CreateCharacterFormBox::applyStyling()
             background-clip: border;
         }
 
-        QComboBox#survivorClassSelect QAbstractItemView::item {
+        QComboBox#survivorClassSelect QAbstractItemView:item {
             background: #c91e1e1e;
             padding: 6px 12px;
             margin: 2px;
         }
 
-        QComboBox#survivorClassSelect QAbstractItemView::item:selected {
+        QComboBox#survivorClassSelect QAbstractItemView:item:selected {
             background: #c91e1e1e;
         }
 
-        QComboBox#survivorClassSelect QAbstractItemView::item:hover {
+        QComboBox#survivorClassSelect QAbstractItemView:item:hover {
             background: #c91e1e1e;
         }
 
@@ -164,7 +166,7 @@ void CreateCharacterFormBox::applyStyling()
             padding-top: 32px;
         }
 
-        QGroupBox::title {
+        QGroupBox:title {
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch stretch;
             subcontrol-origin: margin;
             subcontrol-position: top left;
