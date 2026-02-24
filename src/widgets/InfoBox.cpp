@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <random>
 #include <stdexcept>
 
 #include <QGroupBox>
@@ -8,6 +10,7 @@
 #include <QMap>
 #include <QFormLayout>
 #include <QStringList>
+#include <QRandomGenerator>
 
 #include "widgets/InfoBox.hpp"
 #include "utils.hpp"
@@ -121,6 +124,14 @@ void InfoBox::setContentLabel(const QString& content)
     setGlitchText(_contentLabel, content);
 }
 
+void InfoBox::setContentLabelRandom(QStringList& contentLines)
+{
+    std::mt19937 rng(QRandomGenerator::global()->generate());
+    std::shuffle(contentLines.begin(), contentLines.end(), rng);
+
+    setContentLabel(contentLines.join("\n"));
+}
+
 void InfoBox::setContentFormRow
 (
     const QString& left, 
@@ -128,4 +139,24 @@ void InfoBox::setContentFormRow
 )
 {
     setGlitchText(_contentFormMap[left], right);
+}
+
+void InfoBox::setContentForm(const QStringList& contentRows)
+{
+    int numRows = _contentFormMap.keys().size();
+    for (int i = 0; i < numRows; ++i)
+    {
+        setContentFormRow(_contentFormMap.keys()[i], contentRows[i]);
+    }
+}
+
+void InfoBox::setContentFormRandom(QStringList& contentRows)
+{
+    std::mt19937 rng(QRandomGenerator::global()->generate());
+    std::shuffle(contentRows.begin(), contentRows.end(), rng);
+
+    for (const QString& contentKey : _contentFormMap.keys())
+    {
+        setContentFormRow(contentKey, contentRows[rng() % contentRows.size()]);
+    }
 }

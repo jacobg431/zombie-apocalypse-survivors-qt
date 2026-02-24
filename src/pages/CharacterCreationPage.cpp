@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <random>
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -11,7 +8,6 @@
 #include <QString>
 #include <QLabel>
 #include <QTimer>
-#include <QRandomGenerator>
 #include <QPainter>
 #include <QFrame>
 
@@ -190,21 +186,8 @@ void CharacterCreationPage::classSelectUpdated(const QString &class_string)
         QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬"};
         QStringList attributeSymbols = {"♠", "♥", "♦", "♣"};
 
-        std::mt19937 rng(QRandomGenerator::global()->generate());
-
-        std::shuffle(skillSymbols.begin(), skillSymbols.end(), rng);
-        std::shuffle(attributeSymbols.begin(), attributeSymbols.end(), rng);
-
-        skillLines.clear();
-        skillLines << skillSymbols.join("");
-
-        for (auto *attribute : _attributesMap)
-        {
-            setGlitchText(
-                attribute, 
-                attributeSymbols[rng() % attributeSymbols.size()]
-            );
-        }
+        _attributesInfoBox->setContentFormRandom(attributeSymbols);
+        _skillsInfoBox->setContentLabelRandom(skillSymbols);
     }
 
     _descriptionInfoBox->setContentLabel(QString::fromStdString(class_object->GetRoleDescription()));

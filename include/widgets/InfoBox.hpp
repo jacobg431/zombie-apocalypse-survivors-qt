@@ -27,11 +27,15 @@ public:
     );
 
     void setContentLabel(const QString& content);
+    void setContentLabelRandom(QStringList& contentLines);
+
     void setContentFormRow
     (
         const QString& left, 
         const QString& right
     );
+    void setContentForm(const QStringList& contentRows);
+    void setContentFormRandom(QStringList& contentRows);
 
 private:
     QLabel* createContentLabel(const QString& content);
