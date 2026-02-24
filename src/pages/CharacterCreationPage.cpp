@@ -61,6 +61,8 @@ QWidget *CharacterCreationPage::createSurvivorForm()
 
     connect(_formBox, &CreateCharacterFormBox::classSelectUpdated,
         this, &CharacterCreationPage::updateSelectedClass);
+    connect(_formBox, &CreateCharacterFormBox::characterCreated,
+        this, &CharacterCreationPage::characterCreated);
 
     return _formBox;
 }
