@@ -39,7 +39,7 @@ private:
     QWidget* createLeftPanel();
     QWidget* createSurvivorForm();
     QWidget* createSurvivorImage();
-    QWidget* createSurvivorDesc();
+    QWidget* createCharacterStatsPanel();
     QFrame* createInnerWrapper();
     QFrame* createWrapper();
 

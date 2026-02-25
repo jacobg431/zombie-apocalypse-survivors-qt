@@ -50,7 +50,7 @@ QWidget* CharacterCreationPage::createLeftPanel()
     auto *leftPanel = new QWidget();
     leftPanel->setLayout(new QVBoxLayout());
     leftPanel->layout()->addWidget(createSurvivorForm());
-    leftPanel->layout()->addWidget(createSurvivorDesc());
+    leftPanel->layout()->addWidget(createCharacterStatsPanel());
 
     return leftPanel;
 }
@@ -81,7 +81,7 @@ QWidget *CharacterCreationPage::createSurvivorImage()
     return component;
 }
 
-QWidget *CharacterCreationPage::createSurvivorDesc()
+QWidget *CharacterCreationPage::createCharacterStatsPanel()
 {
     auto *attributeForm = new QFormLayout();
 
