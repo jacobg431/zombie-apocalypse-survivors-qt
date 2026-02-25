@@ -16,6 +16,7 @@ class QLabel;
 class QFrame;
 class InfoBox;
 class CreateCharacterFormBox;
+class CharacterStatsPanel;
 
 class CharacterCreationPage : public QWidget
 {
@@ -25,14 +26,6 @@ public:
     explicit CharacterCreationPage(QWidget *parent = nullptr);
 
 private:
-    inline static const QStringList ATTRIBUTES = {
-        "Strength", "Agility", "Endurance", "Intelligence",
-        "Leadership", "Trustworthiness", "Courage"
-    };
-    inline static const QStringList ATTRIBUTES_DEFAULT_VALUES = {
-        "0", "0", "0", "0", "0", "0", "0"
-    };
-
     QMap<QString, Survivor *> _role_map;
     
     QWidget* createTitleLabel();
@@ -43,15 +36,11 @@ private:
     QFrame* createInnerWrapper();
     QFrame* createWrapper();
 
-    InfoBox* _descriptionInfoBox = nullptr;
-    InfoBox* _attributesInfoBox = nullptr;
-    InfoBox* _skillsInfoBox = nullptr;
-
     CreateCharacterFormBox* _formBox = nullptr;
+    CharacterStatsPanel* _characterStatsPanel = nullptr;
     QLabel* _classImageLabel;
 
     void initRoleMap();
-    void wireConnections();
     void glitchSwapPixmap(const QPixmap& finalPm);
     void applyStyling();
 

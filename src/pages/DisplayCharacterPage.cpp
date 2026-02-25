@@ -24,7 +24,7 @@ DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
 
 QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
-    auto *container = new CharacterStatsPanel(new CareGiver("Character Name"));
+    auto *container = new CharacterStatsPanel();
     return container;
 }
 

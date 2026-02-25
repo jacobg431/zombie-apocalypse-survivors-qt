@@ -3,14 +3,16 @@
 #include <QString>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QFormLayout>
 
 #include <ZasLib/Skill.hpp>
 
 #include "panels/CharacterStatsPanel.hpp"
+#include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
 
-CharacterStatsPanel::CharacterStatsPanel(Survivor *characterClass, QWidget *parent)
-    : _characterClass(characterClass), QWidget(parent)
+CharacterStatsPanel::CharacterStatsPanel(QWidget *parent)
+    : QWidget(parent)
 {
     auto *layout = new QVBoxLayout(this);
     layout->addWidget(createWrapper());
@@ -18,46 +20,47 @@ CharacterStatsPanel::CharacterStatsPanel(Survivor *characterClass, QWidget *pare
     applyStyling();
 }
 
-QWidget* CharacterStatsPanel::createTitleLabel()
-{
-    // add this later: new QLabel(_characterClass->getName());
-    auto *label = new QLabel("Character Name");
-    label->setAlignment(Qt::AlignCenter);
-    label->setObjectName("panelTitle");
-    return label;
-}
-
 QFrame* CharacterStatsPanel::createWrapper()
-{
-    auto *wrapperFrame = new QFrame;
+{   
+    _descriptionInfoBox = new InfoBox("Class Description", "Some description");
+    _attributesInfoBox = new InfoBox("Class Attributes", ATTRIBUTES, ATTRIBUTES_DEFAULT_VALUES);
+    _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
+
+    auto *wrapperFrame = new QFrame();
     wrapperFrame->setObjectName("wrapper");
-    auto wrapperLayout = new QVBoxLayout(wrapperFrame);
-    wrapperLayout->addWidget(createTitleLabel());
+    auto *wrapperLayout = new QVBoxLayout(wrapperFrame);
+    wrapperLayout->addWidget(_descriptionInfoBox);
+    wrapperLayout->addWidget(_attributesInfoBox);
+    wrapperLayout->addWidget(_skillsInfoBox);
 
     return wrapperFrame;
+}
+
+void CharacterStatsPanel::setContent
+(
+    const QStringList& attributeContent,
+    const QString& descriptionContent,
+    const QString& skillContent
+)
+{
+    _attributesInfoBox->setContentForm(attributeContent);
+    _descriptionInfoBox->setContentLabel(descriptionContent);
+    _skillsInfoBox->setContentLabel(skillContent);
+}
+
+void CharacterStatsPanel::setContentRandom
+(
+    QStringList& attributeContent, 
+    QStringList& skillContent
+)
+{
+    _attributesInfoBox->setContentFormRandom(attributeContent);
+    _skillsInfoBox->setContentLabelRandom(skillContent);
 }
 
 void CharacterStatsPanel::applyStyling()
 {
     setStyleSheet(R"(
-
-        QFrame {
-            background-color: #2E2E2E;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        QFrame#innerWrapper {
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        QLabel#panelTitle {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            max-height: 64px;
-        }
 
     )");
 }

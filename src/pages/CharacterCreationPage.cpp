@@ -15,6 +15,7 @@
 #include <ZasLib/Skill.hpp>
 
 #include "pages/CharacterCreationPage.hpp"
+#include "panels/CharacterStatsPanel.hpp"
 #include "widgets/CreateCharacterFormBox.hpp"
 #include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
@@ -83,19 +84,8 @@ QWidget *CharacterCreationPage::createSurvivorImage()
 
 QWidget *CharacterCreationPage::createCharacterStatsPanel()
 {
-    auto *attributeForm = new QFormLayout();
-
-    _descriptionInfoBox = new InfoBox("Class Description", "Some description");
-    _attributesInfoBox = new InfoBox("Class Attributes", ATTRIBUTES, ATTRIBUTES_DEFAULT_VALUES);
-    _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
-
-    auto *infoBoxWrapper = new QWidget();
-    auto *infoBoxWrapperLayout = new QVBoxLayout(infoBoxWrapper);
-    infoBoxWrapperLayout->addWidget(_descriptionInfoBox);
-    infoBoxWrapperLayout->addWidget(_attributesInfoBox);
-    infoBoxWrapperLayout->addWidget(_skillsInfoBox);
-
-    return infoBoxWrapper;
+    _characterStatsPanel = new CharacterStatsPanel();
+    return _characterStatsPanel;
 }
 
 QFrame* CharacterCreationPage::createInnerWrapper()
@@ -135,8 +125,7 @@ void CharacterCreationPage::updateSelectedClass()
         QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬"};
         QStringList attributeSymbols = {"♠", "♥", "♦", "♣"};
 
-        _attributesInfoBox->setContentFormRandom(attributeSymbols);
-        _skillsInfoBox->setContentLabelRandom(skillSymbols);
+        _characterStatsPanel->setContentRandom(attributeSymbols, skillSymbols);
     }
     else {
         auto attributes = class_object->GetAttributes();
@@ -158,10 +147,12 @@ void CharacterCreationPage::updateSelectedClass()
             QString::number(attributes.GetTrustworthiness())
         };
 
-        _attributesInfoBox->setContentForm(attributeValues);
-
-        _descriptionInfoBox->setContentLabel(QString::fromStdString(class_object->GetRoleDescription()));
-        _skillsInfoBox->setContentLabel(skillLines.join("\n"));
+        _characterStatsPanel->setContent
+        (
+            attributeValues,
+            QString::fromStdString(class_object->GetRoleDescription()),
+            skillLines.join("\n")
+        );
     }
     
     const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
