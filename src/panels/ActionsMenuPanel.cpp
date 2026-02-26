@@ -1,4 +1,4 @@
-#include "pages/ActionsMenuPage.hpp"
+#include "panels/ActionsMenuPanel.hpp"
 #include "widgets/HoverButton.hpp"
 
 #include <QVBoxLayout>
@@ -10,7 +10,7 @@
 #include <QMovie>
 #include <QPainter>
 
-ActionsMenuPage::ActionsMenuPage(QWidget *parent) : QWidget(parent)
+ActionsMenuPanel::ActionsMenuPanel(QWidget *parent) : QWidget(parent)
 {
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(createMenuWrapper(), 0, Qt::AlignCenter);
@@ -19,13 +19,14 @@ ActionsMenuPage::ActionsMenuPage(QWidget *parent) : QWidget(parent)
     backgroundGif->setCacheMode(QMovie::CacheAll);
     backgroundGif->start();
     menuWrapper->installEventFilter(this);
+
     connect(backgroundGif, &QMovie::frameChanged, menuWrapper, [this]()
             { menuWrapper->update(); });
 
     applyStyling();
 }
 
-QFrame *ActionsMenuPage::createMenuWrapper()
+QFrame *ActionsMenuPanel::createMenuWrapper()
 {
     QVBoxLayout *menuLayout = new QVBoxLayout;
     menuLayout->setContentsMargins(210, 120, 50, 300);
@@ -37,12 +38,12 @@ QFrame *ActionsMenuPage::createMenuWrapper()
     menuWrapper = new QFrame;
     menuWrapper->setLayout(menuLayout);
     menuWrapper->setObjectName("menuWrapper");
-    menuWrapper->setFixedSize(1000, 800);
+    menuWrapper->setFixedSize(1000 * 0.8, 800 * 0.8);
 
     return menuWrapper;
 }
 
-QWidget *ActionsMenuPage::createTextPanel()
+QWidget *ActionsMenuPanel::createTextPanel()
 {
     auto *textPanel = new QWidget;
 
@@ -59,7 +60,7 @@ QWidget *ActionsMenuPage::createTextPanel()
     return textPanel;
 }
 
-QWidget *ActionsMenuPage::createOptionsPanel()
+QWidget *ActionsMenuPanel::createOptionsPanel()
 {
     auto *optionsPanel = new QWidget;
 
@@ -67,21 +68,25 @@ QWidget *ActionsMenuPage::createOptionsPanel()
     optionsLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     auto *exploreButton = new HoverButton("Explore", optionsPanel);
-    auto *restButton = new HoverButton("Rest", optionsPanel);
+    auto *fightButton = new HoverButton("Fight!", optionsPanel);
     auto *shopButton = new HoverButton("Go to Shop", optionsPanel);
 
     optionsLayout->addWidget(exploreButton, 0, Qt::AlignLeft | Qt::AlignTop);
-    optionsLayout->addWidget(restButton, 0, Qt::AlignLeft | Qt::AlignTop);
+    optionsLayout->addWidget(fightButton, 0, Qt::AlignLeft | Qt::AlignTop);
     optionsLayout->addWidget(shopButton, 0, Qt::AlignLeft | Qt::AlignTop);
     optionsLayout->addStretch();
 
+    connect(exploreButton, &QPushButton::clicked,
+            this, &ActionsMenuPanel::ExploreClicked);
+    connect(fightButton, &QPushButton::clicked,
+            this, &ActionsMenuPanel::FightClicked);
     connect(shopButton, &QPushButton::clicked,
-            this, &ActionsMenuPage::GoToShopClicked);
+            this, &ActionsMenuPanel::GoToShopClicked);
 
     return optionsPanel;
 }
 
-void ActionsMenuPage::showEvent(QShowEvent *event)
+void ActionsMenuPanel::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
 
@@ -91,7 +96,7 @@ void ActionsMenuPage::showEvent(QShowEvent *event)
     }
 }
 
-bool ActionsMenuPage::eventFilter(QObject *obj, QEvent *event)
+bool ActionsMenuPanel::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == menuWrapper && event->type() == QEvent::Paint)
     {
@@ -109,7 +114,7 @@ bool ActionsMenuPage::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
-void ActionsMenuPage::startTypingText(QLabel *label, const QString &text, int msPerChar)
+void ActionsMenuPanel::startTypingText(QLabel *label, const QString &text, int msPerChar)
 {
     if (!label)
     {
@@ -141,7 +146,7 @@ void ActionsMenuPage::startTypingText(QLabel *label, const QString &text, int ms
     typeTimer->start(msPerChar);
 }
 
-void ActionsMenuPage::applyStyling()
+void ActionsMenuPanel::applyStyling()
 {
     setStyleSheet(R"(
         QWidget {
