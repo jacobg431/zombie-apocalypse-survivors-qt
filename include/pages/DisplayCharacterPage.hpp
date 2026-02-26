@@ -11,6 +11,8 @@ class QLabel;
 class QFrame;
 class CharacterActionsPanel;
 class CharacterImagePanel;
+class ActionsMenuPanel;
+class GoBackPanel;
 
 class DisplayCharacterPage : public QWidget
 {
@@ -26,12 +28,14 @@ private:
     QWidget* createCharacterImagePanel();
     QWidget* createCharacterActionsPanel();
     QWidget* createInventoryPanel();
+    QWidget *createGoBackPanel();
     QFrame* createWrapper();
 
     void applyStyling();
 
-    CharacterActionsPanel* _characterActionsPanel = nullptr;
+    ActionsMenuPanel* _actionsMenuPanel = nullptr;
     CharacterImagePanel* _characterImagePanel = nullptr;
+    GoBackPanel* _goBackPanel = nullptr;
 
 signals:
     void itemsShopClicked();

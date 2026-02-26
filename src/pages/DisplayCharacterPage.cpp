@@ -12,13 +12,18 @@
 #include "panels/CharacterImagePanel.hpp"
 #include "panels/CharacterActionsPanel.hpp"
 #include "panels/ItemsPanel.hpp"
+#include "panels/ActionsMenuPanel.hpp"
+#include "panels/GoBackPanel.hpp"
 #include "managers/RoleManager.hpp"
 
 DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
     : QWidget(parent)
 {    
     auto *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(createWrapper());
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
+    mainLayout->addWidget(createGoBackPanel(), 0, Qt::AlignTop | Qt::AlignLeft);
+    mainLayout->addWidget(createWrapper(), 1);
 
     applyStyling();
 }
@@ -39,22 +44,35 @@ QWidget* DisplayCharacterPage::createCharacterImagePanel()
 
 QWidget* DisplayCharacterPage::createCharacterActionsPanel()
 {
-    _characterActionsPanel = new CharacterActionsPanel();
-    
-    connect(_characterActionsPanel, &CharacterActionsPanel::itemsShopClicked,
+    //_characterActionsPanel = new CharacterActionsPanel();
+    _actionsMenuPanel = new ActionsMenuPanel();
+
+    connect(_actionsMenuPanel, &ActionsMenuPanel::GoToShopClicked,
         this, &DisplayCharacterPage::itemsShopClicked);
-    connect(_characterActionsPanel, &CharacterActionsPanel::fightClicked,
+    connect(_actionsMenuPanel, &ActionsMenuPanel::FightClicked,
         this, &DisplayCharacterPage::fightClicked);
-    connect(_characterActionsPanel, &CharacterActionsPanel::mainMenuClicked,
+    connect(_actionsMenuPanel, &ActionsMenuPanel::MainMenuClicked,
         this, &DisplayCharacterPage::mainMenuClicked);
 
-    return _characterActionsPanel;
+    return _actionsMenuPanel;
 }
 
 QWidget* DisplayCharacterPage::createInventoryPanel()
 {
     auto *container = new ItemsPanel("Inventory");
     return container;
+}
+
+QWidget *DisplayCharacterPage::createGoBackPanel()
+{
+    _goBackPanel = new GoBackPanel(this);
+    _goBackPanel->setContentsMargins(0, 0, 0, 0);
+    _goBackPanel->setButtonText(" ⬅ To Menu ");
+
+    connect(_goBackPanel, &GoBackPanel::GoBackClicked,
+            this, &DisplayCharacterPage::mainMenuClicked);
+
+    return _goBackPanel;
 }
 
 QFrame* DisplayCharacterPage::createWrapper()
@@ -64,7 +82,7 @@ QFrame* DisplayCharacterPage::createWrapper()
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
 
     panelsWrapperLayout->addWidget(createCharacterStatsPanel());
-    panelsWrapperLayout->addWidget(createCharacterImagePanel());
+    //panelsWrapperLayout->addWidget(createCharacterImagePanel());
     panelsWrapperLayout->addWidget(createCharacterActionsPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
 
