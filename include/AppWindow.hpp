@@ -6,6 +6,7 @@
 class QStackedWidget;
 class MainMenuPage;
 class CharacterCreationPage;
+class ActionsMenuPage;
 class ItemsShopPage;
 class PauseMenu;
 class GoBackPanel;
@@ -23,8 +24,9 @@ protected:
 
 private:
     QStackedWidget *stack;
-    MainMenuPage *menu;
+    MainMenuPage *mainMenu;
     CharacterCreationPage *characterCreation;
+    ActionsMenuPage *actionsMenu;
     ItemsShopPage *itemsShop;
     PauseMenu *pauseOverlay;
     GoBackPanel *goBackPanel;
@@ -35,7 +37,8 @@ private:
     bool pauseAllowed() const;
 
 public slots:
-    void showMenu();
+    void showMainMenu();
     void showCharacterCreation();
-    void showItemsShop();
+    void showActionsMenu();
+    void showShopMenu();
 };
