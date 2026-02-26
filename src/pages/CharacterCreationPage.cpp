@@ -20,8 +20,6 @@ int MAX_COLUMN_WIDTH = 400;
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) 
     : QWidget(parent)
 {
-    initRoleMap();
-
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(createWrapper());
 
@@ -51,7 +49,8 @@ QWidget* CharacterCreationPage::createLeftPanel()
 
 QWidget *CharacterCreationPage::createSurvivorForm()
 {
-    _formBox = new CreateCharacterFormBox(_role_map.keys());
+    auto& roleManager = RoleManager::instance();
+    _formBox = new CreateCharacterFormBox(roleManager.availableRoles());
 
     connect(_formBox, &CreateCharacterFormBox::classSelectUpdated,
         this, &CharacterCreationPage::updateSelectedClass);
@@ -102,9 +101,10 @@ QFrame* CharacterCreationPage::createWrapper()
 void CharacterCreationPage::updateSelectedClass()
 {
     const QString &className = _formBox->getCurrentSelectorText();
-    Survivor *class_object = _role_map[className];
+    auto& roleManager = RoleManager::instance();
+    const Survivor *class_object = roleManager.getRole(className);
     
-    bool isJester = dynamic_cast<Jester *>(class_object) != nullptr;
+    bool isJester = dynamic_cast<const Jester *>(class_object) != nullptr;
     if (isJester)
     {
         QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬"};
@@ -142,19 +142,6 @@ void CharacterCreationPage::updateSelectedClass()
     
     _characterImagePanel->setImage(className);
 
-}
-
-void CharacterCreationPage::initRoleMap()
-{
-    auto& manager = RoleManager::instance();
-
-    for (const QString& roleName : manager.availableRoles())
-    {
-        _role_map.insert(
-            roleName,
-            const_cast<Survivor*>(
-                manager.getRole(roleName)));
-    }
 }
 
 void CharacterCreationPage::applyStyling()

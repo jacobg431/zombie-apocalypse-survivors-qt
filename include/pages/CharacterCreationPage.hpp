@@ -26,9 +26,7 @@ class CharacterCreationPage : public QWidget
 public:
     explicit CharacterCreationPage(QWidget *parent = nullptr);
 
-private:
-    QMap<QString, Survivor *> _role_map;
-    
+private:   
     QWidget* createTitleLabel();
     QWidget* createLeftPanel();
     QWidget* createSurvivorForm();
@@ -41,7 +39,6 @@ private:
     CharacterStatsPanel* _characterStatsPanel = nullptr;
     CharacterImagePanel* _characterImagePanel = nullptr;
 
-    void initRoleMap();
     void applyStyling();
 
 signals:
