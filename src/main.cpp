@@ -2,6 +2,8 @@
 #include "AppWindow.hpp"
 #include <QFontDatabase>
 #include <QFile>
+#include <QList>
+#include <QShortcut>
 
 int main(int argc, char *argv[])
 {
@@ -14,22 +16,28 @@ int main(int argc, char *argv[])
     }
     app.setStyleSheet(file.readAll());
 
-    int fontId = QFontDatabase::addApplicationFont(":/resources/fonts/alagard.ttf");
-
-    try
-    {
-        const auto families = QFontDatabase::applicationFontFamilies(fontId);
-        app.setFont(QFont(families.first()));
-    }
-    catch (...)
-    {
-        qWarning() << "Failed to load font from resource";
+    QList<int> fontIdList = {
+        QFontDatabase::addApplicationFont(":/resources/fonts/IBM-EGA-8x14.ttf"),
+        QFontDatabase::addApplicationFont(":/resources/fonts/alagard.ttf"),
+    };
+    
+    for (int fontId : fontIdList) {
+        try
+        {
+            const auto families = QFontDatabase::applicationFontFamilies(fontId);
+            app.setFont(QFont(families.first()));
+        }
+        catch (...)
+        {
+            qWarning() << "Failed to load font from resource";
+        }
     }
 
     // --- Main window ---
 
     AppWindow window;
     window.show();
+    window.setWindowState(Qt::WindowFullScreen);
 
     return app.exec();
 }

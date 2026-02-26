@@ -6,6 +6,7 @@
 class QStackedWidget;
 class MainMenuPage;
 class CharacterCreationPage;
+class ActionsMenuPage;
 class ItemsShopPage;
 class DisplayCharacterPage;
 class PauseMenu;
@@ -41,9 +42,11 @@ private:
     bool pauseAllowed() const;
 
 public slots:
-    void showMenu();
+    void showMainMenu();
     void showCharacterCreation();
     void showDisplayCharacter();
     void showItemsShop();
     void showFight();
+    void showActionsMenu();
+    void showShopMenu();
 };

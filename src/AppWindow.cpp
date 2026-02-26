@@ -3,7 +3,9 @@
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
 #include "pages/DisplayCharacterPage.hpp"
+#include "pages/ActionsMenuPage.hpp"
 #include "pages/ItemsShopPage.hpp"
+
 #include "panels/GoBackPanel.hpp"
 #include "widgets/PauseMenu.hpp"
 
@@ -71,9 +73,36 @@ void AppWindow::wireConnections()
         this, &AppWindow::showFight);
     connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
         this, &AppWindow::showMenu);
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
+    connect(shortcut, &QShortcut::activated, this, [=]()
+            {
+                if (windowState() & Qt::WindowFullScreen)
+                    showNormal();
+                else
+                    showFullScreen();
+            });
+
+    // Page navigation
+    connect(mainMenu, &MainMenuPage::StartGameClicked,
+            this, &AppWindow::showCharacterCreation);
+
+    connect(mainMenu, &MainMenuPage::QuitGameClicked,
+            this, &QWidget::close);
+
+    connect(characterCreation, &CharacterCreationPage::characterCreated,
+            this, &AppWindow::showActionsMenu);
+
+    connect(actionsMenu, &ActionsMenuPage::GoToShopClicked,
+            this, &AppWindow::showShopMenu);
+
+    connect(itemsShop, &ItemsShopPage::GoBackClicked,
+            this, &AppWindow::showActionsMenu);
+
+    // --- Show menu at startup ---
+    showMainMenu();
 }
 
-void AppWindow::showMenu()
+void AppWindow::showMainMenu()
 {
     _stack->setCurrentWidget(_menu);
 }
@@ -88,7 +117,12 @@ void AppWindow::showDisplayCharacter()
     _stack->setCurrentWidget(_displayCharacter);
 }
 
-void AppWindow::showItemsShop()
+void AppWindow::showActionsMenu()
+{
+    stack->setCurrentWidget(actionsMenu);
+}
+
+void AppWindow::showShopMenu()
 {
     _stack->setCurrentWidget(_itemsShop);
 }

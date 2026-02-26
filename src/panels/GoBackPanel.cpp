@@ -3,12 +3,17 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QPainter>
 
 GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 {
-    auto *layout = new QHBoxLayout(this);
-    layout->addWidget(createWrapper());
+    auto *layout = new QVBoxLayout(this);
+
     layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->addWidget(createWrapper(), 0, Qt::AlignTop | Qt::AlignLeft);
+    layout->addStretch();
+    
     applyStyling();
 }
 
@@ -16,9 +21,16 @@ QFrame* GoBackPanel::createWrapper()
 {
     auto *wrapperFrame = new QFrame;
     wrapperFrame->setObjectName("goBackWrapper");
+
     auto *wrapperLayout = new QHBoxLayout(wrapperFrame);
-    
-    m_button = new DefaultPushButton("Go Back");
+    wrapperLayout->setContentsMargins(0, 0, 0, 0);
+    wrapperLayout->setSpacing(0);
+
+    m_button = new QPushButton(" ⬅ Go Back  ");
+    m_button->setObjectName("goBackButton");
+    m_button->setMinimumHeight(200);
+    m_button->setCursor(Qt::PointingHandCursor);
+
     connect(m_button, &QPushButton::clicked, this, &GoBackPanel::GoBackClicked);
 
     wrapperLayout->addWidget(m_button);
@@ -32,11 +44,38 @@ void GoBackPanel::applyStyling()
     setStyleSheet(R"(
 
         QFrame#goBackWrapper {
-            background-color: #2E2E2E;
-            border-radius: 10px;
-            margin: 0px;
-            padding: 15px;
-        }
+            background: transparent;
+            margin-left: 32px;
+            }
+
+        QPushButton#goBackButton {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 32px;
+            color: #060606;
+            border-image: url(:/resources/images/hanging-sign.png) 0 0 0 0 stretch;
+
+            text-align: center bottom;
+
+            padding-bottom: 32px;
+            padding-left: 32px;
+            padding-right: 32px;
+
+            margin-top: -32px;
+            margin-bottom: 32px;
+            }
+
+        QPushButton#goBackButton:hover {
+            background-color: transparent;
+            border-image: url(:/resources/images/hanging-sign-hover.png) 0 0 0 0 stretch;
+            }
+
+        QPushButton#goBackButton:pressed {
+            background: transparent;
+            border-image: url(:/resources/images/hanging-sign-selected.png) 0 0 0 0 stretch;
+            color: #7f0000;
+            }
 
     )");
 }

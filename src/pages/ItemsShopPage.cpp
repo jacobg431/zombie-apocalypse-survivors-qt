@@ -8,9 +8,10 @@
 ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 {
     auto *mainLayout = new QVBoxLayout(this);
-
-    mainLayout->addWidget(createGoBackPanel());
-    mainLayout->addWidget(createWrapper());
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
+    mainLayout->addWidget(createGoBackPanel(), 0, Qt::AlignTop | Qt::AlignLeft);
+    mainLayout->addWidget(createWrapper(), 1);
 
     applyStyling();
 }
@@ -18,7 +19,7 @@ ItemsShopPage::ItemsShopPage(QWidget *parent) : QWidget(parent)
 QWidget* ItemsShopPage::createGoBackPanel()
 {
     m_goBackPanel = new GoBackPanel(this);
-    m_goBackPanel->setContentsMargins(15, 15, 15, 15);
+    m_goBackPanel->setContentsMargins(0, 0, 0, 0);
 
     connect(m_goBackPanel, &GoBackPanel::GoBackClicked,
             this, &ItemsShopPage::GoBackClicked);
@@ -28,7 +29,7 @@ QWidget* ItemsShopPage::createGoBackPanel()
 
 QWidget* ItemsShopPage::createShopPanel()
 {
-    auto *container = new ItemsPanel("Items Shop", "Buy");
+    auto *container = new ItemsPanel("Shop", "Buy");
     return container;
 }
 
@@ -42,12 +43,14 @@ QFrame* ItemsShopPage::createWrapper()
 {
     auto *panelsWrapperFrame = new QFrame;
     panelsWrapperFrame->setObjectName("panelsWrapper");
+
     auto *panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
     panelsWrapperLayout->setSpacing(30);
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
-
+    panelsWrapperLayout->addStretch();
     panelsWrapperLayout->addWidget(createShopPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
+    panelsWrapperLayout->addStretch();
 
     return panelsWrapperFrame;
 }
@@ -57,9 +60,7 @@ void ItemsShopPage::applyStyling()
     setStyleSheet(R"(
 
         QWidget {
-            background-color: #1e1e1e;
-            color: #dddddd;
-            font-family: Consolas, monospace;
+            background-color: #201e1e1e;
             font-size: 14px;
         }
 
