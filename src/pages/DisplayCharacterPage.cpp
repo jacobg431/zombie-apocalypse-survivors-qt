@@ -60,6 +60,7 @@ QWidget* DisplayCharacterPage::createCharacterActionsPanel()
 QWidget* DisplayCharacterPage::createInventoryPanel()
 {
     auto *container = new ItemsPanel("Inventory");
+    container->setMaximumHeight(700);
     return container;
 }
 
@@ -81,10 +82,9 @@ QFrame* DisplayCharacterPage::createWrapper()
     auto panelsWrapperLayout = new QHBoxLayout(panelsWrapperFrame);
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
 
-    panelsWrapperLayout->addWidget(createCharacterStatsPanel());
-    //panelsWrapperLayout->addWidget(createCharacterImagePanel());
+    panelsWrapperLayout->addWidget(createCharacterStatsPanel(), 1, Qt::AlignLeft);
     panelsWrapperLayout->addWidget(createCharacterActionsPanel());
-    panelsWrapperLayout->addWidget(createInventoryPanel());
+    panelsWrapperLayout->addWidget(createInventoryPanel(), 2, Qt::AlignRight);
 
     return panelsWrapperFrame;
 }
