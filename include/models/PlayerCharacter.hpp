@@ -1,6 +1,7 @@
-#include <memory>
+#include <vector>
 
-#include "models/SessionStateModel.hpp"
+#include <QString>
+#include <QStringList>
 
 class PlayerCharacter
 {
@@ -52,7 +53,18 @@ public:
     void reset();
 
 private:
-    std::unique_ptr<PlayerState> _playerState;
+    QString _characterName;
+    QString _className;
+    QString _description;
+    QStringList _skills = {};
+
+    int _strength = 0;
+    int _endurance = 0;
+    int _agility = 0;
+    int _courage = 0;
+    int _intelligence = 0;
+    int _leadership = 0;
+    int _trustworthiness = 0;
 
 signals:
     void playerStateChanged();

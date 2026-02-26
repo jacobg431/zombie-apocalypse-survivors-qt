@@ -1,50 +1,53 @@
+#include <QString>
+#include <QStringList>
+
 #include "models/PlayerCharacter.hpp"
 
 // Getters
 QString PlayerCharacter::getCharacterName()
 {
-    return _playerState->characterName;
+    return _characterName;
 }
 QString PlayerCharacter::getClassName()
 {
-    return _playerState->className;
+    return _className;
 }
 QString PlayerCharacter::getDescription()
 {
-    return _playerState->description;
+    return _description;
 }
 QStringList PlayerCharacter::getSkills()
 {
-    return _playerState->skills;
+    return _skills;
 }
 
 int PlayerCharacter::getStrength()
 {
-    return _playerState->strength;
+    return _strength;
 }
 int PlayerCharacter::getEndurance()
 {
-    return _playerState->endurance;
+    return _endurance;
 }
 int PlayerCharacter::getAgility()
 {
-    return _playerState->agility;
+    return _agility;
 }
 int PlayerCharacter::getCourage()
 {
-    return _playerState->courage;
+    return _courage;
 }
 int PlayerCharacter::getIntelligence()
 {
-    return _playerState->intelligence;
+    return _intelligence;
 }
 int PlayerCharacter::getLeadership()
 {
-    return _playerState->leadership;
+    return _leadership;
 }
 int PlayerCharacter::getTrustWorthiness()
 {
-    return _playerState->trustworthiness;
+    return _trustworthiness;
 }
 
 std::vector<int> PlayerCharacter::getAttributes()
@@ -65,42 +68,42 @@ std::vector<int> PlayerCharacter::getAttributes()
 // Setters
 void PlayerCharacter::setCharacterName(const QString& characterName)
 {
-    _playerState->characterName = characterName;
+    _characterName = characterName;
     emit playerStateChanged();
 }
 void PlayerCharacter::setClassName(const QString& className)
 {
-    _playerState->className = className;
+    _className = className;
     emit playerStateChanged();
 }
 
 void PlayerCharacter::setStrength(int value)
 {
-    _playerState->strength = value;
+    _strength = value;
 }
 void PlayerCharacter::setEndurance(int value)
 {
-    _playerState->endurance = value;
+    _endurance = value;
 }
 void PlayerCharacter::setAgility(int value)
 {
-    _playerState->agility = value;
+    _agility = value;
 }
 void PlayerCharacter::setCourage(int value)
 {
-    _playerState->courage = value;
+    _courage = value;
 }
 void PlayerCharacter::setIntelligence(int value)
 {
-    _playerState->intelligence = value;
+    _intelligence = value;
 }
 void PlayerCharacter::setLeadership(int value)
 {
-    _playerState->leadership = value;
+    _leadership = value;
 }
 void PlayerCharacter::setTrustWorthiness(int value)
 {
-    _playerState->trustworthiness = value;
+    _trustworthiness = value;
 }
 
 void PlayerCharacter::setAttributes
@@ -125,15 +128,15 @@ void PlayerCharacter::setAttributes
 
 void PlayerCharacter::setDescription(const QString& description)
 {
-    _playerState->description = description;
+    _description = description;
 }
 void PlayerCharacter::setSkills(QStringList& skills)
 {
-    _playerState->skills = skills;
+    _skills = skills;
 }
 void PlayerCharacter::addSkill(const QString& skill)
 {
-    _playerState->skills.push_back(skill);
+    _skills.push_back(skill);
 }
 
 void PlayerCharacter::reset()
