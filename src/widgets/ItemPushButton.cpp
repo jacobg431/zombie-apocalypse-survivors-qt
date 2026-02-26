@@ -17,9 +17,8 @@ void ItemPushButton::applyStyling()
 {
     setStyleSheet(R"(
         QPushButton {
-            background-color: #3a3a3a;
-            border: 1px solid #555;
-            border-radius: 6px;
+            background-color: #3b000000;
+            border: 2px solid #3b000000;
             max-height: 96px;
             min-height: 96px;
             max-width: 96px;
@@ -27,18 +26,18 @@ void ItemPushButton::applyStyling()
         }
 
         QPushButton:hover {
-            background-color: #505050;
+            border-color: #5bff5733;
         }
 
         QPushButton:checked {
-            background-color: #007acc;
-            border: 2px solid #00bfff;
+            border-color: #c9ff5733;
+            background-color: #4aff5733;
         }
 
         QPushButton:disabled {
-            background-color: #222;
-            color: #666;
-            border: 1px solid #444;
+            background-color: #8c3e3e3e;
+            border-color: #5b3e3e3e;
+            color: #929292;
         }
     )");
 }
