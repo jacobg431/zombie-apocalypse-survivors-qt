@@ -26,7 +26,7 @@ QFrame* CharacterStatsPanel::createWrapper()
     _attributesInfoBox = new InfoBox("Class Attributes", ATTRIBUTES, ATTRIBUTES_DEFAULT_VALUES);
     _skillsInfoBox = new InfoBox("Class Skills", "Some skills");
 
-    auto *wrapperFrame = new QFrame();
+    auto *wrapperFrame = new QFrame;
     wrapperFrame->setObjectName("wrapper");
     auto *wrapperLayout = new QVBoxLayout(wrapperFrame);
     wrapperLayout->addWidget(_descriptionInfoBox);

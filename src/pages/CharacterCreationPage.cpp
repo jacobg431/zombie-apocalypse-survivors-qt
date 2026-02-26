@@ -16,13 +16,13 @@
 
 #include "pages/CharacterCreationPage.hpp"
 #include "panels/CharacterStatsPanel.hpp"
+#include "panels/CharacterImagePanel.hpp"
 #include "widgets/CreateCharacterFormBox.hpp"
 #include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
 #include "utils.hpp"
 
 int MAX_COLUMN_WIDTH = 400;
-int FIXED_COLUMN_HEIGHT = 875;
 
 CharacterCreationPage::CharacterCreationPage(QWidget *parent) 
     : QWidget(parent)
@@ -70,16 +70,8 @@ QWidget *CharacterCreationPage::createSurvivorForm()
 
 QWidget *CharacterCreationPage::createSurvivorImage()
 {
-    _classImageLabel = new QLabel(this);
-    _classImageLabel->setScaledContents(true);
-    _classImageLabel->setAlignment(Qt::AlignCenter);
-    _classImageLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    auto *component = new QWidget(this);
-    component->setLayout(new QVBoxLayout());
-    component->layout()->addWidget(_classImageLabel);
-
-    return component;
+    _characterImagePanel = new CharacterImagePanel(_formBox->getCurrentSelectorText());
+    return _characterImagePanel;
 }
 
 QWidget *CharacterCreationPage::createCharacterStatsPanel()
@@ -155,13 +147,8 @@ void CharacterCreationPage::updateSelectedClass()
         );
     }
     
-    const int IMAGE_HEIGHT = FIXED_COLUMN_HEIGHT;
-    const int IMAGE_WIDTH = IMAGE_HEIGHT / 1.25;
+    _characterImagePanel->setImage(className);
 
-    QPixmap pixmap(":/resources/images/" + className.toLower() + "-fried.png");
-    glitchSwapPixmap(
-        pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-    );
 }
 
 void CharacterCreationPage::initRoleMap()
@@ -175,31 +162,6 @@ void CharacterCreationPage::initRoleMap()
             const_cast<Survivor*>(
                 manager.getRole(roleName)));
     }
-}
-
-void CharacterCreationPage::glitchSwapPixmap(const QPixmap &finalPixmap)
-{
-    const int frames = 8;
-    const int intervalMs = 16;
-
-    QPixmap base = finalPixmap;
-
-    int *i = new int(0);
-    auto *timer = new QTimer(this);
-
-    connect(timer, &QTimer::timeout, this, [this, timer, base, finalPixmap, i]() mutable
-            {
-        if (*i < 8) {
-            _classImageLabel->setPixmap(makeGlitchFrame(base));
-            (*i)++;
-        } else {
-            _classImageLabel->setPixmap(finalPixmap);
-            timer->stop();
-            timer->deleteLater();
-            delete i;
-        } });
-
-    timer->start(intervalMs);
 }
 
 void CharacterCreationPage::applyStyling()

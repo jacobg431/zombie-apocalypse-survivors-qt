@@ -17,6 +17,7 @@ class QFrame;
 class InfoBox;
 class CreateCharacterFormBox;
 class CharacterStatsPanel;
+class CharacterImagePanel;
 
 class CharacterCreationPage : public QWidget
 {
@@ -38,10 +39,9 @@ private:
 
     CreateCharacterFormBox* _formBox = nullptr;
     CharacterStatsPanel* _characterStatsPanel = nullptr;
-    QLabel* _classImageLabel;
+    CharacterImagePanel* _characterImagePanel = nullptr;
 
     void initRoleMap();
-    void glitchSwapPixmap(const QPixmap& finalPm);
     void applyStyling();
 
 signals:
