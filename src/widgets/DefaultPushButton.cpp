@@ -8,7 +8,6 @@
 DefaultPushButton::DefaultPushButton(const QString& text, QWidget* parent) 
     : QPushButton(text, parent) 
 {
-    setCheckable(true);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     applyStyling();
 }
@@ -17,19 +16,23 @@ void DefaultPushButton::applyStyling()
 {
     setStyleSheet(R"(
         QPushButton {
-            background-color: #3a3a3a;
-            border: 1px solid #555;
+            background-color: #c91e1e1e;
+            color: white;
+            border: 2px solid #c91e1e1e;
             border-radius: 6px;
+            padding: 6px 12px;
+            text-align: center;
             font-size: 32px;
         }
 
         QPushButton:hover {
-            background-color: #505050;
+            background-color: #c91e1e1e;
+            border-color: #5bff5733;
         }
-
-        QPushButton:checked {
-            background-color: #007acc;
-            border: 2px solid #00bfff;
+        
+        QPushButton:pressed {
+            background-color: #c9ff5733;
+            padding: 4px 10px;
         }
 
         QPushButton:disabled {
