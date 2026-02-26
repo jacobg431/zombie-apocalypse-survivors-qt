@@ -1,3 +1,4 @@
+
 #include <QString>
 #include <QStringList>
 
@@ -16,9 +17,27 @@ QString PlayerCharacter::getDescription()
 {
     return _description;
 }
-QStringList PlayerCharacter::getSkills()
+QString PlayerCharacter::getSkills()
+{
+    return _skills.join("\n");
+}
+QStringList PlayerCharacter::getSkillsStringList()
 {
     return _skills;
+}
+QStringList PlayerCharacter::getAttributesStringList()
+{
+    QStringList attributes = {};
+    
+    attributes.push_back(QString::number(getStrength()));
+    attributes.push_back(QString::number(getEndurance()));
+    attributes.push_back(QString::number(getAgility()));
+    attributes.push_back(QString::number(getCourage()));
+    attributes.push_back(QString::number(getIntelligence()));
+    attributes.push_back(QString::number(getLeadership()));
+    attributes.push_back(QString::number(getTrustWorthiness()));
+
+    return attributes;
 }
 
 int PlayerCharacter::getStrength()

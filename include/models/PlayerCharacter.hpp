@@ -12,7 +12,9 @@ public:
     QString getCharacterName();
     QString getClassName();
     QString getDescription();
-    QStringList getSkills();
+    QString getSkills();
+    QStringList getSkillsStringList();
+    QStringList getAttributesStringList();
 
     int getStrength();
     int getEndurance();
