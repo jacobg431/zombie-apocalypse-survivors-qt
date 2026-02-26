@@ -10,6 +10,7 @@ class QString;
 class QLabel;
 class QFrame;
 class CharacterActionsPanel;
+class CharacterImagePanel;
 
 class DisplayCharacterPage : public QWidget
 {
@@ -22,13 +23,15 @@ private:
     QMap<QString, QLabel *> _attributesMap;
 
     QWidget* createCharacterStatsPanel();
+    QWidget* createCharacterImagePanel();
     QWidget* createCharacterActionsPanel();
     QWidget* createInventoryPanel();
     QFrame* createWrapper();
 
     void applyStyling();
 
-    CharacterActionsPanel* _characterActionsPanel;
+    CharacterActionsPanel* _characterActionsPanel = nullptr;
+    CharacterImagePanel* _characterImagePanel = nullptr;
 
 signals:
     void itemsShopClicked();

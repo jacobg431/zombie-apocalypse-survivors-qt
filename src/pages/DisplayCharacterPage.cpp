@@ -9,6 +9,7 @@
 
 #include "pages/DisplayCharacterPage.hpp"
 #include "panels/CharacterStatsPanel.hpp"
+#include "panels/CharacterImagePanel.hpp"
 #include "panels/CharacterActionsPanel.hpp"
 #include "panels/ItemsPanel.hpp"
 #include "managers/RoleManager.hpp"
@@ -26,6 +27,14 @@ QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
     auto *container = new CharacterStatsPanel();
     return container;
+}
+
+QWidget* DisplayCharacterPage::createCharacterImagePanel()
+{
+    auto& manager = RoleManager::instance();
+    const QString& role = manager.availableRoles()[0];
+    _characterImagePanel = new CharacterImagePanel(role);
+    return _characterImagePanel;
 }
 
 QWidget* DisplayCharacterPage::createCharacterActionsPanel()
@@ -55,6 +64,7 @@ QFrame* DisplayCharacterPage::createWrapper()
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
 
     panelsWrapperLayout->addWidget(createCharacterStatsPanel());
+    panelsWrapperLayout->addWidget(createCharacterImagePanel());
     panelsWrapperLayout->addWidget(createCharacterActionsPanel());
     panelsWrapperLayout->addWidget(createInventoryPanel());
 

@@ -9,11 +9,10 @@
 #include "utils.hpp"
 
 CharacterImagePanel::CharacterImagePanel(const QString& className, QWidget* parent)
-    : QWidget(parent)
+    : _className(className), QWidget(parent)
 {
     auto *layout = new QVBoxLayout(this);
     layout->addWidget(createWrapper());
-    setImage(className);
     applyStyling();
 }
 
@@ -47,6 +46,12 @@ void CharacterImagePanel::setImage(const QString& className)
             Qt::SmoothTransformation
         )
     );
+}
+
+void CharacterImagePanel::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+    setImage(_className);
 }
 
 void CharacterImagePanel::swapImageGlitchEffect(const QPixmap &finalPixmap)
