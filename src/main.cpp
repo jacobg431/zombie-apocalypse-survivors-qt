@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     ResourceManager resourceManager(&app);
+    SessionManager sessionManager();
 
     // --- Main window ---
 
