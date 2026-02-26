@@ -6,12 +6,10 @@
 class QStackedWidget;
 class MainMenuPage;
 class CharacterCreationPage;
-class ActionsMenuPage;
 class ItemsShopPage;
 class DisplayCharacterPage;
 class PauseMenu;
 class GoBackPanel;
-class CharacterActionsPanel;
 
 class AppWindow : public QMainWindow
 {
@@ -32,8 +30,6 @@ private:
     DisplayCharacterPage *_displayCharacter;
     PauseMenu *_pauseOverlay;
     GoBackPanel *_goBackPanel;
-    CharacterActionsPanel *_characterActionsPanel;
-    ActionsMenuPage *_actionsMenu;
 
     void readyPauseMenu();
     void stackPages();
@@ -47,6 +43,5 @@ public slots:
     void showCharacterCreation();
     void showDisplayCharacter();
     void showFight();
-    void showActionsMenu();
     void showShopMenu();
 };
