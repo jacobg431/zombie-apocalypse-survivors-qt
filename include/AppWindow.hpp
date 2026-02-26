@@ -26,13 +26,14 @@ protected:
 
 private:
     QStackedWidget *_stack;
-    MainMenuPage *_menu;
+    MainMenuPage *_mainMenu;
     CharacterCreationPage *_characterCreation;
     ItemsShopPage *_itemsShop;
     DisplayCharacterPage *_displayCharacter;
     PauseMenu *_pauseOverlay;
     GoBackPanel *_goBackPanel;
     CharacterActionsPanel *_characterActionsPanel;
+    ActionsMenuPage *_actionsMenu;
 
     void readyPauseMenu();
     void stackPages();
@@ -45,7 +46,6 @@ public slots:
     void showMainMenu();
     void showCharacterCreation();
     void showDisplayCharacter();
-    void showItemsShop();
     void showFight();
     void showActionsMenu();
     void showShopMenu();
