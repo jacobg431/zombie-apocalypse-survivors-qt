@@ -1,14 +1,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QFormLayout>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QGroupBox>
 #include <QString>
 #include <QLabel>
-#include <QTimer>
-#include <QPainter>
 #include <QFrame>
 
 #include <ZasLib/Roles.hpp>
@@ -173,8 +166,4 @@ void CharacterCreationPage::applyStyling()
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
         }
     )");
-    
-    style()->unpolish(this);
-    style()->polish(this);
-    update();
 }
