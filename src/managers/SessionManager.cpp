@@ -11,7 +11,7 @@ SessionManager::SessionManager(QObject* parent)
     : QObject(parent)
 {}
 
-const PlayerCharacter* SessionManager::getPlayerCharacter()
+PlayerCharacter* SessionManager::getPlayerCharacter()
 {
     return _playerCharacter;
 }
