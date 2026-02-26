@@ -24,6 +24,7 @@ private:
     QComboBox* createClassSelector(QStringList& roles);
     QPushButton* createSubmitButton();
 
+    QLineEdit* _nameInput = nullptr;
     QComboBox* _classSelector = nullptr;
     QPushButton* _submitButton = nullptr;
 
@@ -32,4 +33,7 @@ private:
 signals:
     void classSelectUpdated();
     void characterCreated();
+
+private slots:
+    void onCharacterCreated();
 };
