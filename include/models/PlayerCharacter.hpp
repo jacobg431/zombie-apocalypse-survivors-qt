@@ -6,7 +6,7 @@ class PlayerCharacter
 {
 
 public:
-    PlayerCharacter();
+    PlayerCharacter() = default;
     
     QString getCharacterName();
     QString getClassName();
@@ -44,7 +44,8 @@ public:
         int leadership,
         int trustworthiness
     );
-    
+
+    void setDescription(const QString& description);
     void setSkills(QStringList& skills);
     void addSkill(const QString& skill);
 
