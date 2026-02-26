@@ -1,8 +1,12 @@
-
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
 #include "models/PlayerCharacter.hpp"
+
+PlayerCharacter::PlayerCharacter(QObject* parent) 
+    : QObject(parent)
+{}
 
 // Getters
 QString PlayerCharacter::getCharacterName()
@@ -149,7 +153,7 @@ void PlayerCharacter::setDescription(const QString& description)
 {
     _description = description;
 }
-void PlayerCharacter::setSkills(QStringList& skills)
+void PlayerCharacter::setSkills(const QStringList& skills)
 {
     _skills = skills;
 }
@@ -163,7 +167,7 @@ void PlayerCharacter::reset()
     setCharacterName("");
     setClassName("");
     setDescription("");
-    setSkills({});
+    setSkills(QStringList());
     setAttributes(0, 0, 0, 0, 0, 0, 0);
         
 }

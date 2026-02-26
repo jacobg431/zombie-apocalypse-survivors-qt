@@ -2,14 +2,16 @@
 
 #include <vector>
 
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
-class PlayerCharacter
+class PlayerCharacter : public QObject
 {
+    Q_OBJECT
 
 public:
-    PlayerCharacter() = default;
+    PlayerCharacter(QObject* parent = nullptr);
     
     QString getCharacterName();
     QString getClassName();
