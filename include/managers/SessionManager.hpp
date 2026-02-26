@@ -1,8 +1,10 @@
+#include <vector>
+
 #include <QApplication>
 #include <QSessionManager>
 #include <QSettings>
 
-#include "models/SessionStateModel.hpp"
+#include "models/PlayerCharacter.hpp"
 
 class SessionManager : public QObject
 {
@@ -14,17 +16,14 @@ public:
     SessionManager(const SessionManager&) = delete;
     SessionManager& operator=(const SessionManager&) = delete;
     
+    const PlayerCharacter* getPlayerCharacter(); 
+
     void startNewSession();
     void clearSession();
 
-    void setCharacterName(const QString& characterName);
-    void setClassName(const QString& className);
-    void addExperience(int amount);
-    void applyDamage(int amount);
-
 private:
     explicit SessionManager(QObject* parent = nullptr); 
-    std::unique_ptr<PlayerState> _playerState;
+    PlayerCharacter* _playerCharacter;
 
 signals:
     void sessionStarted(); 

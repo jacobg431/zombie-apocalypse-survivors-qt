@@ -1,5 +1,5 @@
 #include "managers/SessionManager.hpp"
-#include "models/SessionStateModel.hpp"
+#include "models/PlayerCharacter.hpp"
 
 SessionManager& SessionManager::instance()
 {
@@ -11,38 +11,23 @@ SessionManager::SessionManager(QObject* parent)
     : QObject(parent)
 {}
 
+const PlayerCharacter* SessionManager::getPlayerCharacter()
+{
+    return _playerCharacter;
+}
+
 void SessionManager::startNewSession()
 {
-    _playerState = std::make_unique<PlayerState>();
+    _playerCharacter = new PlayerCharacter();
+    
+    connect(_playerCharacter, PlayerCharacter::playerStateChanged,
+    this, SessionManager::playerStateChanged);
+
     emit sessionStarted();
 }
 
 void SessionManager::clearSession()
 {
-    _playerState.reset();
+    _playerCharacter->reset();
     emit sessionCleared();
-}
-
-void SessionManager::setCharacterName(const QString& characterName)
-{
-    _playerState->characterName = characterName;
-    emit playerStateChanged();
-}
-
-void SessionManager::setClassName(const QString& className)
-{
-    _playerState->className = className;
-    emit playerStateChanged();
-}
-
-void SessionManager::addExperience(int amount)
-{
-    _playerState->experience += amount;
-    emit playerStateChanged();
-}
-
-void SessionManager::applyDamage(int amount)
-{
-    _playerState->health -= amount;
-    emit playerStateChanged();
 }
