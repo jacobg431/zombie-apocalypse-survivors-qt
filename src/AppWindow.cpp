@@ -20,7 +20,7 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     readyPauseMenu();
     stackPages();
     wireConnections();
-    showMenu();
+    showMainMenu();
 }
 
 void AppWindow::readyPauseMenu()
@@ -34,23 +34,25 @@ void AppWindow::stackPages()
 {   
     _stack = new QStackedWidget(this);
     setCentralWidget(_stack);
-    _menu = new MainMenuPage(this);
+    _mainMenu = new MainMenuPage(this);
     _characterCreation = new CharacterCreationPage(this);
     _displayCharacter = new DisplayCharacterPage(this);
     _itemsShop = new ItemsShopPage(this);
+    _actionsMenu = new ActionsMenuPage(this);
 
-    _stack->addWidget(_menu);
+    _stack->addWidget(_mainMenu);
     _stack->addWidget(_characterCreation);
     _stack->addWidget(_displayCharacter);
     _stack->addWidget(_itemsShop);
+    _stack->addWidget(_actionsMenu);
 }
 
 void AppWindow::wireConnections()
 {
     // --- Main Menu ---
-    connect(_menu, &MainMenuPage::StartGameClicked, 
+    connect(_mainMenu, &MainMenuPage::StartGameClicked, 
         this, &AppWindow::showCharacterCreation);
-    connect(_menu, &MainMenuPage::QuitGameClicked, 
+    connect(_mainMenu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
 
     // --- Paused Menu ---
@@ -60,51 +62,46 @@ void AppWindow::wireConnections()
     connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
             { setPaused(false); });
     connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
-            { setPaused(false); showMenu(); });
+            { setPaused(false); showMainMenu(); });
 
     // --- Ingame Routing ---
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::showDisplayCharacter);
+
+    //connect(_characterCreation, &CharacterCreationPage::characterCreated,
+    //        this, &AppWindow::showActionsMenu);
+
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
         this, &AppWindow::showDisplayCharacter);
+
+    //connect(_itemsShop, &ItemsShopPage::GoBackClicked,
+    //        this, &AppWindow::showActionsMenu);
+    
     connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
-        this, &AppWindow::showItemsShop);
+            this, &AppWindow::showShopMenu);
+
+    connect(_actionsMenu, &ActionsMenuPage::GoToShopClicked,
+            this, &AppWindow::showShopMenu);
+
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
+
     connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
-        this, &AppWindow::showMenu);
+        this, &AppWindow::showMainMenu);
+
+
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
     connect(shortcut, &QShortcut::activated, this, [=]()
             {
                 if (windowState() & Qt::WindowFullScreen)
                     showNormal();
                 else
-                    showFullScreen();
-            });
-
-    // Page navigation
-    connect(mainMenu, &MainMenuPage::StartGameClicked,
-            this, &AppWindow::showCharacterCreation);
-
-    connect(mainMenu, &MainMenuPage::QuitGameClicked,
-            this, &QWidget::close);
-
-    connect(characterCreation, &CharacterCreationPage::characterCreated,
-            this, &AppWindow::showActionsMenu);
-
-    connect(actionsMenu, &ActionsMenuPage::GoToShopClicked,
-            this, &AppWindow::showShopMenu);
-
-    connect(itemsShop, &ItemsShopPage::GoBackClicked,
-            this, &AppWindow::showActionsMenu);
-
-    // --- Show menu at startup ---
-    showMainMenu();
+                    showFullScreen(); });
 }
 
 void AppWindow::showMainMenu()
 {
-    _stack->setCurrentWidget(_menu);
+    _stack->setCurrentWidget(_mainMenu);
 }
 
 void AppWindow::showCharacterCreation()
@@ -119,7 +116,7 @@ void AppWindow::showDisplayCharacter()
 
 void AppWindow::showActionsMenu()
 {
-    stack->setCurrentWidget(actionsMenu);
+    _stack->setCurrentWidget(_actionsMenu);
 }
 
 void AppWindow::showShopMenu()
@@ -157,7 +154,7 @@ bool AppWindow::isPaused() const
 
 bool AppWindow::pauseAllowed() const
 {
-    return _stack->currentWidget() != _menu;
+    return _stack->currentWidget() != _mainMenu;
 }
 
 void AppWindow::setPaused(bool on)
