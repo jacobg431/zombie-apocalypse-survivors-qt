@@ -17,6 +17,14 @@ GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
     applyStyling();
 }
 
+void GoBackPanel::setButtonText(const QString &text)
+{
+    if (m_button)
+    {
+        m_button->setText(text);
+    }
+}
+
 QFrame* GoBackPanel::createWrapper()
 {
     auto *wrapperFrame = new QFrame;
@@ -29,6 +37,7 @@ QFrame* GoBackPanel::createWrapper()
     m_button = new QPushButton(" ⬅ Go Back  ");
     m_button->setObjectName("goBackButton");
     m_button->setMinimumHeight(200);
+    m_button->setFixedWidth(240);
     m_button->setCursor(Qt::PointingHandCursor);
 
     connect(m_button, &QPushButton::clicked, this, &GoBackPanel::GoBackClicked);

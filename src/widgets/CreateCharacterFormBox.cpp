@@ -57,6 +57,7 @@ QPushButton* CreateCharacterFormBox::createSubmitButton()
     _submitButton = new QPushButton("Create Character", this);
     _submitButton->setCursor(Qt::PointingHandCursor);
     _submitButton->setFixedWidth(INPUT_WIDTH);
+    _submitButton->setMinimumHeight(65);
 
     connect(_submitButton, &QPushButton::clicked, 
         this, &CreateCharacterFormBox::characterCreated);

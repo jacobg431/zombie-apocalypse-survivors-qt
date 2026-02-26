@@ -3,7 +3,6 @@
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
 #include "pages/DisplayCharacterPage.hpp"
-#include "pages/ActionsMenuPage.hpp"
 #include "pages/ItemsShopPage.hpp"
 
 #include "panels/GoBackPanel.hpp"
@@ -38,13 +37,11 @@ void AppWindow::stackPages()
     _characterCreation = new CharacterCreationPage(this);
     _displayCharacter = new DisplayCharacterPage(this);
     _itemsShop = new ItemsShopPage(this);
-    _actionsMenu = new ActionsMenuPage(this);
 
     _stack->addWidget(_mainMenu);
     _stack->addWidget(_characterCreation);
     _stack->addWidget(_displayCharacter);
     _stack->addWidget(_itemsShop);
-    _stack->addWidget(_actionsMenu);
 }
 
 void AppWindow::wireConnections()
@@ -80,8 +77,8 @@ void AppWindow::wireConnections()
     connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
             this, &AppWindow::showShopMenu);
 
-    connect(_actionsMenu, &ActionsMenuPage::GoToShopClicked,
-            this, &AppWindow::showShopMenu);
+    //connect(_actionsMenu, &ActionsMenuPanel::GoToShopClicked,
+    //        this, &AppWindow::showShopMenu);
 
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
@@ -114,10 +111,6 @@ void AppWindow::showDisplayCharacter()
     _stack->setCurrentWidget(_displayCharacter);
 }
 
-void AppWindow::showActionsMenu()
-{
-    _stack->setCurrentWidget(_actionsMenu);
-}
 
 void AppWindow::showShopMenu()
 {

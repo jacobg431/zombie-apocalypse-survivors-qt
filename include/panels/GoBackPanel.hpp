@@ -11,6 +11,7 @@ class GoBackPanel : public QWidget
 public:
     explicit GoBackPanel(QWidget *parent = nullptr);
     void applyStyling();
+    void setButtonText(const QString &text);
 
 signals:
     void GoBackClicked();

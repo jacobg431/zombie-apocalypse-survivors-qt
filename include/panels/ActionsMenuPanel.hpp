@@ -8,12 +8,12 @@ class QLabel;
 class QTimer;
 class QMovie;
 
-class ActionsMenuPage : public QWidget
+class ActionsMenuPanel : public QWidget
 {
     Q_OBJECT
 
 public:
-    ActionsMenuPage(QWidget *parent = nullptr);
+    ActionsMenuPanel(QWidget *parent = nullptr);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -37,4 +37,10 @@ private:
 
 signals:
     void GoToShopClicked();
+
+    void FightClicked();
+
+    void ExploreClicked();
+
+    void MainMenuClicked();
 };
