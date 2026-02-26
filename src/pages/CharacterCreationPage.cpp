@@ -13,6 +13,8 @@
 #include "widgets/CreateCharacterFormBox.hpp"
 #include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
+#include "managers/SessionManager.hpp"
+#include "models/PlayerCharacter.hpp"
 #include "utils.hpp"
 
 int MAX_COLUMN_WIDTH = 400;
@@ -55,7 +57,7 @@ QWidget *CharacterCreationPage::createSurvivorForm()
     connect(_formBox, &CreateCharacterFormBox::classSelectUpdated,
         this, &CharacterCreationPage::updateSelectedClass);
     connect(_formBox, &CreateCharacterFormBox::characterCreated,
-        this, &CharacterCreationPage::characterCreated);
+        this, &CharacterCreationPage::onCharacterCreated);
 
     return _formBox;
 }
@@ -98,13 +100,23 @@ QFrame* CharacterCreationPage::createWrapper()
     return wrapperFrame;
 }
 
+QStringList CharacterCreationPage::skillVectorToStringList(std::vector<Skill> skillVector)
+{
+    QStringList skillLines;
+    for (const auto &skill : skillVector)
+    {
+        skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
+    }
+    return skillLines;
+}
+
 void CharacterCreationPage::updateSelectedClass()
 {
     const QString &className = _formBox->getCurrentSelectorText();
     auto& roleManager = RoleManager::instance();
-    const Survivor *class_object = roleManager.getRole(className);
+    const Survivor *classObject = roleManager.getRole(className);
     
-    bool isJester = dynamic_cast<const Jester *>(class_object) != nullptr;
+    bool isJester = dynamic_cast<const Jester *>(classObject) != nullptr;
     if (isJester)
     {
         QStringList skillSymbols = {"🂡", "🂥", "🂧", "🂪", "🂫", "🂬"};
@@ -113,14 +125,8 @@ void CharacterCreationPage::updateSelectedClass()
         _characterStatsPanel->setContentRandom(attributeSymbols, skillSymbols);
     }
     else {
-        auto attributes = class_object->GetAttributes();
-        auto skills = class_object->GetSkills();
-
-        QStringList skillLines;
-        for (const auto &skill : skills)
-        {
-            skillLines << QString::fromStdString(SkillUtils::SkillToString(skill));
-        }
+        auto attributes = classObject->GetAttributes();
+        auto skills = skillVectorToStringList(classObject->GetSkills());
 
         const QStringList attributeValues = {
             QString::number(attributes.GetStrength()),
@@ -135,13 +141,36 @@ void CharacterCreationPage::updateSelectedClass()
         _characterStatsPanel->setContent
         (
             attributeValues,
-            QString::fromStdString(class_object->GetRoleDescription()),
-            skillLines.join("\n")
+            QString::fromStdString(classObject->GetRoleDescription()),
+            skills.join("\n")
         );
     }
     
     _characterImagePanel->setImage(className);
 
+}
+
+void CharacterCreationPage::onCharacterCreated()
+{
+    const QString &className = _formBox->getCurrentSelectorText();
+    auto& roleManager = RoleManager::instance();
+    const Survivor *classObject = roleManager.getRole(className);
+    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    
+    playerCharacter->setDescription
+    (
+        QString::fromStdString(classObject->GetRoleDescription())
+    );
+    playerCharacter->setSkills(skillVectorToStringList(classObject->GetSkills()));
+    playerCharacter->setStrength(classObject->GetAttributes().GetStrength());
+    playerCharacter->setEndurance(classObject->GetAttributes().GetEndurance());
+    playerCharacter->setAgility(classObject->GetAttributes().GetAgility());
+    playerCharacter->setCourage(classObject->GetAttributes().GetCourage());
+    playerCharacter->setIntelligence(classObject->GetAttributes().GetIntelligence());
+    playerCharacter->setLeadership(classObject->GetAttributes().GetLeadership());
+    playerCharacter->setTrustWorthiness(classObject->GetAttributes().GetTrustworthiness());
+
+    emit characterCreated();
 }
 
 void CharacterCreationPage::applyStyling()

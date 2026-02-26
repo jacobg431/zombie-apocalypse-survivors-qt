@@ -32,14 +32,8 @@ DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
 
 QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
-    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
-    const QStringList attributes = playerCharacter->getAttributesStringList();
-    const QString description = playerCharacter->getDescription();
-    const QString skills = playerCharacter->getSkills();
-
-    auto *container = new CharacterStatsPanel();
-    container->setContent(attributes, description, skills);
-    return container;
+    _characterStatsPanel = new CharacterStatsPanel();
+    return _characterStatsPanel;
 }
 
 QWidget* DisplayCharacterPage::createCharacterImagePanel()
@@ -97,6 +91,16 @@ QFrame* DisplayCharacterPage::createWrapper()
     panelsWrapperLayout->addWidget(createInventoryPanel(), 2, Qt::AlignRight);
 
     return panelsWrapperFrame;
+}
+
+void DisplayCharacterPage::updateStatsPanelContent()
+{
+    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    const QStringList attributes = playerCharacter->getAttributesStringList();
+    const QString description = playerCharacter->getDescription();
+    const QString skills = playerCharacter->getSkills();
+
+    _characterStatsPanel->setContent(attributes, description, skills);
 }
 
 void DisplayCharacterPage::applyStyling()

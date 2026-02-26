@@ -25,7 +25,7 @@ public:
 
 private:
     explicit SessionManager(QObject* parent = nullptr); 
-    PlayerCharacter* _playerCharacter;
+    PlayerCharacter* _playerCharacter = nullptr;
 
 signals:
     void sessionStarted(); 

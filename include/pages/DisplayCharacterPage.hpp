@@ -9,6 +9,7 @@ class QPushButton;
 class QString;
 class QLabel;
 class QFrame;
+class CharacterStatsPanel;
 class CharacterActionsPanel;
 class CharacterImagePanel;
 class ActionsMenuPanel;
@@ -20,6 +21,7 @@ class DisplayCharacterPage : public QWidget
 
 public:
     explicit DisplayCharacterPage(QWidget *parent = nullptr);
+    void updateStatsPanelContent();
 
 private:
     QMap<QString, QLabel *> _attributesMap;
@@ -33,6 +35,7 @@ private:
 
     void applyStyling();
 
+    CharacterStatsPanel* _characterStatsPanel = nullptr;
     ActionsMenuPanel* _actionsMenuPanel = nullptr;
     CharacterImagePanel* _characterImagePanel = nullptr;
     GoBackPanel* _goBackPanel = nullptr;

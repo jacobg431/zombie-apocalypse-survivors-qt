@@ -63,7 +63,7 @@ void AppWindow::wireConnections()
 
     // --- Ingame Routing ---
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
-        this, &AppWindow::showDisplayCharacter);
+        this, &AppWindow::onCharacterCreated);
 
     //connect(_characterCreation, &CharacterCreationPage::characterCreated,
     //        this, &AppWindow::showActionsMenu);
@@ -159,4 +159,10 @@ void AppWindow::setPaused(bool on)
     }
 
     // pause game things here
+}
+
+void AppWindow::onCharacterCreated()
+{
+    _displayCharacter->updateStatsPanelContent();
+    showDisplayCharacter();
 }

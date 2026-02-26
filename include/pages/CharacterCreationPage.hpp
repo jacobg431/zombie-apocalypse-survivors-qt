@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <QWidget>
 #include <QMap>
 
@@ -39,6 +41,9 @@ private:
     CharacterStatsPanel* _characterStatsPanel = nullptr;
     CharacterImagePanel* _characterImagePanel = nullptr;
 
+    QStringList skillVectorToStringList(std::vector<Skill> skillVector);
+
+    void onCharacterCreated();
     void applyStyling();
 
 signals:

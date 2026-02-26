@@ -8,8 +8,11 @@ SessionManager& SessionManager::instance()
 }
 
 SessionManager::SessionManager(QObject* parent)
-    : QObject(parent)
-{}
+    : QObject(parent), _playerCharacter(new PlayerCharacter())
+{
+    connect(_playerCharacter, &PlayerCharacter::playerStateChanged,
+    this, &SessionManager::playerStateChanged);
+}
 
 PlayerCharacter* SessionManager::getPlayerCharacter()
 {
@@ -18,11 +21,7 @@ PlayerCharacter* SessionManager::getPlayerCharacter()
 
 void SessionManager::startNewSession()
 {
-    _playerCharacter = new PlayerCharacter();
-    
-    connect(_playerCharacter, PlayerCharacter::playerStateChanged,
-    this, SessionManager::playerStateChanged);
-
+    _playerCharacter->reset();
     emit sessionStarted();
 }
 
