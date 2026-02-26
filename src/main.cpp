@@ -1,9 +1,9 @@
 #include <QApplication>
-#include "AppWindow.hpp"
 #include <QFontDatabase>
 #include <QFile>
 #include <QList>
-#include <QShortcut>
+
+#include "AppWindow.hpp"
 
 int main(int argc, char *argv[])
 {
