@@ -10,9 +10,7 @@
 
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
 {
-
     auto *layout = new QVBoxLayout(this);
-
     auto *innerWrapper = createInnerWrapper(title, buttonText);
     layout->addWidget(innerWrapper);
     layout->setAlignment(m_button, Qt::AlignCenter);
@@ -25,6 +23,7 @@ QLabel* ItemsPanel::createTitleLabel(const QString& title)
     auto *label = new QLabel(title);
     label->setAlignment(Qt::AlignCenter);
     label->setObjectName("panelTitle");
+    label->setMinimumWidth(500);
     return label;
 }
 
@@ -34,7 +33,7 @@ QFrame* ItemsPanel::createGrid()
     gridWrapperFrame->setObjectName("gridWrapper");
 
     auto *grid = new QGridLayout(gridWrapperFrame);
-    grid->setSpacing(8);
+    grid->setSpacing(16);
     grid->setContentsMargins(0, 0, 0, 0); 
 
     for (int row = 0; row < 4; ++row)
@@ -84,7 +83,7 @@ QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
 
     auto *bottomWrapperLayout = new QHBoxLayout(bottomWrapperFrame);
     bottomWrapperLayout->setContentsMargins(0, 0, 0, 0);
-    bottomWrapperLayout->addWidget(m_selectedItemLabel);
+    bottomWrapperLayout->addWidget(m_selectedItemLabel, 0);
     bottomWrapperLayout->addStretch();
     bottomWrapperLayout->addWidget(m_button);
 
@@ -95,13 +94,15 @@ QFrame* ItemsPanel::createInnerWrapper(const QString& title, const QString& butt
 {
     auto *innerWrapperFrame = new QFrame;
     innerWrapperFrame->setObjectName("innerWrapper");
-
+    
+    auto *itemGrid = createGrid();
+    auto *bottomWrapper = createBottomWrapper(buttonText);
+    bottomWrapper->setFixedWidth(itemGrid->sizeHint().width());
+    
     auto *innerLayout = new QVBoxLayout(innerWrapperFrame);
-
-    innerLayout->addWidget(createTitleLabel(title), 0);
-    innerLayout->addWidget(createGrid(), 1);
-    innerLayout->addSpacing(10);
-    innerLayout->addWidget(createBottomWrapper(buttonText), 0);
+    innerLayout->addWidget(createTitleLabel(title), 0, Qt::AlignHCenter);
+    innerLayout->addWidget(itemGrid, 1, Qt::AlignHCenter);
+    innerLayout->addWidget(bottomWrapper, 0, Qt::AlignHCenter);
 
     return innerWrapperFrame;
 }
@@ -111,18 +112,20 @@ void ItemsPanel::applyStyling()
     setStyleSheet(R"(
 
         QFrame {
-            background-color: #2E2E2E;
+            background-color: transparent;
             border-radius: 10px;
-            padding: 15px;
+            padding: 0px;
         }
 
         QFrame#innerWrapper {
             border-radius: 10px;
-            padding: 15px;
+            padding: 16px;
+
+            border-image: url(:resources/images/parchment.png) 0 0 0 0 stretch stretch;
         }
 
         QFrame#gridWrapper {
-            padding: 0px;
+            padding: 32px;
         }
 
         QFrame#bottomWrapper {
@@ -131,16 +134,20 @@ void ItemsPanel::applyStyling()
 
         QLabel#panelTitle {
             font-size: 32px;
-            font-weight: bold;
             margin-bottom: 10px;
             max-height: 64px;
+            color: #FF5733;
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
+            margin-left: 64px;
+            margin-right: 64px;
         }
 
         QLabel#selectedItemText {
             font-size: 16px;
-            color: #ddd;
+            color: #FF5733;
             padding: 0px;
+            margin: 12px;
+            border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
         }
-
     )");
 }
