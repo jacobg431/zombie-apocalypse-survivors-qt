@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 #include <QString>
@@ -49,7 +51,7 @@ public:
     );
 
     void setDescription(const QString& description);
-    void setSkills(QStringList& skills);
+    void setSkills(const QStringList& skills);
     void addSkill(const QString& skill);
 
     void reset();

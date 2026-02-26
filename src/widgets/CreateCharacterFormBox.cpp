@@ -68,9 +68,9 @@ QPushButton* CreateCharacterFormBox::createSubmitButton()
 
 void CreateCharacterFormBox::onCharacterCreated()
 {
-    auto& sessionManager = SessionManager::instance();
-    sessionManager.setCharacterName(_nameInput->text());
-    sessionManager.setClassName(_classSelector->currentText());
+    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    playerCharacter->setCharacterName(_nameInput->text());
+    playerCharacter->setClassName(_classSelector->currentText());
     emit characterCreated();
 }
 

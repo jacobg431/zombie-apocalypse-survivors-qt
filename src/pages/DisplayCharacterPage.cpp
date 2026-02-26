@@ -15,6 +15,8 @@
 #include "panels/ActionsMenuPanel.hpp"
 #include "panels/GoBackPanel.hpp"
 #include "managers/RoleManager.hpp"
+#include "managers/SessionManager.hpp"
+#include "models/PlayerCharacter.hpp"
 
 DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
     : QWidget(parent)
@@ -30,15 +32,23 @@ DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
 
 QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 {
+    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    const QStringList attributes = playerCharacter->getAttributesStringList();
+    const QString description = playerCharacter->getDescription();
+    const QString skills = playerCharacter->getSkills();
+
     auto *container = new CharacterStatsPanel();
+    container->setContent(attributes, description, skills);
     return container;
 }
 
 QWidget* DisplayCharacterPage::createCharacterImagePanel()
 {
-    auto& manager = RoleManager::instance();
-    const QString& role = manager.availableRoles()[0];
-    _characterImagePanel = new CharacterImagePanel(role);
+    auto& sessionManager = SessionManager::instance();
+    const QString className = sessionManager
+        .getPlayerCharacter()->getClassName();
+
+    _characterImagePanel = new CharacterImagePanel(className);
     return _characterImagePanel;
 }
 
