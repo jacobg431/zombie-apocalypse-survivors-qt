@@ -23,6 +23,14 @@ CreateCharacterFormBox::CreateCharacterFormBox(
     layout->addRow(createClassSelector(roles));
     layout->addRow(createSubmitButton());
 
+    if (_nameInput->text().isEmpty())
+    {
+        _submitButton->setEnabled(false);
+    }
+
+    connect(_nameInput, &QLineEdit::textChanged, this, [this](const QString &text)
+            { _submitButton->setEnabled(!text.isEmpty()); });
+
     applyStyling();
 }
 
@@ -158,6 +166,12 @@ void CreateCharacterFormBox::applyStyling()
         QPushButton:pressed {
             background-color: #c9ff5733;
             padding: 4px 10px;
+        }
+
+        QPushButton:disabled {
+            background-color: #c91e1e1e;
+            border-color: #c91e1e1e;
+            color: #7a7a7a;
         }
             
         QGroupBox {
