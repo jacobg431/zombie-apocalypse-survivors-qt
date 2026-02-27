@@ -1,3 +1,6 @@
+#include <QStackedWidget>
+#include <QShortcut>
+
 #include "AppWindow.hpp"
 
 #include "pages/MainMenuPage.hpp"
@@ -6,25 +9,22 @@
 #include "pages/ItemsShopPage.hpp"
 
 #include "panels/GoBackPanel.hpp"
-#include "widgets/PauseMenu.hpp"
-
-#include <QStackedWidget>
-#include <QShortcut>
+#include "panels/PauseOverlayPanel.hpp"
 
 AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
 {
     // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
 
-    readyPauseMenu();
+    readyPauseOverlayPanel();
     stackPages();
     wireConnections();
     showMainMenu();
 }
 
-void AppWindow::readyPauseMenu()
+void AppWindow::readyPauseOverlayPanel()
 {
-    _pauseOverlay = new PauseMenu(this);
+    _pauseOverlay = new PauseOverlayPanel(this);
     _pauseOverlay->hide();
     _pauseOverlay->raise();
 }
@@ -52,33 +52,29 @@ void AppWindow::wireConnections()
     connect(_mainMenu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
 
-    // --- Paused Menu ---
+    // --- Pause Overlay ---
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(esc, &QShortcut::activated, this, [this]
-            { if (!pauseAllowed()) return;setPaused(!isPaused()); });
-    connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
-            { setPaused(false); });
-    connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
-            { setPaused(false); showMainMenu(); });
+    connect(esc, &QShortcut::activated, 
+        this, &AppWindow::onEscClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, 
+        this, &AppWindow::onResumeClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::saveClicked,
+        this, &AppWindow::onSaveClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::quitClicked, 
+        this, &AppWindow::onQuitClicked);
 
     // --- Ingame Routing ---
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::onCharacterCreated);
 
-    //connect(_characterCreation, &CharacterCreationPage::characterCreated,
-    //        this, &AppWindow::showActionsMenu);
-
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
         this, &AppWindow::showDisplayCharacter);
-
-    //connect(_itemsShop, &ItemsShopPage::GoBackClicked,
-    //        this, &AppWindow::showActionsMenu);
     
     connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
             this, &AppWindow::showShopMenu);
-
-    //connect(_actionsMenu, &ActionsMenuPanel::GoToShopClicked,
-    //        this, &AppWindow::showShopMenu);
 
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
@@ -86,14 +82,9 @@ void AppWindow::wireConnections()
     connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
         this, &AppWindow::showMainMenu);
 
-
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
-    connect(shortcut, &QShortcut::activated, this, [=]()
-            {
-                if (windowState() & Qt::WindowFullScreen)
-                    showNormal();
-                else
-                    showFullScreen(); });
+    connect(shortcut, &QShortcut::activated, 
+        this, onF11Clicked);
 }
 
 void AppWindow::showMainMenu()
@@ -157,12 +148,38 @@ void AppWindow::setPaused(bool on)
     {
         _pauseOverlay->raise();
     }
+}
 
-    // pause game things here
+void AppWindow::onEscClicked()
+{
+    if (!pauseAllowed()) return; 
+    setPaused(!isPaused());
+}
+
+void AppWindow::onF11Clicked()
+{
+    if (windowState() & Qt::WindowFullScreen)
+        showNormal();
+    else
+        showFullScreen();
 }
 
 void AppWindow::onCharacterCreated()
 {
     _displayCharacter->updateStatsPanelContent();
     showDisplayCharacter();
+}
+
+void AppWindow::onResumeClicked()
+{
+    setPaused(false);
+}
+
+void AppWindow::onSaveClicked()
+{}
+
+void AppWindow::onQuitClicked()
+{
+    setPaused(false); 
+    showMainMenu();
 }

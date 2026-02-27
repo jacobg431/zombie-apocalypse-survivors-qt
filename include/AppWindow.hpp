@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QResizeEvent>
@@ -8,7 +9,7 @@ class MainMenuPage;
 class CharacterCreationPage;
 class ItemsShopPage;
 class DisplayCharacterPage;
-class PauseMenu;
+class PauseOverlayPanel;
 class GoBackPanel;
 
 class AppWindow : public QMainWindow
@@ -28,10 +29,10 @@ private:
     CharacterCreationPage *_characterCreation;
     ItemsShopPage *_itemsShop;
     DisplayCharacterPage *_displayCharacter;
-    PauseMenu *_pauseOverlay;
+    PauseOverlayPanel *_pauseOverlay;
     GoBackPanel *_goBackPanel;
 
-    void readyPauseMenu();
+    void readyPauseOverlayPanel();
     void stackPages();
     void wireConnections();
     void setPaused(bool on);
@@ -46,5 +47,10 @@ public slots:
     void showShopMenu();
 
 private slots:
+    void onEscClicked();
+    void onF11Clicked();
     void onCharacterCreated();
+    void onResumeClicked();
+    void onSaveClicked();
+    void onQuitClicked();
 };
