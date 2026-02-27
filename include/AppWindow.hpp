@@ -48,4 +48,8 @@ public slots:
 
 private slots:
     void onCharacterCreated();
+    void onEscClicked();
+    void onResumeClicked();
+    void onSaveClicked();
+    void onQuitClicked();
 };

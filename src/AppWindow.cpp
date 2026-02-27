@@ -52,14 +52,19 @@ void AppWindow::wireConnections()
     connect(_mainMenu, &MainMenuPage::QuitGameClicked, 
         this, &QWidget::close);
 
-    // --- Paused Menu ---
+    // --- Pause Overlay ---
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(esc, &QShortcut::activated, this, [this]
-            { if (!pauseAllowed()) return;setPaused(!isPaused()); });
-    connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, this, [this]
-            { setPaused(false); });
-    connect(_pauseOverlay, &PauseOverlayPanel::quitClicked, this, [this]
-            { setPaused(false); showMainMenu(); });
+    connect(esc, &QShortcut::activated, 
+        this, &AppWindow::onEscClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, 
+        this, &AppWindow::onResumeClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::saveClicked,
+        this, &AppWindow::onSaveClicked);
+
+    connect(_pauseOverlay, &PauseOverlayPanel::quitClicked, 
+        this, &AppWindow::onQuitClicked);
 
     // --- Ingame Routing ---
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
@@ -147,12 +152,30 @@ void AppWindow::setPaused(bool on)
     {
         _pauseOverlay->raise();
     }
-
-    // pause game things here
 }
 
 void AppWindow::onCharacterCreated()
 {
     _displayCharacter->updateStatsPanelContent();
     showDisplayCharacter();
+}
+
+void AppWindow::onEscClicked()
+{
+    if (!pauseAllowed()) return; 
+    setPaused(!isPaused());
+}
+
+void AppWindow::onResumeClicked()
+{
+    setPaused(false);
+}
+
+void AppWindow::onSaveClicked()
+{}
+
+void AppWindow::onQuitClicked()
+{
+    setPaused(false); 
+    showMainMenu();
 }
