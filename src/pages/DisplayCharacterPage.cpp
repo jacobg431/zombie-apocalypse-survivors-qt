@@ -15,7 +15,7 @@
 #include "panels/ActionsMenuPanel.hpp"
 #include "panels/GoBackPanel.hpp"
 #include "managers/RoleManager.hpp"
-#include "managers/SessionManager.hpp"
+#include "managers/GameStateManager.hpp"
 #include "models/PlayerCharacter.hpp"
 
 DisplayCharacterPage::DisplayCharacterPage(QWidget *parent)
@@ -38,9 +38,10 @@ QWidget* DisplayCharacterPage::createCharacterStatsPanel()
 
 QWidget* DisplayCharacterPage::createCharacterImagePanel()
 {
-    auto& sessionManager = SessionManager::instance();
-    const QString className = sessionManager
-        .getPlayerCharacter()->getClassName();
+    const QString className = GameStateManager::instance()
+        .getGameState()
+        .getPlayer()
+        .getClassName();
 
     _characterImagePanel = new CharacterImagePanel(className);
     return _characterImagePanel;
@@ -95,10 +96,13 @@ QFrame* DisplayCharacterPage::createWrapper()
 
 void DisplayCharacterPage::updateStatsPanelContent()
 {
-    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
-    const QStringList attributes = playerCharacter->getAttributesStringList();
-    const QString description = playerCharacter->getDescription();
-    const QString skills = playerCharacter->getSkills();
+    auto& playerCharacter = GameStateManager::instance()
+        .getGameState()
+        .getPlayer();
+
+    const QStringList attributes = playerCharacter.getAttributesStringList();
+    const QString description = playerCharacter.getDescription();
+    const QString skills = playerCharacter.getSkills();
 
     _characterStatsPanel->setContent(attributes, description, skills);
 }

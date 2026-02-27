@@ -16,8 +16,6 @@ public:
     SessionManager(const SessionManager&) = delete;
     SessionManager& operator=(const SessionManager&) = delete;
     
-    PlayerCharacter* getPlayerCharacter(); 
-
     void startNewSession();
     void endSession();
 

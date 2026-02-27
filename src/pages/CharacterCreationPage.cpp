@@ -13,7 +13,7 @@
 #include "widgets/CreateCharacterFormBox.hpp"
 #include "widgets/InfoBox.hpp"
 #include "managers/RoleManager.hpp"
-#include "managers/SessionManager.hpp"
+#include "managers/GameStateManager.hpp"
 #include "models/PlayerCharacter.hpp"
 #include "utils.hpp"
 
@@ -155,20 +155,22 @@ void CharacterCreationPage::onCharacterCreated()
     const QString &className = _formBox->getCurrentSelectorText();
     auto& roleManager = RoleManager::instance();
     const Survivor *classObject = roleManager.getRole(className);
-    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    auto& playerCharacter = GameStateManager::instance()
+        .getGameState()
+        .getPlayer();
     
-    playerCharacter->setDescription
+    playerCharacter.setDescription
     (
         QString::fromStdString(classObject->GetRoleDescription())
     );
-    playerCharacter->setSkills(skillVectorToStringList(classObject->GetSkills()));
-    playerCharacter->setStrength(classObject->GetAttributes().GetStrength());
-    playerCharacter->setEndurance(classObject->GetAttributes().GetEndurance());
-    playerCharacter->setAgility(classObject->GetAttributes().GetAgility());
-    playerCharacter->setCourage(classObject->GetAttributes().GetCourage());
-    playerCharacter->setIntelligence(classObject->GetAttributes().GetIntelligence());
-    playerCharacter->setLeadership(classObject->GetAttributes().GetLeadership());
-    playerCharacter->setTrustWorthiness(classObject->GetAttributes().GetTrustworthiness());
+    playerCharacter.setSkills(skillVectorToStringList(classObject->GetSkills()));
+    playerCharacter.setStrength(classObject->GetAttributes().GetStrength());
+    playerCharacter.setEndurance(classObject->GetAttributes().GetEndurance());
+    playerCharacter.setAgility(classObject->GetAttributes().GetAgility());
+    playerCharacter.setCourage(classObject->GetAttributes().GetCourage());
+    playerCharacter.setIntelligence(classObject->GetAttributes().GetIntelligence());
+    playerCharacter.setLeadership(classObject->GetAttributes().GetLeadership());
+    playerCharacter.setTrustWorthiness(classObject->GetAttributes().GetTrustworthiness());
 
     emit characterCreated();
 }
