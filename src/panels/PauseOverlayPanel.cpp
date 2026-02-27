@@ -1,23 +1,23 @@
-#include "panels/PauseOverlayPanel.hpp"
-
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>
+
+#include "panels/PauseOverlayPanel.hpp"
+#include "widgets/DefaultPushButton.hpp"
 
 PauseOverlayPanel::PauseOverlayPanel(QWidget *parent) : QWidget(parent)
 {
     setObjectName("pauseMenu");
     setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet("#pauseMenu { background-color: rgba(0,0,0,160); }");
 
     auto *layout = new QVBoxLayout(this);
     auto *title = new QLabel("Game Paused", this);   
     title->setAlignment(Qt::AlignCenter);
 
-    auto *resumeButton = new QPushButton("Resume", this);
+    auto *resumeButton = new DefaultPushButton("Resume", this);
     resumeButton->setFixedWidth(200);
 
-    auto *returnToMenuButton = new QPushButton("Return to Menu", this);
+    auto *returnToMenuButton = new DefaultPushButton("Quit", this);
     returnToMenuButton->setFixedWidth(200);
 
     layout->addStretch(); 
@@ -26,6 +26,19 @@ PauseOverlayPanel::PauseOverlayPanel(QWidget *parent) : QWidget(parent)
     layout->addWidget(returnToMenuButton, 0, Qt::AlignCenter);
     layout->addStretch();
 
+    applyStyling();
+
     connect(resumeButton, &QPushButton::clicked, this, &PauseOverlayPanel::ResumeClicked);
     connect(returnToMenuButton, &QPushButton::clicked, this, &PauseOverlayPanel::ReturnToMenuClicked);
+}
+
+void PauseOverlayPanel::applyStyling()
+{
+    setStyleSheet(R"(
+
+        QWidget#pauseMenu { 
+            background-color: rgba(0,0,0,200); 
+        }
+            
+    )");
 }

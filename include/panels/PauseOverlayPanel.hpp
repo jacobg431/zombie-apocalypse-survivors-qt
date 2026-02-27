@@ -8,6 +8,9 @@ class PauseOverlayPanel : public QWidget
 public:
     explicit PauseOverlayPanel(QWidget *parent = nullptr);
 
+private:
+    void applyStyling();
+
 signals:
     void ResumeClicked();
     void ReturnToMenuClicked();
