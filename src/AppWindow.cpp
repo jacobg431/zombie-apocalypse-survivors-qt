@@ -47,9 +47,9 @@ void AppWindow::stackPages()
 void AppWindow::wireConnections()
 {
     // --- Main Menu ---
-    connect(_mainMenu, &MainMenuPage::StartGameClicked, 
+    connect(_mainMenu, &MainMenuPage::startGameClicked, 
         this, &AppWindow::showCharacterCreation);
-    connect(_mainMenu, &MainMenuPage::QuitGameClicked, 
+    connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
         this, &QWidget::close);
 
     // --- Pause Overlay ---

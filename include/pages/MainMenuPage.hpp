@@ -9,6 +9,6 @@ public:
     explicit MainMenuPage(QWidget *parent = nullptr);
 
 signals:
-    void StartGameClicked();
-    void QuitGameClicked();
+    void startGameClicked();
+    void quitToDesktopClicked();
 };

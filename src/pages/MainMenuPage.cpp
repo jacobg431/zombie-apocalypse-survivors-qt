@@ -39,6 +39,8 @@ MainMenuPage::MainMenuPage(QWidget *parent) : QWidget(parent)
     layout->addWidget(button_quit, 0, Qt::AlignCenter);
     layout->addStretch();
 
-    QObject::connect(button_quit, &QPushButton::clicked, this, &MainMenuPage::QuitGameClicked);
-    QObject::connect(button_start, &QPushButton::clicked, this, &MainMenuPage::StartGameClicked);
+    QObject::connect(button_start, &QPushButton::clicked, 
+        this, &MainMenuPage::startGameClicked);
+    QObject::connect(button_quit, &QPushButton::clicked, 
+        this, &MainMenuPage::quitToDesktopClicked);
 }
