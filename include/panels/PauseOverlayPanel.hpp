@@ -1,12 +1,12 @@
 #pragma once
 #include <QWidget>
 
-class PauseMenu : public QWidget
+class PauseOverlayPanel : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit PauseMenu(QWidget *parent = nullptr);
+    explicit PauseOverlayPanel(QWidget *parent = nullptr);
 
 signals:
     void ResumeClicked();

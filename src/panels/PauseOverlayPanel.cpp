@@ -1,10 +1,10 @@
-#include "widgets/PauseMenu.hpp"
+#include "panels/PauseOverlayPanel.hpp"
 
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLabel>
 
-PauseMenu::PauseMenu(QWidget *parent) : QWidget(parent)
+PauseOverlayPanel::PauseOverlayPanel(QWidget *parent) : QWidget(parent)
 {
     setObjectName("pauseMenu");
     setAttribute(Qt::WA_StyledBackground, true);
@@ -26,6 +26,6 @@ PauseMenu::PauseMenu(QWidget *parent) : QWidget(parent)
     layout->addWidget(returnToMenuButton, 0, Qt::AlignCenter);
     layout->addStretch();
 
-    connect(resumeButton, &QPushButton::clicked, this, &PauseMenu::ResumeClicked);
-    connect(returnToMenuButton, &QPushButton::clicked, this, &PauseMenu::ReturnToMenuClicked);
+    connect(resumeButton, &QPushButton::clicked, this, &PauseOverlayPanel::ResumeClicked);
+    connect(returnToMenuButton, &QPushButton::clicked, this, &PauseOverlayPanel::ReturnToMenuClicked);
 }

@@ -6,7 +6,7 @@
 #include "pages/ItemsShopPage.hpp"
 
 #include "panels/GoBackPanel.hpp"
-#include "widgets/PauseMenu.hpp"
+#include "panels/PauseOverlayPanel.hpp"
 
 #include <QStackedWidget>
 #include <QShortcut>
@@ -16,15 +16,15 @@ AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
     // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
 
-    readyPauseMenu();
+    readyPauseOverlayPanel();
     stackPages();
     wireConnections();
     showMainMenu();
 }
 
-void AppWindow::readyPauseMenu()
+void AppWindow::readyPauseOverlayPanel()
 {
-    _pauseOverlay = new PauseMenu(this);
+    _pauseOverlay = new PauseOverlayPanel(this);
     _pauseOverlay->hide();
     _pauseOverlay->raise();
 }
@@ -56,9 +56,9 @@ void AppWindow::wireConnections()
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
-    connect(_pauseOverlay, &PauseMenu::ResumeClicked, this, [this]
+    connect(_pauseOverlay, &PauseOverlayPanel::ResumeClicked, this, [this]
             { setPaused(false); });
-    connect(_pauseOverlay, &PauseMenu::ReturnToMenuClicked, this, [this]
+    connect(_pauseOverlay, &PauseOverlayPanel::ReturnToMenuClicked, this, [this]
             { setPaused(false); showMainMenu(); });
 
     // --- Ingame Routing ---
