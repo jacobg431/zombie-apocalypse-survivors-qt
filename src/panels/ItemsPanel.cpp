@@ -19,7 +19,7 @@ ItemsPanel::ItemsPanel(const QString& title, QWidget *parent)
 }
 
 ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, const QVector<QString>& items, QWidget *parent) : 
-m_items(std::move(items)) 
+m_items(items) 
 {
     normalizeItems(); 
     auto *layout = new QVBoxLayout(this);
@@ -52,7 +52,7 @@ QFrame* ItemsPanel::createGrid()
     {
         for (int col = 0; col < 4; ++col)
         {
-            auto text = m_items.value(row * 4 + col, "empty");
+            auto text = m_items.value(row * 4 + col, "");
             auto *button = new ItemPushButton(text, this);       
             button->setDisabled(false);      
             m_itemButtons.append(button);
@@ -68,11 +68,15 @@ QFrame* ItemsPanel::createGrid()
 
                 if (isSelected) 
                 {
-                    m_selectedItemLabel->setText(button->text());
+                    m_selectedItem = button->text();
+                    m_selectedItemLabel->setText(m_selectedItem);
+                    emit itemSelected(m_selectedItem);
                 }
                 else
                 {
+                    m_selectedItem.clear();
                     m_selectedItemLabel->setText("No item selected");
+                    emit itemSelected(QString());
                 } 
             });
         }
@@ -91,6 +95,10 @@ QFrame* ItemsPanel::createBottomWrapper(const QString& buttonText)
 
     m_button = new DefaultPushButton(buttonText);
     m_button->setEnabled(false);
+
+    connect(m_button, &QPushButton::clicked, this, [this]() {
+    if (!m_selectedItem.isEmpty())
+        emit actionClicked(m_selectedItem);});
 
     auto *bottomWrapperFrame = new QFrame;
     bottomWrapperFrame->setObjectName("bottomWrapper");
@@ -182,8 +190,30 @@ void ItemsPanel::applyStyling()
 void ItemsPanel::normalizeItems()
 {
     while (m_items.size() < 16)
-        m_items.append("empty");
+        m_items.append("");
 
     if (m_items.size() > 16)
         m_items.resize(16);
+}
+
+
+void ItemsPanel::setItems(const QVector<QString>& items)
+{
+    m_items = items;
+    normalizeItems();
+
+    for (int i = 0; i < m_itemButtons.size(); ++i)
+    {
+        QString text = m_items.value(i, "");
+        m_itemButtons[i]->setText(text);
+        m_itemButtons[i]->setEnabled(!text.isEmpty());
+        m_itemButtons[i]->setChecked(false);
+    }
+
+    m_selectedItem.clear();
+    if (m_selectedItemLabel)
+        m_selectedItemLabel->setText("No item selected");
+
+    if (m_button)
+        m_button->setEnabled(false);
 }

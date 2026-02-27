@@ -1,13 +1,10 @@
 #include "managers/ItemsManager.hpp"
 
-
-
 ItemsManager& ItemsManager::instance()
 {
     static ItemsManager instance;
     return instance;
 }
-
 
 ItemsManager::ItemsManager()
 {
@@ -27,7 +24,6 @@ ItemsManager::ItemsManager()
     _items.emplace("Machete",
         std::make_unique<Weapon>("Machete", 2, 22));
 
-
     // Tools
     _items.emplace("Hammer",
         std::make_unique<Tool>("Hammer", 3, 80));
@@ -43,7 +39,6 @@ ItemsManager::ItemsManager()
 
     _items.emplace("Shovel",
         std::make_unique<Tool>("Shovel", 5, 85));
-
 
     // Consumables
     _items.emplace("Medkit",

@@ -7,12 +7,20 @@
 #include <QVector>
 #include <QLabel>
 
+
+
 class ItemsPanel : public QFrame
 {
+    Q_OBJECT
 public:
     explicit ItemsPanel(const QString& title, QWidget *parent = nullptr);
     explicit ItemsPanel(const QString& title, const QString& buttonText, const QVector<QString>& items = {}, QWidget *parent = nullptr);
     void applyStyling();
+    void setItems(const QVector<QString>& items);
+
+signals: 
+    void actionClicked(const QString& itemName);
+    void itemSelected(const QString& itemName);
 
 private:
     QLabel* createTitleLabel(const QString& title);
@@ -22,9 +30,10 @@ private:
     QFrame* createInnerWrapper(const QString& title, const QString& buttonText);
 
     void normalizeItems(); 
-    
+
     QPushButton* m_button = nullptr;
     QVector<QPushButton*> m_itemButtons;
     QLabel* m_selectedItemLabel = nullptr;
     QVector<QString> m_items;
+    QString m_selectedItem;
 };

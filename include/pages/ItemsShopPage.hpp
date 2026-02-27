@@ -2,6 +2,7 @@
 
 #include "panels/GoBackPanel.hpp"
 #include "managers/ItemsManager.hpp"
+#include "panels/ItemsPanel.hpp"
 #include "ZasLib/Equipment.hpp"
 
 #include <QWidget>
@@ -20,10 +21,14 @@ signals:
 
 private:
     GoBackPanel* m_goBackPanel;
-
+    ItemsPanel* m_inventoryPanel = nullptr;
     QWidget* createGoBackPanel();
-    QWidget* createShopPanel();
-    QWidget* createInventoryPanel();
+    ItemsPanel* createShopPanel();
+    ItemsPanel* createInventoryPanel();
     QFrame* createWrapper();
     void applyStyling();
+    QMap<QString, int> itemsInInventory;
+    QVector<QString> inventoryDisplayList() const;
+    QString baseItemName(const QString& displayName) const; 
+
 };
