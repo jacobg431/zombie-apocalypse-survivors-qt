@@ -44,4 +44,7 @@ public slots:
     void showDisplayCharacter();
     void showFight();
     void showShopMenu();
+
+private slots:
+    void onCharacterCreated();
 };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QGroupBox>
 #include <QMap>
 #include <QStringList>

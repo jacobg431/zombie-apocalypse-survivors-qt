@@ -7,6 +7,7 @@
 #include <QFormLayout>
 
 #include "widgets/CreateCharacterFormBox.hpp"
+#include "managers/SessionManager.hpp"
 
 CreateCharacterFormBox::CreateCharacterFormBox(
     QStringList roles,
@@ -32,11 +33,11 @@ QString CreateCharacterFormBox::getCurrentSelectorText()
 
 QLineEdit* CreateCharacterFormBox::createNameInput()
 {
-    auto *nameInput = new QLineEdit(this);
-    nameInput->setObjectName("survivorNameEdit");
-    nameInput->setFixedWidth(INPUT_WIDTH);
+    _nameInput = new QLineEdit(this);
+    _nameInput->setObjectName("survivorNameEdit");
+    _nameInput->setFixedWidth(INPUT_WIDTH);
 
-    return nameInput;
+    return _nameInput;
 }
 
 QComboBox* CreateCharacterFormBox::createClassSelector(QStringList& roles)
@@ -60,9 +61,17 @@ QPushButton* CreateCharacterFormBox::createSubmitButton()
     _submitButton->setMinimumHeight(65);
 
     connect(_submitButton, &QPushButton::clicked, 
-        this, &CreateCharacterFormBox::characterCreated);
+        this, &CreateCharacterFormBox::onCharacterCreated);
     
     return _submitButton;
+}
+
+void CreateCharacterFormBox::onCharacterCreated()
+{
+    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
+    playerCharacter->setCharacterName(_nameInput->text());
+    playerCharacter->setClassName(_classSelector->currentText());
+    emit characterCreated();
 }
 
 void CreateCharacterFormBox::applyStyling()

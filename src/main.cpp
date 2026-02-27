@@ -1,37 +1,18 @@
 #include <QApplication>
-#include "AppWindow.hpp"
 #include <QFontDatabase>
 #include <QFile>
 #include <QList>
-#include <QShortcut>
+
+#include "AppWindow.hpp"
+#include "managers/ResourceManager.hpp"
+#include "managers/SessionManager.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
-    QFile file("resources/styles/dark_theme.qss");
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        qWarning() << "Failed to open styling file: " << file.errorString();
-        return -1;
-    }
-    app.setStyleSheet(file.readAll());
-
-    QList<int> fontIdList = {
-        QFontDatabase::addApplicationFont(":/resources/fonts/IBM-EGA-8x14.ttf"),
-        QFontDatabase::addApplicationFont(":/resources/fonts/alagard.ttf"),
-    };
-    
-    for (int fontId : fontIdList) {
-        try
-        {
-            const auto families = QFontDatabase::applicationFontFamilies(fontId);
-            app.setFont(QFont(families.first()));
-        }
-        catch (...)
-        {
-            qWarning() << "Failed to load font from resource";
-        }
-    }
+    ResourceManager resourceManager(&app);
+    auto &sessionManager = SessionManager::instance();
+    sessionManager.startNewSession();
 
     // --- Main window ---
 
