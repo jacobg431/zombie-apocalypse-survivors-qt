@@ -47,8 +47,9 @@ public slots:
     void showShopMenu();
 
 private slots:
-    void onCharacterCreated();
     void onEscClicked();
+    void onF11Clicked();
+    void onCharacterCreated();
     void onResumeClicked();
     void onSaveClicked();
     void onQuitClicked();

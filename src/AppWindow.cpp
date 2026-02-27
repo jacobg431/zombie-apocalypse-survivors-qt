@@ -83,12 +83,8 @@ void AppWindow::wireConnections()
         this, &AppWindow::showMainMenu);
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
-    connect(shortcut, &QShortcut::activated, this, [=]()
-            {
-                if (windowState() & Qt::WindowFullScreen)
-                    showNormal();
-                else
-                    showFullScreen(); });
+    connect(shortcut, &QShortcut::activated, 
+        this, onF11Clicked);
 }
 
 void AppWindow::showMainMenu()
@@ -154,16 +150,24 @@ void AppWindow::setPaused(bool on)
     }
 }
 
-void AppWindow::onCharacterCreated()
-{
-    _displayCharacter->updateStatsPanelContent();
-    showDisplayCharacter();
-}
-
 void AppWindow::onEscClicked()
 {
     if (!pauseAllowed()) return; 
     setPaused(!isPaused());
+}
+
+void AppWindow::onF11Clicked()
+{
+    if (windowState() & Qt::WindowFullScreen)
+        showNormal();
+    else
+        showFullScreen();
+}
+
+void AppWindow::onCharacterCreated()
+{
+    _displayCharacter->updateStatsPanelContent();
+    showDisplayCharacter();
 }
 
 void AppWindow::onResumeClicked()
