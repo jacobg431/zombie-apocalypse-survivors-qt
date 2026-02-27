@@ -56,9 +56,9 @@ void AppWindow::wireConnections()
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, this, [this]
             { if (!pauseAllowed()) return;setPaused(!isPaused()); });
-    connect(_pauseOverlay, &PauseOverlayPanel::ResumeClicked, this, [this]
+    connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, this, [this]
             { setPaused(false); });
-    connect(_pauseOverlay, &PauseOverlayPanel::ReturnToMenuClicked, this, [this]
+    connect(_pauseOverlay, &PauseOverlayPanel::quitClicked, this, [this]
             { setPaused(false); showMainMenu(); });
 
     // --- Ingame Routing ---

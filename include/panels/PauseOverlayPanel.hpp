@@ -25,6 +25,7 @@ private:
     void applyStyling();
 
 signals:
-    void ResumeClicked();
-    void ReturnToMenuClicked();
+    void resumeClicked();
+    void saveClicked();
+    void quitClicked();
 };

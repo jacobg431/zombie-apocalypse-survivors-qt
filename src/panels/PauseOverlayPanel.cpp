@@ -52,11 +52,11 @@ void PauseOverlayPanel::setWidgets()
 void PauseOverlayPanel::wireConnections()
 {
     connect(_resumeButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::ResumeClicked);
+        this, &PauseOverlayPanel::resumeClicked);
     connect(_saveButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::ResumeClicked);
+        this, &PauseOverlayPanel::saveClicked);
     connect(_quitButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::ReturnToMenuClicked);
+        this, &PauseOverlayPanel::quitClicked);
 }
 
 void PauseOverlayPanel::applyStyling()
