@@ -64,3 +64,26 @@ ItemsManager::ItemsManager()
     _items.emplace("MolotovCocktail",
         std::make_unique<Consumable>("Molotov Cocktail", 2, 1));
 }
+
+const Equipment* ItemsManager::getItem(const QString& name) const
+{
+    auto it = _items.find(name);
+    if (it != _items.end())
+        return it->second.get();
+    return nullptr;
+}
+
+QVector<QString> ItemsManager::availableItems() const
+{
+    QVector<QString> names;
+    names.reserve(static_cast<int>(_items.size()));
+
+    for (const auto& [key, ptr] : _items)
+    {
+        if (!ptr) continue;
+        names << QString::fromStdString(ptr->GetName());
+    }
+    return names;
+}
+
+
