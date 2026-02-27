@@ -5,6 +5,7 @@
 #include <QToolButton>
 #include <QPainter>
 #include <QStyle>
+#include <QFont>
 
 GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 {
@@ -38,15 +39,17 @@ QFrame* GoBackPanel::createWrapper()
     _button = new QToolButton();
     _button->setText("Go Back");
     _button->setObjectName("goBackButton");
-
-    QIcon backArrowIcon = style()->standardIcon(QStyle::SP_ArrowBack);
-    _button->setIcon(backArrowIcon);
-    _button->setIconSize(QSize(24, 24));
-    _button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
     _button->setMinimumHeight(200);
     _button->setFixedWidth(240);
     _button->setCursor(Qt::PointingHandCursor);
+
+    _button->setIcon(QIcon(":/resources/icons/arrow-big-left.svg"));
+    _button->setIconSize(QSize(24, 24));
+    _button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+    QFont font = _button->font();
+    font.setPointSize(24);
+    _button->setFont(font);
 
     connect(_button, &QToolButton::clicked, this, &GoBackPanel::GoBackClicked);
 
@@ -69,15 +72,14 @@ void GoBackPanel::applyStyling()
             background: transparent;
             border: none;
             outline: none;
-            font-size: 32px;
             color: #060606;
             border-image: url(:/resources/images/hanging-sign.png) 0 0 0 0 stretch;
 
             text-align: center bottom;
 
             padding-top: 96px;
-            padding-left: 40px;
-            padding-right: 40px;
+            padding-left: 44px;
+            padding-right: 32px;
 
             margin-top: -32px;
             margin-bottom: 32px;
