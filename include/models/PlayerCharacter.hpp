@@ -6,12 +6,17 @@
 #include <QString>
 #include <QStringList>
 
+class QJsonObject;
+
 class PlayerCharacter : public QObject
 {
     Q_OBJECT
 
 public:
     PlayerCharacter(QObject* parent = nullptr);
+
+    QJsonObject toJson();
+    bool fromJson(const QJsonObject& json);
     
     QString getCharacterName();
     QString getClassName();

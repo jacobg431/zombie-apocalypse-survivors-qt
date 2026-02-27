@@ -1,12 +1,28 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QJsonObject>
 
 #include "models/PlayerCharacter.hpp"
 
 PlayerCharacter::PlayerCharacter(QObject* parent) 
     : QObject(parent)
 {}
+
+QJsonObject PlayerCharacter::toJson()
+{
+    QJsonObject json;
+
+    json["characterName"] = getCharacterName();
+    json["className"] = getClassName();
+    json["description"] = getSkills();
+}
+
+bool PlayerCharacter::fromJson(const QJsonObject& json)
+{
+
+}
+
 
 // Getters
 QString PlayerCharacter::getCharacterName()
