@@ -35,9 +35,10 @@ private:
     void readyGameMenuPanel();
     void stackPages();
     void wireConnections();
-    void setPaused(bool on);
-    bool isPaused() const;
-    bool pauseAllowed() const;
+    void openGameMenu();
+    void closeGameMenu();
+    bool isGameMenuOpen() const;
+    bool isGameMenuAvailable() const;
 
 public slots:
     void showMainMenu();

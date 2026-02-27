@@ -15,7 +15,6 @@
 
 AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
 {
-    // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
 
     readyGameMenuPanel();
@@ -64,7 +63,7 @@ void AppWindow::wireConnections()
     connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
         this, &QWidget::close);
 
-    // --- Pause Overlay ---
+    // --- Game Menu ---
     connect(_gameMenuPanel, &GameMenuPanel::resumeClicked, 
         this, &AppWindow::onResumeClicked);
 
@@ -135,36 +134,36 @@ void AppWindow::resizeEvent(QResizeEvent *event)
 
 void AppWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape && pauseAllowed())
-        setPaused(!isPaused());
-
-    else
-        QMainWindow::keyPressEvent(event);
+    QMainWindow::keyPressEvent(event);
 }
 
-bool AppWindow::isPaused() const
+bool AppWindow::isGameMenuOpen() const
 {
     return _gameMenuPanel->isVisible();
 }
 
-bool AppWindow::pauseAllowed() const
+bool AppWindow::isGameMenuAvailable() const
 {
     return _stack->currentWidget() != _mainMenu;
 }
 
-void AppWindow::setPaused(bool on)
+void AppWindow::openGameMenu()
 {
-    _gameMenuPanel->setVisible(on);
-    if (on)
-    {
-        _gameMenuPanel->raise();
-    }
+    _gameMenuPanel->setVisible(true);
+    _gameMenuPanel->raise();
+}
+
+void AppWindow::closeGameMenu()
+{
+    _gameMenuPanel->setVisible(false);
 }
 
 void AppWindow::onEscClicked()
 {
-    if (!pauseAllowed()) return; 
-    setPaused(!isPaused());
+    if (!isGameMenuAvailable()) return;
+
+    if (isGameMenuOpen()) closeGameMenu();
+    else openGameMenu();
 }
 
 void AppWindow::onF11Clicked()
@@ -193,12 +192,12 @@ void AppWindow::onCharacterCreated()
 
 void AppWindow::onGameMenuClicked()
 {
-    setPaused(true);
+    openGameMenu();
 }
 
 void AppWindow::onResumeClicked()
 {
-    setPaused(false);
+    closeGameMenu();
 }
 
 void AppWindow::onSaveClicked()
@@ -206,7 +205,7 @@ void AppWindow::onSaveClicked()
 
 void AppWindow::onQuitClicked()
 {
-    setPaused(false); 
+    closeGameMenu(); 
     auto &sessionManager = SessionManager::instance();
     sessionManager.clearSession();
     showMainMenu();
