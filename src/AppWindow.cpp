@@ -207,6 +207,6 @@ void AppWindow::onQuitClicked()
 {
     closeGameMenu(); 
     auto &sessionManager = SessionManager::instance();
-    sessionManager.clearSession();
+    sessionManager.endSession();
     showMainMenu();
 }

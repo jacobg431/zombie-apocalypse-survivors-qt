@@ -7,7 +7,7 @@
 #include <QFormLayout>
 
 #include "widgets/CreateCharacterFormBox.hpp"
-#include "managers/SessionManager.hpp"
+#include "managers/GameStateManager.hpp"
 
 CreateCharacterFormBox::CreateCharacterFormBox(
     QStringList roles,
@@ -76,9 +76,11 @@ QPushButton* CreateCharacterFormBox::createSubmitButton()
 
 void CreateCharacterFormBox::onCharacterCreated()
 {
-    auto playerCharacter = SessionManager::instance().getPlayerCharacter();
-    playerCharacter->setCharacterName(_nameInput->text());
-    playerCharacter->setClassName(_classSelector->currentText());
+    auto& playerCharacter = GameStateManager::instance()
+        .getGameState()    
+        .getPlayer();
+    playerCharacter.setCharacterName(_nameInput->text());
+    playerCharacter.setClassName(_classSelector->currentText());
     emit characterCreated();
 }
 
