@@ -1,6 +1,9 @@
 #pragma once
 
 #include "panels/GoBackPanel.hpp"
+#include "managers/ItemsManager.hpp"
+#include "ZasLib/Equipment.hpp"
+
 #include <QWidget>
 #include <QPushButton>
 #include <QVector>

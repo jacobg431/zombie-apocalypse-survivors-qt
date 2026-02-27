@@ -18,8 +18,10 @@ ItemsPanel::ItemsPanel(const QString& title, QWidget *parent)
     applyStyling();
 }
 
-ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, QWidget *parent) 
+ItemsPanel::ItemsPanel(const QString& title, const QString& buttonText, const QVector<QString>& items, QWidget *parent) : 
+m_items(std::move(items)) 
 {
+    normalizeItems(); 
     auto *layout = new QVBoxLayout(this);
     auto *innerWrapper = createInnerWrapper(title, buttonText);
     layout->addWidget(innerWrapper);
@@ -50,7 +52,9 @@ QFrame* ItemsPanel::createGrid()
     {
         for (int col = 0; col < 4; ++col)
         {
-            auto *button = new ItemPushButton("Empty");
+            auto text = m_items.value(row * 4 + col, "empty");
+            auto *button = new ItemPushButton(text, this);       
+            button->setDisabled(false);      
             m_itemButtons.append(button);
             grid->addWidget(button, row, col);
 
@@ -173,4 +177,13 @@ void ItemsPanel::applyStyling()
             border-image: url(:/resources/images/slash.png) 0 0 0 0 stretch;
         }
     )");
+}
+
+void ItemsPanel::normalizeItems()
+{
+    while (m_items.size() < 16)
+        m_items.append("empty");
+
+    if (m_items.size() > 16)
+        m_items.resize(16);
 }

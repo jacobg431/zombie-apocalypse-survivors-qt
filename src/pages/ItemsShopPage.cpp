@@ -29,7 +29,10 @@ QWidget* ItemsShopPage::createGoBackPanel()
 
 QWidget* ItemsShopPage::createShopPanel()
 {
-    auto *container = new ItemsPanel("Shop", "Buy");
+    auto& itemsManager = ItemsManager::instance();
+    QVector<QString> items = itemsManager.availableItems();
+
+    auto *container = new ItemsPanel("Shop", "Buy", items);
     return container;
 }
 
