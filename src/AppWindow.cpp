@@ -3,6 +3,8 @@
 
 #include "AppWindow.hpp"
 
+#include "managers/SessionManager.hpp"
+
 #include "pages/MainMenuPage.hpp"
 #include "pages/CharacterCreationPage.hpp"
 #include "pages/DisplayCharacterPage.hpp"
@@ -48,7 +50,7 @@ void AppWindow::wireConnections()
 {
     // --- Main Menu ---
     connect(_mainMenu, &MainMenuPage::newGameClicked, 
-        this, &AppWindow::showCharacterCreation);
+        this, &AppWindow::onNewGameClicked);
     connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
         this, &QWidget::close);
 
@@ -72,14 +74,17 @@ void AppWindow::wireConnections()
 
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
         this, &AppWindow::showDisplayCharacter);
+
+    connect(_displayCharacter, &DisplayCharacterPage::exploreClicked,
+        this, &AppWindow::showExplore);
+
+    connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
+        this, &AppWindow::showFight);
     
     connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
             this, &AppWindow::showShopMenu);
 
-    connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
-        this, &AppWindow::showFight);
-
-    connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
+    connect(_displayCharacter, &DisplayCharacterPage::gameMenuClicked,
         this, &AppWindow::showMainMenu);
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
@@ -102,15 +107,19 @@ void AppWindow::showDisplayCharacter()
     _stack->setCurrentWidget(_displayCharacter);
 }
 
-
-void AppWindow::showShopMenu()
+void AppWindow::showExplore()
 {
-    _stack->setCurrentWidget(_itemsShop);
+    return;
 }
 
 void AppWindow::showFight()
 {
     return;
+}
+
+void AppWindow::showShopMenu()
+{
+    _stack->setCurrentWidget(_itemsShop);
 }
 
 void AppWindow::resizeEvent(QResizeEvent *event)
@@ -164,10 +173,25 @@ void AppWindow::onF11Clicked()
         showFullScreen();
 }
 
+void AppWindow::onNewGameClicked()
+{
+    auto &sessionManager = SessionManager::instance();
+    sessionManager.startNewSession();
+    showCharacterCreation();
+}
+
+void AppWindow::onLoadSaveClicked()
+{}
+
 void AppWindow::onCharacterCreated()
 {
     _displayCharacter->updateStatsPanelContent();
     showDisplayCharacter();
+}
+
+void AppWindow::onGameMenuClicked()
+{
+    setPaused(true);
 }
 
 void AppWindow::onResumeClicked()
@@ -181,5 +205,7 @@ void AppWindow::onSaveClicked()
 void AppWindow::onQuitClicked()
 {
     setPaused(false); 
+    auto &sessionManager = SessionManager::instance();
+    sessionManager.clearSession();
     showMainMenu();
 }

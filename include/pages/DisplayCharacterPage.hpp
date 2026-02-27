@@ -41,7 +41,8 @@ private:
     GoBackPanel* _goBackPanel = nullptr;
 
 signals:
-    void itemsShopClicked();
+    void exploreClicked();
     void fightClicked();
-    void mainMenuClicked();
+    void itemsShopClicked();
+    void gameMenuClicked();
 };

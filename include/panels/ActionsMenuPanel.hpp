@@ -37,10 +37,6 @@ private:
 
 signals:
     void GoToShopClicked();
-
     void FightClicked();
-
     void ExploreClicked();
-
-    void MainMenuClicked();
 };

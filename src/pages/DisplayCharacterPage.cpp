@@ -51,12 +51,12 @@ QWidget* DisplayCharacterPage::createCharacterActionsPanel()
     //_characterActionsPanel = new CharacterActionsPanel();
     _actionsMenuPanel = new ActionsMenuPanel();
 
+    connect(_actionsMenuPanel, &ActionsMenuPanel::ExploreClicked,
+        this, &DisplayCharacterPage::exploreClicked);
     connect(_actionsMenuPanel, &ActionsMenuPanel::GoToShopClicked,
         this, &DisplayCharacterPage::itemsShopClicked);
     connect(_actionsMenuPanel, &ActionsMenuPanel::FightClicked,
         this, &DisplayCharacterPage::fightClicked);
-    connect(_actionsMenuPanel, &ActionsMenuPanel::MainMenuClicked,
-        this, &DisplayCharacterPage::mainMenuClicked);
 
     return _actionsMenuPanel;
 }
@@ -75,7 +75,7 @@ QWidget *DisplayCharacterPage::createGoBackPanel()
     _goBackPanel->setButtonText("To Menu");
 
     connect(_goBackPanel, &GoBackPanel::GoBackClicked,
-            this, &DisplayCharacterPage::mainMenuClicked);
+            this, &DisplayCharacterPage::gameMenuClicked);
 
     return _goBackPanel;
 }

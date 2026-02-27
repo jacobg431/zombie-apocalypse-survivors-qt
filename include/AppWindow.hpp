@@ -43,14 +43,22 @@ public slots:
     void showMainMenu();
     void showCharacterCreation();
     void showDisplayCharacter();
+    void showExplore();
     void showFight();
     void showShopMenu();
 
 private slots:
     void onEscClicked();
     void onF11Clicked();
+
+    void onNewGameClicked();
+    void onLoadSaveClicked();
+
     void onCharacterCreated();
+    void onGameMenuClicked();
+    
     void onResumeClicked();
     void onSaveClicked();
     void onQuitClicked();
+
 };
