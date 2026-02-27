@@ -21,8 +21,8 @@ QWidget* ItemsShopPage::createGoBackPanel()
     m_goBackPanel = new GoBackPanel(this);
     m_goBackPanel->setContentsMargins(0, 0, 0, 0);
 
-    connect(m_goBackPanel, &GoBackPanel::GoBackClicked,
-            this, &ItemsShopPage::GoBackClicked);
+    connect(m_goBackPanel, &GoBackPanel::goBackClicked,
+            this, &ItemsShopPage::goBackClicked);
 
     return m_goBackPanel;
 }

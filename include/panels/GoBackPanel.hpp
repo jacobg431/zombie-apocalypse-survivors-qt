@@ -15,7 +15,7 @@ public:
     void setButtonText(const QString &text);
 
 signals:
-    void GoBackClicked();
+    void goBackClicked();
 
 private:
     QFrame* createWrapper();

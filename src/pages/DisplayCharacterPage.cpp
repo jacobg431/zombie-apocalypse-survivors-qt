@@ -74,7 +74,7 @@ QWidget *DisplayCharacterPage::createGoBackPanel()
     _goBackPanel->setContentsMargins(0, 0, 0, 0);
     _goBackPanel->setButtonText("To Menu");
 
-    connect(_goBackPanel, &GoBackPanel::GoBackClicked,
+    connect(_goBackPanel, &GoBackPanel::goBackClicked,
             this, &DisplayCharacterPage::gameMenuClicked);
 
     return _goBackPanel;

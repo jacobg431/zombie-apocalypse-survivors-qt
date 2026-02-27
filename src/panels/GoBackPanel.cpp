@@ -51,7 +51,7 @@ QFrame* GoBackPanel::createWrapper()
     font.setPointSize(24);
     _button->setFont(font);
 
-    connect(_button, &QToolButton::clicked, this, &GoBackPanel::GoBackClicked);
+    connect(_button, &QToolButton::clicked, this, &GoBackPanel::goBackClicked);
 
     wrapperLayout->addWidget(_button);
     wrapperLayout->setAlignment(Qt::AlignLeft);

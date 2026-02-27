@@ -48,17 +48,23 @@ void AppWindow::stackPages()
 
 void AppWindow::wireConnections()
 {
-    // --- Main Menu ---
-    connect(_mainMenu, &MainMenuPage::newGameClicked, 
-        this, &AppWindow::onNewGameClicked);
-    connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
-        this, &QWidget::close);
-
-    // --- Pause Overlay ---
+    // --- Shortcuts ---
     auto *esc = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(esc, &QShortcut::activated, 
         this, &AppWindow::onEscClicked);
 
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
+    connect(shortcut, &QShortcut::activated, 
+        this, onF11Clicked);
+
+    // --- Main Menu ---
+    connect(_mainMenu, &MainMenuPage::newGameClicked, 
+        this, &AppWindow::onNewGameClicked);
+        
+    connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
+        this, &QWidget::close);
+
+    // --- Pause Overlay ---
     connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, 
         this, &AppWindow::onResumeClicked);
 
@@ -72,7 +78,7 @@ void AppWindow::wireConnections()
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::onCharacterCreated);
 
-    connect(_itemsShop, &ItemsShopPage::GoBackClicked,
+    connect(_itemsShop, &ItemsShopPage::goBackClicked,
         this, &AppWindow::showDisplayCharacter);
 
     connect(_displayCharacter, &DisplayCharacterPage::exploreClicked,
@@ -86,10 +92,6 @@ void AppWindow::wireConnections()
 
     connect(_displayCharacter, &DisplayCharacterPage::gameMenuClicked,
         this, &AppWindow::showMainMenu);
-
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
-    connect(shortcut, &QShortcut::activated, 
-        this, onF11Clicked);
 }
 
 void AppWindow::showMainMenu()

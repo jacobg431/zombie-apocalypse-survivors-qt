@@ -16,7 +16,7 @@ public:
     explicit ItemsShopPage(QWidget *parent = nullptr);
 
 signals:
-    void GoBackClicked();
+    void goBackClicked();
 
 private:
     GoBackPanel* m_goBackPanel;
