@@ -65,27 +65,17 @@ void AppWindow::wireConnections()
     connect(_characterCreation, &CharacterCreationPage::characterCreated,
         this, &AppWindow::onCharacterCreated);
 
-    //connect(_characterCreation, &CharacterCreationPage::characterCreated,
-    //        this, &AppWindow::showActionsMenu);
-
     connect(_itemsShop, &ItemsShopPage::GoBackClicked,
         this, &AppWindow::showDisplayCharacter);
-
-    //connect(_itemsShop, &ItemsShopPage::GoBackClicked,
-    //        this, &AppWindow::showActionsMenu);
     
     connect(_displayCharacter, &DisplayCharacterPage::itemsShopClicked,
             this, &AppWindow::showShopMenu);
-
-    //connect(_actionsMenu, &ActionsMenuPanel::GoToShopClicked,
-    //        this, &AppWindow::showShopMenu);
 
     connect(_displayCharacter, &DisplayCharacterPage::fightClicked,
         this, &AppWindow::showFight);
 
     connect(_displayCharacter, &DisplayCharacterPage::mainMenuClicked,
         this, &AppWindow::showMainMenu);
-
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
     connect(shortcut, &QShortcut::activated, this, [=]()
