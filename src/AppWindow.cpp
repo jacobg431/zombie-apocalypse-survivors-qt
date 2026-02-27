@@ -1,3 +1,6 @@
+#include <QStackedWidget>
+#include <QShortcut>
+
 #include "AppWindow.hpp"
 
 #include "pages/MainMenuPage.hpp"
@@ -7,9 +10,6 @@
 
 #include "panels/GoBackPanel.hpp"
 #include "panels/PauseOverlayPanel.hpp"
-
-#include <QStackedWidget>
-#include <QShortcut>
 
 AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
 {
