@@ -2,10 +2,10 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "panels/PauseOverlayPanel.hpp"
+#include "panels/GameMenuPanel.hpp"
 #include "widgets/DefaultPushButton.hpp"
 
-PauseOverlayPanel::PauseOverlayPanel(QWidget *parent) 
+GameMenuPanel::GameMenuPanel(QWidget *parent) 
     : QWidget(parent)
 {
     setObjectName("pauseMenu");
@@ -17,7 +17,7 @@ PauseOverlayPanel::PauseOverlayPanel(QWidget *parent)
     wireConnections();
 }
 
-QFrame* PauseOverlayPanel::createWrapper()
+QFrame* GameMenuPanel::createWrapper()
 {
     auto* wrapperFrame = new QFrame;
     auto* wrapperLayout = new QVBoxLayout(wrapperFrame);
@@ -34,7 +34,7 @@ QFrame* PauseOverlayPanel::createWrapper()
     return wrapperFrame;
 }
 
-void PauseOverlayPanel::setWidgets()
+void GameMenuPanel::setWidgets()
 {
     _title = new QLabel("Game Paused", this);   
     _title->setAlignment(Qt::AlignCenter);
@@ -49,17 +49,17 @@ void PauseOverlayPanel::setWidgets()
     _quitButton->setFixedWidth(200);
 }
 
-void PauseOverlayPanel::wireConnections()
+void GameMenuPanel::wireConnections()
 {
     connect(_resumeButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::resumeClicked);
+        this, &GameMenuPanel::resumeClicked);
     connect(_saveButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::saveClicked);
+        this, &GameMenuPanel::saveClicked);
     connect(_quitButton, &QPushButton::clicked, 
-        this, &PauseOverlayPanel::quitClicked);
+        this, &GameMenuPanel::quitClicked);
 }
 
-void PauseOverlayPanel::applyStyling()
+void GameMenuPanel::applyStyling()
 {
     setStyleSheet(R"(
 

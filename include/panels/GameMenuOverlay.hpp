@@ -6,12 +6,12 @@ class QFrame;
 class QLabel;
 class QPushButton;
 
-class PauseOverlayPanel : public QWidget
+class GameMenuPanel : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit PauseOverlayPanel(QWidget *parent = nullptr);
+    explicit GameMenuPanel(QWidget *parent = nullptr);
 
 private:
     QLabel* _title = nullptr;
