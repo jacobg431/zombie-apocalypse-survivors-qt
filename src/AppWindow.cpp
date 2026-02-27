@@ -11,24 +11,24 @@
 #include "pages/ItemsShopPage.hpp"
 
 #include "panels/GoBackPanel.hpp"
-#include "panels/PauseOverlayPanel.hpp"
+#include "panels/GameMenuPanel.hpp"
 
 AppWindow::AppWindow(QWidget *parent) : QMainWindow(parent)
 {
     // --- Window & Styling ---
     setWindowTitle("Zombie Apocalypse Survivors");
 
-    readyPauseOverlayPanel();
+    readyGameMenuPanel();
     stackPages();
     wireConnections();
     showMainMenu();
 }
 
-void AppWindow::readyPauseOverlayPanel()
+void AppWindow::readyGameMenuPanel()
 {
-    _pauseOverlay = new PauseOverlayPanel(this);
-    _pauseOverlay->hide();
-    _pauseOverlay->raise();
+    _gameMenuPanel = new GameMenuPanel(this);
+    _gameMenuPanel->hide();
+    _gameMenuPanel->raise();
 }
 
 void AppWindow::stackPages()
@@ -65,13 +65,13 @@ void AppWindow::wireConnections()
         this, &QWidget::close);
 
     // --- Pause Overlay ---
-    connect(_pauseOverlay, &PauseOverlayPanel::resumeClicked, 
+    connect(_gameMenuPanel, &GameMenuPanel::resumeClicked, 
         this, &AppWindow::onResumeClicked);
 
-    connect(_pauseOverlay, &PauseOverlayPanel::saveClicked,
+    connect(_gameMenuPanel, &GameMenuPanel::saveClicked,
         this, &AppWindow::onSaveClicked);
 
-    connect(_pauseOverlay, &PauseOverlayPanel::quitClicked, 
+    connect(_gameMenuPanel, &GameMenuPanel::quitClicked, 
         this, &AppWindow::onQuitClicked);
 
     // --- Ingame Routing ---
@@ -127,9 +127,9 @@ void AppWindow::showShopMenu()
 void AppWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
-    if (_pauseOverlay)
+    if (_gameMenuPanel)
     {
-        _pauseOverlay->setGeometry(centralWidget()->rect());
+        _gameMenuPanel->setGeometry(centralWidget()->rect());
     }
 }
 
@@ -144,7 +144,7 @@ void AppWindow::keyPressEvent(QKeyEvent *event)
 
 bool AppWindow::isPaused() const
 {
-    return _pauseOverlay->isVisible();
+    return _gameMenuPanel->isVisible();
 }
 
 bool AppWindow::pauseAllowed() const
@@ -154,10 +154,10 @@ bool AppWindow::pauseAllowed() const
 
 void AppWindow::setPaused(bool on)
 {
-    _pauseOverlay->setVisible(on);
+    _gameMenuPanel->setVisible(on);
     if (on)
     {
-        _pauseOverlay->raise();
+        _gameMenuPanel->raise();
     }
 }
 

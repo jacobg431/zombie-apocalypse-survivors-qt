@@ -9,7 +9,7 @@ class MainMenuPage;
 class CharacterCreationPage;
 class ItemsShopPage;
 class DisplayCharacterPage;
-class PauseOverlayPanel;
+class GameMenuPanel;
 class GoBackPanel;
 
 class AppWindow : public QMainWindow
@@ -29,10 +29,10 @@ private:
     CharacterCreationPage *_characterCreation;
     ItemsShopPage *_itemsShop;
     DisplayCharacterPage *_displayCharacter;
-    PauseOverlayPanel *_pauseOverlay;
+    GameMenuPanel *_gameMenuPanel;
     GoBackPanel *_goBackPanel;
 
-    void readyPauseOverlayPanel();
+    void readyGameMenuPanel();
     void stackPages();
     void wireConnections();
     void setPaused(bool on);
