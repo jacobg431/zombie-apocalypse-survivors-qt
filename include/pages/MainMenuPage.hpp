@@ -18,7 +18,7 @@ private:
     static const int BUTTON_HEIGHT = 100;
 
     QLabel* _title = nullptr;
-    QPushButton* _startGameButton = nullptr; // rename to newGameButton
+    QPushButton* _newGameButton = nullptr;
     QPushButton* _loadSaveButton = nullptr;
     QPushButton* _quitToDesktopButton = nullptr;
 
@@ -28,7 +28,7 @@ private:
     void applyStyling();
 
 signals:
-    void startGameClicked();
+    void newGameClicked();
     void loadSaveClicked();
     void quitToDesktopClicked();
 };

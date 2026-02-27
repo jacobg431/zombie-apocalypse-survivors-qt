@@ -47,7 +47,7 @@ void AppWindow::stackPages()
 void AppWindow::wireConnections()
 {
     // --- Main Menu ---
-    connect(_mainMenu, &MainMenuPage::startGameClicked, 
+    connect(_mainMenu, &MainMenuPage::newGameClicked, 
         this, &AppWindow::showCharacterCreation);
     connect(_mainMenu, &MainMenuPage::quitToDesktopClicked, 
         this, &QWidget::close);

@@ -24,7 +24,7 @@ QFrame* MainMenuPage::createWrapper()
     wrapperLayout->addStretch();
     wrapperLayout->addWidget(_title);
     wrapperLayout->addStretch();
-    wrapperLayout->addWidget(_startGameButton, 0, Qt::AlignCenter);
+    wrapperLayout->addWidget(_newGameButton, 0, Qt::AlignCenter);
     wrapperLayout->addWidget(_loadSaveButton, 0, Qt::AlignCenter);
     wrapperLayout->addWidget(_quitToDesktopButton, 0, Qt::AlignCenter);
     wrapperLayout->addStretch();
@@ -38,9 +38,9 @@ void MainMenuPage::setWidgets()
     _title->setObjectName("title");
     _title->setAlignment(Qt::AlignCenter);
 
-    _startGameButton = new QPushButton("Start Game");
-    _startGameButton->setObjectName("mainMenuButton");
-    _startGameButton->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+    _newGameButton = new QPushButton("New Game");
+    _newGameButton->setObjectName("mainMenuButton");
+    _newGameButton->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     
     _loadSaveButton = new QPushButton("Load Save");
     _loadSaveButton->setObjectName("mainMenuButton");
@@ -53,8 +53,8 @@ void MainMenuPage::setWidgets()
 
 void MainMenuPage::wireConnections()
 {
-    QObject::connect(_startGameButton, &QPushButton::clicked, 
-        this, &MainMenuPage::startGameClicked);
+    QObject::connect(_newGameButton, &QPushButton::clicked, 
+        this, &MainMenuPage::newGameClicked);
     QObject::connect(_loadSaveButton, &QPushButton::clicked, 
         this, &MainMenuPage::loadSaveClicked);
     QObject::connect(_quitToDesktopButton, &QPushButton::clicked, 
