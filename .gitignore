@@ -63,3 +63,4 @@ resources/fonts/*.zip
 # Raw image files & GIMP XCF files
 resources/images/raw/*
 resources/images/xfc/*
+out/
