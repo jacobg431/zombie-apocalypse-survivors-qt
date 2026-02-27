@@ -53,7 +53,8 @@ QFrame* ItemsPanel::createGrid()
         for (int col = 0; col < 4; ++col)
         {
             auto text = m_items.value(row * 4 + col, "empty");
-            auto *button = new ItemPushButton(text, this);            
+            auto *button = new ItemPushButton(text, this);       
+            button->setDisabled(false);      
             m_itemButtons.append(button);
             grid->addWidget(button, row, col);
 
