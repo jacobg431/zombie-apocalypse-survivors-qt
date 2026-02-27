@@ -27,19 +27,55 @@ QWidget* ItemsShopPage::createGoBackPanel()
     return m_goBackPanel;
 }
 
-QWidget* ItemsShopPage::createShopPanel()
+ItemsPanel* ItemsShopPage::createShopPanel()
 {
     auto& itemsManager = ItemsManager::instance();
     QVector<QString> items = itemsManager.availableItems();
 
-    auto *container = new ItemsPanel("Shop", "Buy", items);
+    auto *container = new ItemsPanel("Shop", "Buy", items, this);
+
+    connect(container, &ItemsPanel::actionClicked, this,
+            [this](const QString& name){
+
+        itemsInInventory[name] += 1;
+
+        if (m_inventoryPanel)
+            m_inventoryPanel->setItems(inventoryDisplayList());
+    });
+
     return container;
 }
 
-QWidget* ItemsShopPage::createInventoryPanel()
+ItemsPanel* ItemsShopPage::createInventoryPanel()
 {
-    auto *container = new ItemsPanel("Inventory", "Sell");
+    auto *container = new ItemsPanel("Inventory", "Sell",
+                                     inventoryDisplayList(), this);
+
+    connect(container, &ItemsPanel::actionClicked, this,
+            [this](const QString& displayName){
+
+        QString base = baseItemName(displayName);
+
+        if (itemsInInventory.contains(base) && itemsInInventory[base] > 0)
+        {
+            itemsInInventory[base] -= 1;
+            if (itemsInInventory[base] == 0)
+                itemsInInventory.remove(base);
+        }
+
+        if (m_inventoryPanel)
+            m_inventoryPanel->setItems(inventoryDisplayList());
+    });
+
     return container;
+}
+
+QString ItemsShopPage::baseItemName(const QString& displayName) const
+{
+    int idx = displayName.indexOf(" x");
+    if (idx != -1)
+        return displayName.left(idx);
+    return displayName;
 }
 
 QFrame* ItemsShopPage::createWrapper()
@@ -52,7 +88,8 @@ QFrame* ItemsShopPage::createWrapper()
     panelsWrapperLayout->setContentsMargins(20, 20, 20, 20);
     panelsWrapperLayout->addStretch();
     panelsWrapperLayout->addWidget(createShopPanel());
-    panelsWrapperLayout->addWidget(createInventoryPanel());
+    m_inventoryPanel = createInventoryPanel();
+    panelsWrapperLayout->addWidget(m_inventoryPanel);
     panelsWrapperLayout->addStretch();
 
     return panelsWrapperFrame;
@@ -63,4 +100,20 @@ void ItemsShopPage::applyStyling()
     setStyleSheet(R"(
 
     )");
+}
+
+
+QVector<QString> ItemsShopPage::inventoryDisplayList() const
+{
+    QVector<QString> list;
+
+    for (auto it = itemsInInventory.begin(); it != itemsInInventory.end(); ++it)
+    {
+        if (it.value() > 1)
+            list.append(it.key() + " x" + QString::number(it.value()));
+        else
+            list.append(it.key());
+    }
+
+    return list;
 }
