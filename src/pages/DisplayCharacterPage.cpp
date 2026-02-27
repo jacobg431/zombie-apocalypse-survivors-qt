@@ -51,11 +51,11 @@ QWidget* DisplayCharacterPage::createCharacterActionsPanel()
     //_characterActionsPanel = new CharacterActionsPanel();
     _actionsMenuPanel = new ActionsMenuPanel();
 
-    connect(_actionsMenuPanel, &ActionsMenuPanel::ExploreClicked,
+    connect(_actionsMenuPanel, &ActionsMenuPanel::exploreClicked,
         this, &DisplayCharacterPage::exploreClicked);
-    connect(_actionsMenuPanel, &ActionsMenuPanel::GoToShopClicked,
+    connect(_actionsMenuPanel, &ActionsMenuPanel::goToShopClicked,
         this, &DisplayCharacterPage::itemsShopClicked);
-    connect(_actionsMenuPanel, &ActionsMenuPanel::FightClicked,
+    connect(_actionsMenuPanel, &ActionsMenuPanel::fightClicked,
         this, &DisplayCharacterPage::fightClicked);
 
     return _actionsMenuPanel;

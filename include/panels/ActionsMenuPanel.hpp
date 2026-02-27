@@ -36,7 +36,7 @@ private:
     QMovie *backgroundGif = nullptr;
 
 signals:
-    void GoToShopClicked();
-    void FightClicked();
-    void ExploreClicked();
+    void goToShopClicked();
+    void fightClicked();
+    void exploreClicked();
 };

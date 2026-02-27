@@ -77,11 +77,11 @@ QWidget *ActionsMenuPanel::createOptionsPanel()
     optionsLayout->addStretch();
 
     connect(exploreButton, &QPushButton::clicked,
-            this, &ActionsMenuPanel::ExploreClicked);
+            this, &ActionsMenuPanel::exploreClicked);
     connect(fightButton, &QPushButton::clicked,
-            this, &ActionsMenuPanel::FightClicked);
+            this, &ActionsMenuPanel::fightClicked);
     connect(shopButton, &QPushButton::clicked,
-            this, &ActionsMenuPanel::GoToShopClicked);
+            this, &ActionsMenuPanel::goToShopClicked);
 
     return optionsPanel;
 }
