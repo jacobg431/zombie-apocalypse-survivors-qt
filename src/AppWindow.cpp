@@ -84,7 +84,7 @@ void AppWindow::wireConnections()
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_F11), this);
     connect(shortcut, &QShortcut::activated, 
-        this, onF11Clicked);
+        this, &AppWindow::onF11Clicked);
 }
 
 void AppWindow::showMainMenu()
