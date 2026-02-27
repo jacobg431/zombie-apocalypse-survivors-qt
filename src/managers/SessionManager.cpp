@@ -1,5 +1,5 @@
 #include "managers/SessionManager.hpp"
-#include "models/PlayerCharacter.hpp"
+#include "managers/GameStateManager.hpp"
 
 SessionManager& SessionManager::instance()
 {
@@ -8,25 +8,17 @@ SessionManager& SessionManager::instance()
 }
 
 SessionManager::SessionManager(QObject* parent)
-    : QObject(parent), _playerCharacter(new PlayerCharacter())
-{
-    connect(_playerCharacter, &PlayerCharacter::playerStateChanged,
-    this, &SessionManager::playerStateChanged);
-}
-
-PlayerCharacter* SessionManager::getPlayerCharacter()
-{
-    return _playerCharacter;
-}
+    : QObject(parent)
+{}
 
 void SessionManager::startNewSession()
 {
-    _playerCharacter->reset();
+    GameStateManager::instance().createNewGame();
     emit sessionStarted();
 }
 
-void SessionManager::clearSession()
+void SessionManager::endSession()
 {
-    _playerCharacter->reset();
-    emit sessionCleared();
+    GameStateManager::instance().clear();
+    emit sessionEnded();
 }

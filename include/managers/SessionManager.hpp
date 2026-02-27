@@ -6,8 +6,6 @@
 #include <QSessionManager>
 #include <QSettings>
 
-#include "models/PlayerCharacter.hpp"
-
 class SessionManager : public QObject
 {
     Q_OBJECT
@@ -21,14 +19,12 @@ public:
     PlayerCharacter* getPlayerCharacter(); 
 
     void startNewSession();
-    void clearSession();
+    void endSession();
 
 private:
     explicit SessionManager(QObject* parent = nullptr); 
-    PlayerCharacter* _playerCharacter = nullptr;
 
 signals:
     void sessionStarted(); 
-    void sessionCleared();
-    void playerStateChanged();
+    void sessionEnded();
 };
