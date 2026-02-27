@@ -5,6 +5,8 @@
     <file>fonts/DoubleHomicide.ttf</file>
     <file>fonts/IBM-EGA-8x14.ttf</file>
 
+    <file>icons/arrow-big-left.svg</file>
+
     <file>images/hero-fried.png</file>
     <file>images/caregiver-fried.png</file>
     <file>images/jester-fried.png</file>

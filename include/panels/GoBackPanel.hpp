@@ -2,8 +2,9 @@
 
 #include <QFrame>
 #include <QWidget>
-#include <QString>
-#include <QPushButton>
+
+class QString;
+class QToolButton;
 
 class GoBackPanel : public QWidget
 {
@@ -18,5 +19,5 @@ signals:
 
 private:
     QFrame* createWrapper();
-    QPushButton* m_button = nullptr;
+    QToolButton* _button = nullptr;
 };

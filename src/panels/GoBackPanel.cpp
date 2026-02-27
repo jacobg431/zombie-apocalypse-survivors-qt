@@ -2,8 +2,10 @@
 #include "widgets/DefaultPushButton.hpp"
 #include <QWidget>
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QToolButton>
 #include <QPainter>
+#include <QStyle>
+#include <QFont>
 
 GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 {
@@ -19,9 +21,9 @@ GoBackPanel::GoBackPanel(QWidget *parent) : QWidget(parent)
 
 void GoBackPanel::setButtonText(const QString &text)
 {
-    if (m_button)
+    if (_button)
     {
-        m_button->setText(text);
+        _button->setText(text);
     }
 }
 
@@ -34,15 +36,24 @@ QFrame* GoBackPanel::createWrapper()
     wrapperLayout->setContentsMargins(0, 0, 0, 0);
     wrapperLayout->setSpacing(0);
 
-    m_button = new QPushButton(" ⬅ Go Back  ");
-    m_button->setObjectName("goBackButton");
-    m_button->setMinimumHeight(200);
-    m_button->setFixedWidth(240);
-    m_button->setCursor(Qt::PointingHandCursor);
+    _button = new QToolButton();
+    _button->setText("Go Back");
+    _button->setObjectName("goBackButton");
+    _button->setMinimumHeight(200);
+    _button->setFixedWidth(240);
+    _button->setCursor(Qt::PointingHandCursor);
 
-    connect(m_button, &QPushButton::clicked, this, &GoBackPanel::GoBackClicked);
+    _button->setIcon(QIcon(":/resources/icons/arrow-big-left.svg"));
+    _button->setIconSize(QSize(24, 24));
+    _button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-    wrapperLayout->addWidget(m_button);
+    QFont font = _button->font();
+    font.setPointSize(24);
+    _button->setFont(font);
+
+    connect(_button, &QToolButton::clicked, this, &GoBackPanel::GoBackClicked);
+
+    wrapperLayout->addWidget(_button);
     wrapperLayout->setAlignment(Qt::AlignLeft);
 
     return wrapperFrame;
@@ -55,36 +66,35 @@ void GoBackPanel::applyStyling()
         QFrame#goBackWrapper {
             background: transparent;
             margin-left: 32px;
-            }
+        }
 
-        QPushButton#goBackButton {
+        QToolButton#goBackButton {
             background: transparent;
             border: none;
             outline: none;
-            font-size: 32px;
             color: #060606;
             border-image: url(:/resources/images/hanging-sign.png) 0 0 0 0 stretch;
 
             text-align: center bottom;
 
-            padding-bottom: 32px;
-            padding-left: 32px;
+            padding-top: 96px;
+            padding-left: 44px;
             padding-right: 32px;
 
             margin-top: -32px;
             margin-bottom: 32px;
-            }
+        }
 
-        QPushButton#goBackButton:hover {
+        QToolButton#goBackButton:hover {
             background-color: transparent;
             border-image: url(:/resources/images/hanging-sign-hover.png) 0 0 0 0 stretch;
-            }
+        }
 
-        QPushButton#goBackButton:pressed {
+        QToolButton#goBackButton:pressed {
             background: transparent;
             border-image: url(:/resources/images/hanging-sign-selected.png) 0 0 0 0 stretch;
             color: #7f0000;
-            }
+        }
 
     )");
 }

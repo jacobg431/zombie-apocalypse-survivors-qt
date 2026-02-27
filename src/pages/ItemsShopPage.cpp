@@ -59,10 +59,5 @@ void ItemsShopPage::applyStyling()
 {
     setStyleSheet(R"(
 
-        QWidget {
-            background-color: #201e1e1e;
-            font-size: 14px;
-        }
-
     )");
 }
