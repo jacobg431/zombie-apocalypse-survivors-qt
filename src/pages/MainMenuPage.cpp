@@ -4,43 +4,76 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QString>
+#include <QFrame>
 
 MainMenuPage::MainMenuPage(QWidget *parent) : QWidget(parent)
 {
-    int BUTTON_WIDTH = 400;
-    int BUTTON_HEIGHT = 100;
-
-    QString TITLE_STYLE = "font-size: 56px; font-weight: bold; color: #FF5733;";
-    QString BUTTON_STYLE = "font-size: 40px;";
-
-    // --- Title Card ---
-    auto *game_title = new QLabel("Zombie Apocalypse Survivors");
-
-    game_title->setAlignment(Qt::AlignCenter);
-    game_title->setStyleSheet(TITLE_STYLE);
-
-    // --- Menu buttons ---
-    auto *button_start = new QPushButton("Start Game");
-    auto *button_quit = new QPushButton("Quit Game");
-
-    button_start->setStyleSheet(button_start->styleSheet() + BUTTON_STYLE);
-    button_quit->setStyleSheet(button_quit->styleSheet() + BUTTON_STYLE);
-
-    button_start->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-    button_quit->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-
-    // --- Layout ---
     auto *layout = new QVBoxLayout(this);
+    layout->addWidget(createWrapper());
+    applyStyling();
+    wireConnections();
+}
 
-    layout->addStretch();
-    layout->addWidget(game_title);
-    layout->addStretch();
-    layout->addWidget(button_start, 0, Qt::AlignCenter);
-    layout->addWidget(button_quit, 0, Qt::AlignCenter);
-    layout->addStretch();
+QFrame* MainMenuPage::createWrapper()
+{
+    auto* wrapperFrame = new QFrame;
+    auto* wrapperLayout = new QVBoxLayout(wrapperFrame);
 
-    QObject::connect(button_start, &QPushButton::clicked, 
+    setWidgets();
+
+    wrapperLayout->addStretch();
+    wrapperLayout->addWidget(_title);
+    wrapperLayout->addStretch();
+    wrapperLayout->addWidget(_startGameButton, 0, Qt::AlignCenter);
+    wrapperLayout->addWidget(_loadSaveButton, 0, Qt::AlignCenter);
+    wrapperLayout->addWidget(_quitToDesktopButton, 0, Qt::AlignCenter);
+    wrapperLayout->addStretch();
+
+    return wrapperFrame;
+}
+
+void MainMenuPage::setWidgets()
+{
+    _title = new QLabel("Zombie Apocalypse Survivors");
+    _title->setObjectName("title");
+    _title->setAlignment(Qt::AlignCenter);
+
+    _startGameButton = new QPushButton("Start Game");
+    _startGameButton->setObjectName("mainMenuButton");
+    _startGameButton->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+    
+    _loadSaveButton = new QPushButton("Load Save");
+    _loadSaveButton->setObjectName("mainMenuButton");
+    _loadSaveButton->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+    _quitToDesktopButton = new QPushButton("Quit Game");
+    _quitToDesktopButton->setObjectName("mainMenuButton");
+    _quitToDesktopButton->setMinimumSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+}
+
+void MainMenuPage::wireConnections()
+{
+    QObject::connect(_startGameButton, &QPushButton::clicked, 
         this, &MainMenuPage::startGameClicked);
-    QObject::connect(button_quit, &QPushButton::clicked, 
+    QObject::connect(_loadSaveButton, &QPushButton::clicked, 
+        this, &MainMenuPage::loadSaveClicked);
+    QObject::connect(_quitToDesktopButton, &QPushButton::clicked, 
         this, &MainMenuPage::quitToDesktopClicked);
+}
+
+void MainMenuPage::applyStyling()
+{
+    setStyleSheet(R"(
+
+        QLabel#title {
+            font-size: 56px; 
+            font-weight: bold; 
+            color: #FF5733;
+        }
+
+        QPushButton#mainMenuButton {
+            font-size: 40px;
+        }
+
+    )");
 }

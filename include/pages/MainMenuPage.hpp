@@ -1,5 +1,10 @@
 #pragma once
+
 #include <QWidget>
+
+class QFrame;
+class QLabel;
+class QPushButton;
 
 class MainMenuPage : public QWidget
 {
@@ -8,7 +13,22 @@ class MainMenuPage : public QWidget
 public:
     explicit MainMenuPage(QWidget *parent = nullptr);
 
+private:
+    static const int BUTTON_WIDTH = 400;
+    static const int BUTTON_HEIGHT = 100;
+
+    QLabel* _title = nullptr;
+    QPushButton* _startGameButton = nullptr; // rename to newGameButton
+    QPushButton* _loadSaveButton = nullptr;
+    QPushButton* _quitToDesktopButton = nullptr;
+
+    QFrame* createWrapper();
+    void setWidgets();
+    void wireConnections();
+    void applyStyling();
+
 signals:
     void startGameClicked();
+    void loadSaveClicked();
     void quitToDesktopClicked();
 };
